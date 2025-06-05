@@ -258,20 +258,20 @@
             box-shadow: none; /* برای حفظ ظاهر قبلی */
         }
         
-        .form-icon { 
+        .form-icon { /* این کلاس در HTML استفاده نشده بود، اما برای سازگاری نگه داشته شده */
             position: relative;
         }
 
         .form-icon i {
             position: absolute;
-            right: 15px; 
+            right: 15px; /* چپ برای زبان فارسی */
             top: 50%;
             transform: translateY(-50%);
             color: var(--primary);
         }
 
         .form-icon .form-control {
-            padding-right: 40px; 
+            padding-right: 40px; /* چپ برای زبان فارسی */
         }
 
 
@@ -321,7 +321,7 @@
         
         .btn-accent {
             background: linear-gradient(135deg, var(--accent), #00b4db);
-            color: var(--dark); 
+            color: var(--dark); /* رنگ متن برای کنتراست بهتر */
         }
 
         .btn-accent:hover {
@@ -342,12 +342,12 @@
         .table-responsive {
             overflow-x: auto;
             border-radius: var(--border-radius);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* سایه ملایم‌تر */
         }
 
         .table {
             width: 100%;
-            border-collapse: separate; 
+            border-collapse: separate; /* برای border-radius روی th/td */
             border-spacing: 0;
         }
 
@@ -358,7 +358,7 @@
             text-align: right;
             font-weight: 600;
             position: sticky;
-            top: 0; 
+            top: 0; /* برای هدر چسبان در اسکرول جدول */
         }
         
         .table th:first-child {
@@ -377,7 +377,7 @@
         }
         
         .table tr:nth-child(even) td {
-            background-color: rgba(247, 250, 252, 0.8); 
+            background-color: rgba(247, 250, 252, 0.8); /* رنگ روشن‌تر برای خوانایی */
         }
 
         .table tr:last-child td {
@@ -392,14 +392,15 @@
 
 
         .table tr:hover td {
-            background-color: rgba(226, 232, 240, 0.5); 
+            background-color: rgba(226, 232, 240, 0.5); /* افکت هاور ملایم */
         }
         
+        /* ردیف برای بیماران دیابتی */
         .diabetic-row td {
-            background-color: rgba(248, 231, 225, 0.8) !important; 
+            background-color: rgba(248, 231, 225, 0.8) !important; /* رنگ ملایم برای دیابتی‌ها، با important برای اولویت */
             color: var(--diabetic-color);
         }
-        .diabetic-row td .btn-outline { 
+        .diabetic-row td .btn-outline { /* استایل دکمه‌ها در ردیف دیابتی */
             border-color: var(--diabetic-color);
             color: var(--diabetic-color);
         }
@@ -448,7 +449,7 @@
         .modal {
             position: fixed;
             top: 0;
-            right: 0; 
+            right: 0; /* برای زبان فارسی */
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
@@ -458,7 +459,7 @@
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease; 
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* انیمیشن نرم‌تر */
         }
 
         .modal.active {
@@ -473,12 +474,12 @@
             max-width: 800px;
             max-height: 90vh;
             overflow-y: auto;
-            transform: translateY(20px) scale(0.95); 
+            transform: translateY(20px) scale(0.95); /* انیمیشن ورود */
             transition: var(--transition);
             box-shadow: var(--box-shadow);
         }
         .modal.active .modal-content {
-            transform: translateY(0) scale(1); 
+            transform: translateY(0) scale(1); /* انیمیشن ورود */
         }
 
 
@@ -515,7 +516,7 @@
         
         .image-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* اندازه کوچکتر برای پیش‌نمایش */
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
@@ -531,12 +532,12 @@
             cursor: pointer;
             transition: var(--transition);
             position: relative;
-            overflow: hidden; 
+            overflow: hidden; /* برای اینکه تصویر از کادر بیرون نزند */
             background-color: rgba(255,255,255,0.7);
         }
         .image-upload:hover {
             border-color: var(--accent);
-            transform: translateY(-3px); 
+            transform: translateY(-3px); /* افکت هاور */
         }
 
         .image-upload i {
@@ -554,11 +555,11 @@
             height: 100%;
             object-fit: cover;
             z-index: 1;
-            cursor: pointer; 
+            cursor: pointer; /* برای نشان دادن قابلیت کلیک */
             transition: transform 0.3s;
         }
         .image-upload img:hover {
-            transform: scale(1.05); 
+            transform: scale(1.05); /* بزرگنمایی تصویر در هاور */
         }
 
 
@@ -588,23 +589,23 @@
             border-color: var(--primary);
         }
         
-        .option-toggle { 
+        .option-toggle { /* استایل‌های جدید برای آکاردئون */
             transition: var(--transition);
-            border: 2px solid transparent; 
+            border: 2px solid transparent; /* برای جلوگیری از پرش در هاور */
         }
         .option-toggle.selected.yes {
             background-color: var(--success);
             color: white;
-            border-color: var(--success) !important; 
+            border-color: var(--success) !important; /* برای اولویت بر استایل .option.selected */
         }
         .option-toggle.selected.no {
             background-color: var(--danger);
             color: white;
-            border-color: var(--danger) !important; 
+            border-color: var(--danger) !important; /* برای اولویت */
         }
         
 
-        .collapsible-section { 
+        .collapsible-section { /* استایل بخش‌های مخفی */
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out, padding 0.3s ease-out, margin-top 0.3s ease-out, border 0.3s ease-out;
@@ -613,7 +614,7 @@
             border: none;
         }
         .collapsible-section.open {
-            max-height: 2000px; 
+            max-height: 2000px; /* مقدار بزرگ برای اطمینان از نمایش کامل محتوا */
             padding: 1rem;
             margin-top: 1rem;
             border: 1px solid var(--light-gray);
@@ -634,19 +635,19 @@
             color: var(--accent);
         }
         
-        .details-section { 
+        .details-section { /* استایل بخش‌های جزئیات (مثلاً عوارض دیابت) */
             margin-top: 1rem;
             padding: 1rem;
             background-color: var(--light);
             border-radius: var(--border-radius);
             border: 1px solid var(--light-gray);
-            position: relative; 
+            position: relative; /* برای ::before */
         }
         .details-section::before {
             content: '';
             position: absolute;
             top: 0;
-            right: 0; 
+            right: 0; /* برای زبان فارسی */
             width: 3px;
             height: 100%;
             background-color: var(--primary);
@@ -667,14 +668,15 @@
         .bmi-overweight { background-color: rgba(255,238,186,0.7); color: #856404; border-color: rgba(255,223,126,0.7); }
         .bmi-obese { background-color: rgba(248,215,218,0.7); color: #721c24; border-color: rgba(245,198,203,0.7); }
         
+        /* استایل پیام‌های موفقیت، خطا و اطلاعات */
         .app-message {
             position: fixed;
             top: 20px;
-            left: 20px; 
+            left: 20px; /* تغییر به چپ برای زبان فارسی */
             padding: 15px 25px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
-            z-index: 3000; 
+            z-index: 3000; /* بالاتر از مودال‌ها */
             display: flex;
             align-items: center;
             gap: 10px;
@@ -706,6 +708,7 @@
             font-size: 0.875rem;
         }
 
+        /* استایل مودال نمایش تصویر/آزمایش */
         .test-modal-backdrop {
             position: fixed;
             top: 0;
@@ -713,8 +716,8 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.7);
-            z-index: 2500; 
-            display: none; 
+            z-index: 2500; /* باید بالاتر از فرم ولی پایین‌تر از مودال باشد */
+            display: none; /* به طور پیش‌فرض مخفی */
         }
         .test-modal-container {
             position: fixed;
@@ -722,35 +725,36 @@
             right: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5); 
-            z-index: 2600; 
+            background-color: rgba(0,0,0,0.5); /* کمی شفاف‌تر برای تمایز */
+            z-index: 2600; /* بالاتر از بک‌دراپ خودش */
             display: none;
             justify-content: center;
             align-items: center;
-            padding: 20px; 
+            padding: 20px; /* فاصله از لبه‌های صفحه */
         }
         .test-modal-content {
             background: white;
             border-radius: var(--border-radius);
-            width: auto; 
-            max-width: 90vw; 
-            max-height: 90vh; 
-            overflow: auto; 
+            width: auto; /* عرض خودکار بر اساس محتوا */
+            max-width: 90vw; /* حداکثر عرض */
+            max-height: 90vh; /* حداکثر ارتفاع */
+            overflow: auto; /* اسکرول در صورت نیاز */
             padding: 20px;
             position: relative;
             box-shadow: var(--box-shadow);
         }
         .test-image-item img {
             max-width: 100%;
-            max-height: calc(90vh - 120px); 
+            max-height: calc(90vh - 120px); /* ارتفاع تصویر با در نظر گرفتن هدر و دکمه‌ها */
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            cursor: default; 
-            transition: transform 0.3s; 
-            display: block; 
-            margin: 0 auto; 
+            cursor: default; /* دیگر قابلیت زوم ندارد */
+            transition: transform 0.3s; /* برای انیمیشن‌های آینده */
+            display: block; /* برای جلوگیری از فضای اضافی زیر تصویر */
+            margin: 0 auto; /* وسط‌چین کردن تصویر */
         }
         
+        /* Healing Progress */
         .healing-progress {
             margin: 1.5rem 0;
         }
@@ -774,6 +778,7 @@
             color: var(--gray);
         }
 
+        /* Loader (اگر نیاز باشد) */
         .loader {
             display: flex;
             flex-direction: column;
@@ -798,116 +803,28 @@
             to { transform: rotate(360deg); }
         }
 
-        /* BEGIN: Styles for uploaded file lists - NEW */
-        #uploadedTestsList, #uploadedSummariesList {
-            margin-top: 10px;
-            padding: 15px;
-            background-color: rgba(0,0,0,0.02); 
-            border-radius: var(--border-radius);
-            border: 1px solid var(--light-gray); 
-            min-height: 70px; 
-        }
-
-        .uploaded-file-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 15px; 
-            margin-bottom: 10px; 
-            background-color: white;
-            border-radius: calc(var(--border-radius) - 4px); 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-            transition: var(--transition);
-            border: 1px solid transparent; 
-        }
-        .uploaded-file-item:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .uploaded-file-item:last-child {
-            margin-bottom: 0; 
-        }
-
-        .uploaded-file-info {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 10px; 
-            direction: ltr; 
-            text-align: left;
-            overflow: hidden; 
-        }
-
-        .uploaded-file-info .file-icon-display { 
-            font-size: 1.5em; 
-            min-width: 25px; 
-            text-align: center;
-        }
-
-        .uploaded-file-info .file-name-display { 
-            font-weight: 500;
-            color: var(--dark);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .uploaded-file-info .file-size-display { 
-            font-size: 0.8em;
-            color: var(--gray);
-            margin-left: 10px; 
-            white-space: nowrap; 
-        }
-
-        .uploaded-file-actions .btn {
-            padding: 5px 10px; 
-            font-size: 0.8rem; 
-            margin-left: 8px; 
-        }
-         .uploaded-file-actions .btn:last-child {
-            margin-left: 0;
-        }
-
-        .btn-view-file { 
-            /* Inherits .btn-outline default styles */
-        }
-        .btn-view-file:hover {
-             background-color: rgba(74, 111, 165, 0.15); 
-        }
-
-        .btn-delete-file { 
-            border-color: var(--danger);
-            color: var(--danger);
-            background-color: transparent;
-        }
-        .btn-delete-file:hover {
-            background-color: var(--danger);
-            color: white;
-        }
-        /* END: Styles for uploaded file lists - NEW */
 
         /* Responsive Styles */
         @media (max-width: 1200px) {
-            /* :root { font-size: 15px; } */ 
+            /* :root { font-size: 15px; } */ /* برای جلوگیری از تغییرات ناخواسته در اندازه */
         }
 
         @media (max-width: 992px) {
             .app-container { grid-template-columns: 1fr; }
             .sidebar {
                 position: fixed;
-                top: 0; 
-                right: -280px; 
+                top: 0; /* تغییر برای نمایش از بالای صفحه */
+                right: -280px; /* شروع از خارج صفحه */
                 width: 280px;
-                height: 100vh; 
-                z-index: 1500; 
-                border-left: none; 
-                border-right: 1px solid var(--light-gray); 
+                height: 100vh; /* تمام ارتفاع صفحه */
+                z-index: 1500; /* بالاتر از هدر */
+                border-left: none; /* حذف بوردر اضافه */
+                border-right: 1px solid var(--light-gray); /* بوردر در سمت دیگر */
             }
             .sidebar.active { right: 0; }
             .mobile-menu-toggle { display: block; }
             .main-content { padding: 1.5rem; }
-            .app-header { padding: 0.8rem 1rem; height: 60px; } 
+            .app-header { padding: 0.8rem 1rem; height: 60px; } /* ارتفاع ثابت برای هدر */
              .app-container { min-height: calc(100vh - 60px); }
 
         }
@@ -922,16 +839,16 @@
             }
             .page-title { font-size: 1.4rem; }
             .card { padding: 1rem; }
-            .form-row { grid-template-columns: 1fr; } 
-            .image-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));} 
-            .btn:not(.action-buttons .btn) { 
+            .form-row { grid-template-columns: 1fr; } /* تک ستونه شدن فرم‌ها */
+            .image-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));} /* کوچکتر شدن پیش‌نمایش عکس */
+            .btn:not(.action-buttons .btn) { /* دکمه‌های اصلی تمام عرض شوند */
                  width: 100%;
                  padding: 0.8rem;
             }
             .table th, .table td { padding: 0.75rem; font-size: 0.875rem; }
             .modal-content { width: 95%; padding: 1rem; }
             .option { padding: 0.5rem 1rem; font-size: 0.8rem; }
-            .action-buttons { flex-wrap: wrap; } 
+            .action-buttons { flex-wrap: wrap; } /* اجازه شکستن دکمه‌ها در چند خط */
         }
 
         @media (max-width: 576px) {
@@ -939,10 +856,10 @@
             .main-content { padding: 1rem; }
             .card-title { font-size: 1.1rem; }
             .form-control, .btn:not(.action-buttons .btn) { padding: 0.7rem; }
-            .action-buttons { flex-direction: column; } 
+            .action-buttons { flex-direction: column; } /* دکمه‌های عملیات زیر هم */
             .action-buttons .btn { width: 100%; }
-            .image-grid { grid-template-columns: 1fr;} 
-            .current-date { display: none; } 
+            .image-grid { grid-template-columns: 1fr;} /* تک ستونه شدن پیش‌نمایش عکس */
+            .current-date { display: none; } /* مخفی کردن تاریخ در صفحه‌های خیلی کوچک */
         }
     </style>
 </head>
@@ -1065,7 +982,7 @@
                                     <label for="job" class="form-label">شغل</label>
                                     <input type="text" id="job" class="form-control" placeholder="شغل بیمار">
                                 </div>
-                                <div class="form-group"> 
+                                <div class="form-group"> <!-- دیگر الزامی نیست طبق کد قبلی -->
                                     <label for="education" class="form-label">سطح تحصیلات</label>
                                     <select id="education" class="form-control">
                                         <option value="">انتخاب کنید</option>
@@ -1089,7 +1006,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label class="form-label">آزمایش‌های آپلود شده:</label>
-                                <div id="uploadedTestsList"> 
+                                <div id="uploadedTestsList" style="margin-top: 10px; border: 1px dashed var(--light-gray); padding: 10px; min-height: 50px; border-radius: var(--border-radius);">
                                     <p style="color: var(--gray); text-align: center;">هیچ آزمایشی آپلود نشده است</p>
                                 </div>
                             </div>
@@ -1113,7 +1030,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label class="form-label">خلاصه‌های آپلود شده:</label>
-                                <div id="uploadedSummariesList"> 
+                                <div id="uploadedSummariesList" style="margin-top: 10px; border: 1px dashed var(--light-gray); padding: 10px; min-height: 50px; border-radius: var(--border-radius);">
                                     <p style="color: var(--gray); text-align: center;">هیچ خلاصه‌ای آپلود نشده است</p>
                                 </div>
                             </div>
@@ -1200,7 +1117,7 @@
                             <!-- Diabetes Info Section -->
                             <h3 class="section-title"><i class="fas fa-tint"></i> اطلاعات دیابت</h3>
                             <div id="diabetesToggleSection">
-                                <div class="form-group"> 
+                                <div class="form-group"> <!-- Changed from form-row to form-group for better layout -->
                                     <label class="form-label">آیا بیمار سابقه دیابت دارد؟</label>
                                     <div class="option-group" data-group-name="hasDiabetes">
                                         <div class="option option-toggle" onclick="toggleSection(this, 'diabetesInfoSection', true, 'hasDiabetes')">بله</div>
@@ -1646,30 +1563,32 @@
 
     <script>
         // ==================== Global Variables & Constants ====================
-        let patients = []; 
-        let currentVisitForModal = 1; 
-        let woundDetailsStorage = {}; 
-        let currentEditingPatientId = null; 
-        let uploadedTests = []; 
-        let uploadedSummaries = []; 
-        let currentImageUploadSlot = 1; 
-        let currentlyViewedTestFile = null; 
-        let activeMainSectionId = 'dashboardSection'; 
+        // هشدار: استفاده زیاد از متغیرهای گلوبال می‌تواند منجر به پیچیدگی شود.
+        // در یک برنامه واقعی، استفاده از الگوهای مدیریت وضعیت (State Management) توصیه می‌شود.
+        let patients = []; // آرایه برای نگهداری اطلاعات بیماران
+        let currentVisitForModal = 1; // برای مودال جزئیات زخم
+        let woundDetailsStorage = {}; // برای ذخیره جزئیات زخم هر ویزیت { visitId: { photos: [], notes: "", ... }}
+        let currentEditingPatientId = null; // شناسه بیماری که در حال ویرایش است
+        let uploadedTests = []; // آرایه برای نگهداری فایل‌های آزمایش آپلود شده موقت
+        let uploadedSummaries = []; // آرایه برای نگهداری فایل‌های خلاصه آپلود شده موقت
+        let currentImageUploadSlot = 1; // برای تعیین اسلات عکس در مودال زخم
+        let currentlyViewedTestFile = null; // برای نگهداری اطلاعات فایل در حال نمایش در مودال
+        let activeMainSectionId = 'dashboardSection'; // برای پیگیری بخش فعال اصلی
 
 
-        const MAX_UPLOAD_SIZE_MB = 5; 
+        const MAX_UPLOAD_SIZE_MB = 5; // حداکثر حجم مجاز برای آپلود فایل (مگابایت)
         const MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB * 1024 * 1024;
-        const visitNames = ["اول", "دوم", "سوم", "چهارم", "پنجم", "ششم", "هفتم"]; // Moved here to be globally accessible if needed outside dynamic script
 
         // ==================== Initialize App ====================
         document.addEventListener('DOMContentLoaded', () => {
             updateCurrentDate();
-            loadPatientsFromStorage(); 
+            loadPatientsFromStorage(); // بارگذاری بیماران از localStorage
             displayPatients();
             checkMobileView();
             
+            // راه‌اندازی اولیه بخش‌های toggle به حالت "خیر"
             initializeToggleSections();
-            navigateToSection(activeMainSectionId); 
+            navigateToSection(activeMainSectionId); // نمایش بخش اولیه (داشبورد)
 
 
             document.getElementById('patientForm').addEventListener('submit', function(e) {
@@ -1683,28 +1602,36 @@
             document.getElementById('fileImportInput').addEventListener('change', importPatientFromFile);
             window.addEventListener('resize', checkMobileView);
 
+            // برای جلوگیری از بسته شدن منوی موبایل هنگام کلیک روی آیتم‌ها
             document.querySelectorAll('.sidebar-menu .menu-link').forEach(link => {
                 link.addEventListener('click', function(event) {
+                    // اگر در حالت موبایل هستیم و منو باز است، پس از کلیک آن را ببند
                     if (window.innerWidth <= 992 && document.querySelector('.sidebar').classList.contains('active')) {
-                        // toggleMobileMenu(); // No longer needed here as navigateToSection handles it
+                       // toggleMobileMenu(); // این خط باعث بسته شدن منو می‌شود
                     }
                 });
             });
         });
         
         function initializeToggleSections() {
+            // اطمینان از اینکه بخش‌های جمع‌شونده به درستی با انتخاب "خیر" مقداردهی اولیه می‌شوند
+            // دیابت
             const diabetesNoOption = document.querySelector('#diabetesToggleSection .option-group .option.no');
             if (diabetesNoOption) toggleSection(diabetesNoOption, 'diabetesInfoSection', false, 'hasDiabetes');
 
+            // بستری
             const hospitalizationNoOption = document.querySelector('#hospitalizationMainSection .option-group[data-group-name="hasHospitalization"] .option.no');
             if (hospitalizationNoOption) toggleSection(hospitalizationNoOption, 'hospitalizationDetails', false, 'hasHospitalization');
             
+            // عفونت جراحی
             const surgicalInfectionNoOption = document.querySelector('#hospitalizationMainSection .option-group[data-group-name="hasSurgicalInfection"] .option.no');
             if (surgicalInfectionNoOption) toggleSection(surgicalInfectionNoOption, 'surgicalInfectionDetails', false, 'hasSurgicalInfection');
 
+            // دیالیز
             const dialysisNoOption = document.querySelector('#hospitalizationMainSection .option-group[data-group-name="hasDialysis"] .option.no');
             if (dialysisNoOption) toggleSection(dialysisNoOption, 'dialysisDetails', false, 'hasDialysis');
 
+            // حساسیت
             const allergyNoOption = document.querySelector('#hospitalizationMainSection .option-group[data-group-name="hasAllergy"] .option.no');
             if (allergyNoOption) toggleSection(allergyNoOption, 'allergyDetails', false, 'hasAllergy');
         }
@@ -1714,7 +1641,7 @@
         function navigateToSection(sectionId, event) {
             if (event) event.preventDefault();
             
-            activeMainSectionId = sectionId; 
+            activeMainSectionId = sectionId; // ذخیره بخش فعال فعلی
 
             document.querySelectorAll('main > div').forEach(sec => sec.style.display = 'none');
             const targetSection = document.getElementById(sectionId);
@@ -1723,14 +1650,18 @@
 
             document.querySelectorAll('.sidebar-menu .menu-link').forEach(link => link.classList.remove('active'));
             
+            // فعال کردن لینک منوی مربوطه
             const activeLink = document.querySelector(`.sidebar-menu a[onclick*="'${sectionId}'"]`);
             if (activeLink) {
                 activeLink.classList.add('active');
             } else if (sectionId === 'dashboardSection') { 
-                const dashboardLink = document.querySelector('.sidebar-menu a[onclick*="dashboard"]'); 
-                if(dashboardLink) dashboardLink.classList.add('active');
+                 // اگر بخش داشبورد به صورت پیش‌فرض فعال است و لینکی با onclick آن پیدا نشد (ممکن است نام تابع متفاوت باشد)
+                 const dashboardLink = document.querySelector('.sidebar-menu a[onclick*="dashboard"]'); // یک جستجوی کلی‌تر
+                 if(dashboardLink) dashboardLink.classList.add('active');
             }
 
+
+            // بستن منوی موبایل پس از انتخاب
             if (window.innerWidth <= 992 && document.querySelector('.sidebar').classList.contains('active')) {
                 toggleMobileMenu();
             }
@@ -1738,11 +1669,12 @@
 
 
         // ==================== UI Helper Functions ====================
-        function showAppMessage(message, type = 'info') { 
+        function showAppMessage(message, type = 'info') { // types: success, error, info
             const msgDiv = document.createElement('div');
             msgDiv.className = `app-message ${type}`;
             msgDiv.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-times-circle' : 'fa-info-circle'}"></i> ${message}`;
             document.body.appendChild(msgDiv);
+            // حذف خودکار پیام پس از چند ثانیه
             setTimeout(() => {
                 msgDiv.style.animation = 'fadeOut 0.3s ease forwards';
                 setTimeout(() => msgDiv.remove(), 300);
@@ -1768,7 +1700,7 @@
                 if(mobileToggle) mobileToggle.style.display = 'block';
             } else {
                 if(mobileToggle) mobileToggle.style.display = 'none';
-                if(sidebar) sidebar.classList.remove('active'); 
+                if(sidebar) sidebar.classList.remove('active'); // بستن منو در حالت دسکتاپ
             }
         }
         
@@ -1779,7 +1711,8 @@
 
         // ==================== Formatter Functions ====================
         function formatBloodPressure(input) {
-            let value = input.value.replace(/[^0-9\/]/g, ''); 
+            let value = input.value.replace(/[^0-9\/]/g, ''); // فقط اعداد و اسلش مجاز است
+            // جلوگیری از دو اسلش یا اسلش در ابتدا
             value = value.replace(/\/+/g, '/').replace(/^\//, '');
             const parts = value.split('/');
             if (parts.length > 2) {
@@ -1797,11 +1730,11 @@
 
             if (!heightInput || !weightInput || !bmiResultEl) return;
 
-            const height = parseFloat(heightInput.value) / 100; 
+            const height = parseFloat(heightInput.value) / 100; // تبدیل به متر
             const weight = parseFloat(weightInput.value);
             
-            bmiResultEl.textContent = '--'; 
-            bmiResultEl.className = 'bmi-result'; 
+            bmiResultEl.textContent = '--'; // مقدار پیش‌فرض
+            bmiResultEl.className = 'bmi-result'; // کلاس پیش‌فرض
 
             if (height > 0 && weight > 0) {
                 const bmi = (weight / (height * height)).toFixed(1);
@@ -1851,12 +1784,15 @@
 
 
         function toggleMultiSelectOption(element, groupNameAttribute) {
+            // groupNameAttribute is the value of data-group-name
             element.classList.toggle('selected');
+            // The actual data collection will happen when the form is submitted
+            // by checking which options have the 'selected' class.
         }
 
 
         // ==================== File Handling ====================
-        function handleFileUpload(event, fileTypeCategory) { 
+        function handleFileUpload(event, fileTypeCategory) { // fileTypeCategory: 'test' or 'summary'
             const files = event.target.files;
             if (!files || files.length === 0) return;
             
@@ -1865,7 +1801,7 @@
             Array.from(files).forEach(file => {
                 if (file.size > MAX_UPLOAD_SIZE_BYTES) {
                     showAppMessage(`فایل "${file.name}" حجیم‌تر از ${MAX_UPLOAD_SIZE_MB} مگابایت است و آپلود نشد.`, 'error');
-                    return; 
+                    return; // Skip this file
                 }
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -1873,7 +1809,7 @@
                         name: file.name,
                         type: file.type,
                         size: file.size,
-                        data: e.target.result 
+                        data: e.target.result // Base64 data
                     });
                     if (fileTypeCategory === 'test') updateUploadedTestsList();
                     else updateUploadedSummariesList();
@@ -1884,7 +1820,7 @@
                 reader.readAsDataURL(file);
             });
             showAppMessage('فایل(ها) با موفقیت برای افزودن انتخاب شدند.', 'success');
-            event.target.value = null; 
+            event.target.value = null; // Reset file input for next selection
         }
 
         function updateUploadedFilesList(listId, filesArray, viewFunctionName, removeFunctionName) {
@@ -1895,22 +1831,23 @@
                 container.innerHTML = `<p style="color: var(--gray); text-align: center;">هیچ فایلی آپلود نشده است</p>`;
                 return;
             }
-            container.innerHTML = ''; 
+            container.innerHTML = ''; // Clear previous list
             filesArray.forEach((file, index) => {
                 const itemDiv = document.createElement('div');
-                itemDiv.className = 'uploaded-file-item';
+                itemDiv.className = 'uploaded-file-item'; // Generic class
+                itemDiv.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid var(--light-gray);';
                 
                 itemDiv.innerHTML = `
-                    <div class="uploaded-file-info">
-                        <i class="${getFileIcon(file.type)} file-icon-display" style="color: ${getFileIconColor(file.type)};"></i>
-                        <span class="file-name-display" title="${file.name}">${file.name}</span>
-                        <span class="file-size-display">(${(file.size / 1024).toFixed(1)} KB)</span>
+                    <div style="flex: 1; direction: ltr; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        <i class="${getFileIcon(file.type)}" style="color: ${getFileIconColor(file.type)}; margin-right: 8px;"></i>
+                        <span title="${file.name}">${file.name}</span>
+                        <small style="color: var(--gray); margin-left: 10px;">(${(file.size / 1024).toFixed(1)} KB)</small>
                     </div>
-                    <div class="uploaded-file-actions">
-                        <button class="btn btn-outline btn-view-file" onclick="event.stopPropagation(); ${viewFunctionName}(${index})" title="مشاهده فایل">
+                    <div>
+                        <button class="btn btn-outline" onclick="event.stopPropagation(); ${viewFunctionName}(${index})" style="padding: 3px 8px; font-size: 12px; margin-left: 5px;">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button class="btn btn-outline btn-delete-file" onclick="event.stopPropagation(); ${removeFunctionName}(${index})" title="حذف فایل">
+                        <button class="btn btn-outline" onclick="event.stopPropagation(); ${removeFunctionName}(${index})" style="padding: 3px 8px; font-size: 12px; background-color: var(--danger); color: white;">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -1933,7 +1870,7 @@
             if (fileType.includes('excel') || fileType.includes('spreadsheet')) return 'fas fa-file-excel';
             return 'fas fa-file-alt';
         }
-        function getFileIconColor(fileType) { 
+        function getFileIconColor(fileType) { // Consistent with previous version
             if (fileType.startsWith('image/')) return '#4CAF50';
             if (fileType === 'application/pdf') return '#F44336';
             if (fileType.includes('word') || fileType.includes('document')) return '#2196F3';
@@ -1942,17 +1879,20 @@
         }
 
         function viewFileInModal(fileObject) {
-            currentlyViewedTestFile = fileObject; 
+            currentlyViewedTestFile = fileObject; // Store for download
             const container = document.getElementById('testFileContainer');
             const modalTitle = document.getElementById('testModalTitle');
             if (!container || !modalTitle) return;
 
             modalTitle.textContent = `نمایش فایل: ${fileObject.name}`;
-            container.innerHTML = ''; 
+            container.innerHTML = ''; // Clear previous content
 
             if (fileObject.type.startsWith('image/')) {
                 container.innerHTML = `<img src="${fileObject.data}" alt="${fileObject.name}" style="max-width: 100%; max-height: calc(90vh - 150px); display: block; margin: auto;">`;
             } else if (fileObject.type === 'application/pdf') {
+                // Embedding PDF directly might be problematic due to security or browser support.
+                // Offering a download link or using a library like PDF.js is more robust.
+                // For simplicity, we'll use an iframe, but be aware of limitations.
                 container.innerHTML = `<iframe src="${fileObject.data}" style="width: 100%; height: calc(90vh - 150px);" title="${fileObject.name}"></iframe>`;
             } else {
                 container.innerHTML = `<p style="text-align:center; padding:20px;">پیش‌نمایش برای این نوع فایل (${fileObject.type}) در دسترس نیست. لطفاً فایل را دانلود کنید.</p>`;
@@ -1964,13 +1904,14 @@
         function viewTestFile(index) { if (index >= 0 && index < uploadedTests.length) viewFileInModal(uploadedTests[index]); }
         function viewSummaryFile(index) { if (index >= 0 && index < uploadedSummaries.length) viewFileInModal(uploadedSummaries[index]); }
 
-        function closeTestViewModal() {
-            document.getElementById('testModalContainer').style.display = 'none';
-            document.getElementById('testModalBackdrop').style.display = 'none';
-            currentlyViewedTestFile = null;
-            // The line 'navigateToSection(activeMainSectionId);' has been removed
-            // to keep the user on the current page after closing the modal.
-        }
+       function closeTestViewModal() {
+          document.getElementById('testModalContainer').style.display = 'none';
+          document.getElementById('testModalBackdrop').style.display = 'none';
+          currentlyViewedTestFile = null;
+          // نیازی به فراخوانی navigateToSection نیست، چون مودال فقط روی صفحه فعلی نمایش داده شده بود.
+          // با حذف خط زیر، مشکل حل می‌شود.
+          // navigateToSection(activeMainSectionId); 
+      }
         function downloadCurrentViewedTestFile() {
             if (!currentlyViewedTestFile) return;
             const a = document.createElement('a');
@@ -1982,6 +1923,7 @@
         }
 
         function removeFileFromArray(index, filesArray, updateFunction) {
+            // کامنت: در اینجا باید از کاربر تاییدیه گرفته شود (ترجیحا با مودال سفارشی)
             if (confirm('آیا مطمئن هستید می‌خواهید این فایل را حذف کنید؟')) {
                 filesArray.splice(index, 1);
                 updateFunction();
@@ -1994,7 +1936,7 @@
 
         // ==================== Wound Details Modal & Image Handling ====================
         function triggerImageUpload(slotNumber, event) {
-            if (event) event.stopPropagation(); 
+            if (event) event.stopPropagation(); // جلوگیری از باز شدن مودال اصلی اگر روی خود عکس کلیک شد
             currentImageUploadSlot = slotNumber;
             document.getElementById('woundImageUpload').click();
         }
@@ -2017,23 +1959,24 @@
                 const previewContainer = document.getElementById(`woundImagePreview${currentImageUploadSlot}`);
                 if (!previewContainer) return;
 
-                previewContainer.innerHTML = ''; 
+                previewContainer.innerHTML = ''; // Clear previous content (icon and span)
                 const img = document.createElement('img');
                 img.src = e.target.result;
                 img.alt = `عکس زخم ${currentImageUploadSlot}`;
-                img.onclick = (ev) => { 
+                img.onclick = (ev) => { // Allow viewing the larger image from preview
                     ev.stopPropagation();
-                    viewFileInModal({ name: `عکس زخم ${currentImageUploadSlot}`, type: 'image/jpeg', data: img.src, size: 0 });
+                    viewFileInModal({ name: `عکس زخم ${currentImageUploadSlot}`, type: 'image/jpeg', data: img.src, size: 0 /* Size not critical for view */ });
                 };
                 previewContainer.appendChild(img);
 
+                // Store image data in woundDetailsStorage for the current visit
                 if (!woundDetailsStorage[currentVisitForModal]) {
                     woundDetailsStorage[currentVisitForModal] = { woundImagesData: {} };
                 }
                 woundDetailsStorage[currentVisitForModal].woundImagesData[`image${currentImageUploadSlot}`] = e.target.result;
             };
             reader.readAsDataURL(file);
-            event.target.value = null; 
+            event.target.value = null; // Reset file input
         }
 
         function openWoundDetailsModal(visitNumber) {
@@ -2044,19 +1987,23 @@
 
             modalTitle.textContent = `جزئیات زخم - ویزیت ${visitNames[visitNumber-1] || visitNumber}`;
             
+            // Reset image previews
             for (let i = 1; i <= 3; i++) {
                 const preview = document.getElementById(`woundImagePreview${i}`);
                 if (preview) preview.innerHTML = `<i class="fas fa-camera"></i><span>عکس ${i}</span>`;
             }
+            // Reset option groups in modal
             ['woundTissue', 'surroundingSkin', 'woundEdge'].forEach(groupId => {
                 document.querySelectorAll(`#${groupId} .option`).forEach(opt => opt.classList.remove('selected'));
             });
+            // Reset textareas and selects in modal
             document.getElementById('woundNotes').value = '';
             document.getElementById('woundAreaChange').value = '';
             document.getElementById('woundDepthChange').value = '';
             document.getElementById('woundChangeNotes').value = '';
 
 
+            // Load existing data for this visit if available
             const visitData = woundDetailsStorage[visitNumber] || {};
             if (visitData.woundImagesData) {
                 for (let i = 1; i <= 3; i++) {
@@ -2129,6 +2076,8 @@
 
 
         // ==================== Patient Data Management ====================
+        // کامنت: استفاده از localStorage برای داده‌های حساس پزشکی توصیه نمی‌شود.
+        // این بخش باید با یک پایگاه داده امن در سمت سرور جایگزین شود.
         function loadPatientsFromStorage() {
             const storedPatients = localStorage.getItem('woundPatients');
             patients = storedPatients ? JSON.parse(storedPatients) : [];
@@ -2141,18 +2090,20 @@
             const requiredFields = ['nationalId', 'firstName', 'lastName', 'gender', 'phone'];
             for (const fieldId of requiredFields) {
                 const field = document.getElementById(fieldId);
-                if (!field.value.trim()) { 
+                if (!field.value.trim()) { // Check for empty or whitespace-only values
                     showAppMessage(`لطفاً فیلد "${field.previousElementSibling.textContent}" را پر کنید.`, 'error');
                     field.focus();
                     return;
                 }
             }
+            // اعتبارسنجی کد ملی (مثال ساده، باید کامل‌تر شود)
             const nationalIdField = document.getElementById('nationalId');
             if (nationalIdField.value.length !== 10 || !/^\d+$/.test(nationalIdField.value)) {
                  showAppMessage('کد ملی باید ۱۰ رقم و فقط شامل اعداد باشد.', 'error');
                  nationalIdField.focus();
                  return;
             }
+            // اعتبارسنجی شماره موبایل (مثال ساده)
             const phoneField = document.getElementById('phone');
             if (!/^09\d{9}$/.test(phoneField.value)) {
                  showAppMessage('فرمت شماره موبایل صحیح نیست (مثال: 09123456789).', 'error');
@@ -2166,6 +2117,7 @@
             if (currentEditingPatientId) {
                 updatePatient(patientData);
             } else {
+                // بررسی وجود کد ملی تکراری فقط برای بیمار جدید
                 const exists = patients.some(p => p.nationalId === patientData.nationalId);
                 if (exists) {
                     showAppMessage("بیماری با این کد ملی قبلاً ثبت شده است!", 'error');
@@ -2190,7 +2142,7 @@
             };
             
             const diabetesYesOption = document.querySelector('#diabetesToggleSection .option-group[data-group-name="hasDiabetes"] .option.yes.selected');
-            medicalInfo.hasDiabetes = !!diabetesYesOption; 
+            medicalInfo.hasDiabetes = !!diabetesYesOption; // true if 'yes' is selected
             
             if(medicalInfo.hasDiabetes) {
                 medicalInfo.diabetesInfo = {
@@ -2221,6 +2173,7 @@
                 allergyDescription: document.getElementById('allergyDescription').value,
             };
 
+            // Wound Measurements from table
             const woundMeasurements = [];
             const measurementRows = document.querySelectorAll('.wound-measurement-table tbody tr');
             measurementRows.forEach((row, index) => {
@@ -2232,16 +2185,17 @@
 
                 if (dateInput.value || lengthInput.value || widthInput.value || depthInput.value || woundDetailsStorage[visitId]) {
                      woundMeasurements.push({
-                        visit: visitId, 
+                        visit: visitId, // or visitNames[index]
                         date: dateInput.value,
                         length: lengthInput.value,
                         width: widthInput.value,
                         depth: depthInput.value,
-                        details: woundDetailsStorage[visitId] || null 
+                        details: woundDetailsStorage[visitId] || null // Include details from modal
                     });
                 }
             });
 
+            // Wound Cultures from table
             const woundCultures = [];
             const cultureRows = document.querySelectorAll('.wound-culture-table tbody tr');
             cultureRows.forEach(row => {
@@ -2270,17 +2224,17 @@
                 education: document.getElementById('education').value,
                 phone: document.getElementById('phone').value.trim(),
                 address: document.getElementById('address').value.trim(),
-                medicalTestsData: [...uploadedTests], 
-                patientSummariesData: [...uploadedSummaries], 
-                medicalInfo, 
+                medicalTestsData: [...uploadedTests], // Store copies
+                patientSummariesData: [...uploadedSummaries], // Store copies
+                medicalInfo, // Contains diabetesInfo
                 hospitalizationHistory,
-                medicalHistoryText: document.getElementById('medicalHistory').value, 
+                medicalHistoryText: document.getElementById('medicalHistory').value, // Other diseases
                 familyMedicalHistoryText: document.getElementById('familyMedicalHistory').value,
                 substanceUse: Array.from(document.querySelectorAll('#medicalHistoryMainSection .option-group[data-group-name="substanceUse"] .option.selected')).map(el => el.textContent),
                 drugHistoryText: document.getElementById('drugHistory').value,
                 woundMeasurements,
                 woundCultures,
-                woundDetailsSnapshot: { ...woundDetailsStorage }, 
+                woundDetailsSnapshot: { ...woundDetailsStorage }, // Store a snapshot of wound details
                 createdAt: currentEditingPatientId ? patients.find(p => p.id === currentEditingPatientId)?.createdAt : new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             };
@@ -2291,9 +2245,9 @@
                 patients.push(patient);
                 savePatientsToStorage();
                 showAppMessage("پرونده جدید با موفقیت ثبت شد!", 'success');
-                resetForm(); 
+                resetForm(); // Reset after successful save
                 displayPatients();
-                navigateToSection('patientsListSection'); 
+                navigateToSection('patientsListSection'); // Navigate to patient list
             } catch (err) {
                 console.error("خطا در ثبت بیمار:", err);
                 showAppMessage(`خطا در ثبت بیمار: ${err.message}`, 'error');
@@ -2307,9 +2261,9 @@
                     patients[index] = updatedPatientData;
                     savePatientsToStorage();
                     showAppMessage("پرونده با موفقیت ویرایش شد!", 'success');
-                    resetForm(); 
+                    resetForm(); // Reset form and editing state
                     displayPatients();
-                    navigateToSection('patientsListSection'); 
+                    navigateToSection('patientsListSection'); // Navigate to patient list
                 } else {
                     showAppMessage("خطا: بیمار مورد نظر برای ویرایش یافت نشد.", 'error');
                 }
@@ -2320,6 +2274,7 @@
         }
         
         function resetFormConfirmation() {
+            // کامنت: در یک برنامه واقعی، از مودال سفارشی به جای confirm استفاده شود.
             if (confirm("آیا مطمئن هستید که می‌خواهید تمام اطلاعات فرم را پاک کنید؟ این عمل قابل بازگشت نیست.")) {
                 resetForm();
                 showAppMessage("فرم با موفقیت پاک شد.", "info");
@@ -2332,38 +2287,46 @@
             currentEditingPatientId = null;
             document.getElementById('submitButtonText').textContent = 'ثبت پرونده بیمار';
             
+            // Reset BMI
             const bmiResultEl = document.getElementById('bmiResult');
             if(bmiResultEl) {
                 bmiResultEl.textContent = '--';
                 bmiResultEl.className = 'bmi-result';
             }
             
+            // Clear uploaded files arrays and update UI
             uploadedTests = [];
             uploadedSummaries = [];
             updateUploadedTestsList();
             updateUploadedSummariesList();
             
+            // Clear wound details storage
             woundDetailsStorage = {};
 
+            // Reset all option groups (multi-select and single-select toggles)
             document.querySelectorAll('.option-group .option').forEach(opt => {
                 opt.classList.remove('selected', 'yes', 'no');
             });
 
-            initializeToggleSections(); 
+            // Reset collapsible sections and their toggle buttons to default "No"
+            initializeToggleSections(); // Re-initialize to default "No" state and closed sections
             
+            // Clear wound measurement table inputs
             document.querySelectorAll('.wound-measurement-table tbody input').forEach(input => input.value = '');
+            // Clear wound culture table inputs
             document.querySelectorAll('.wound-culture-table tbody input, .wound-culture-table tbody textarea').forEach(input => input.value = '');
             
+            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            navigateToSection('dashboardSection'); 
-            document.getElementById('nationalId').focus(); 
+            navigateToSection('dashboardSection'); // Go back to form view
+            document.getElementById('nationalId').focus(); // Focus on the first field
         }
 
 
         function displayPatients() {
             const tbody = document.getElementById('patientsList');
             if (!tbody) return;
-            tbody.innerHTML = ''; 
+            tbody.innerHTML = ''; // Clear existing rows
 
             if (patients.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--gray);">هیچ بیمار ثبت‌شده‌ای وجود ندارد. برای افزودن، به بخش "ثبت پرونده جدید" بروید.</td></tr>';
@@ -2373,14 +2336,20 @@
             patients.forEach(patient => {
                 const tr = document.createElement('tr');
                 if (patient.medicalInfo && patient.medicalInfo.hasDiabetes) {
-                    tr.classList.add('diabetic-row'); 
+                    tr.classList.add('diabetic-row'); // اعمال کلاس برای بیماران دیابتی
                 }
                 
+                // Sanitize patient data for display, handle potential undefined values
                 const nationalId = patient.nationalId || '-';
                 const firstName = patient.firstName || 'نامشخص';
                 const lastName = patient.lastName || 'نامشخص';
                 const age = patient.age || '-';
                 const hasDiabetes = (patient.medicalInfo && patient.medicalInfo.hasDiabetes) ? 'بله' : 'خیر';
+
+                // IMPORTANT: Stringify patient data carefully for inline JS to avoid XSS or broken HTML.
+                // A safer approach would be to pass only the patient.id and then retrieve the full object from the `patients` array.
+                const patientJsonString = JSON.stringify(patient).replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+
 
                 tr.innerHTML = `
                     <td>${nationalId}</td>
@@ -2412,9 +2381,10 @@
                 showAppMessage("بیمار مورد نظر یافت نشد!", 'error');
                 return;
             }
-            resetForm(); 
+            resetForm(); // Clear form before loading new data
             currentEditingPatientId = patient.id;
 
+            // Populate basic info
             document.getElementById('nationalId').value = patient.nationalId || '';
             document.getElementById('firstName').value = patient.firstName || '';
             document.getElementById('lastName').value = patient.lastName || '';
@@ -2427,11 +2397,13 @@
             document.getElementById('phone').value = patient.phone || '';
             document.getElementById('address').value = patient.address || '';
 
+            // Populate uploaded files (tests and summaries)
             uploadedTests = patient.medicalTestsData ? [...patient.medicalTestsData] : [];
             uploadedSummaries = patient.patientSummariesData ? [...patient.patientSummariesData] : [];
             updateUploadedTestsList();
             updateUploadedSummariesList();
 
+            // Populate medical info
             if (patient.medicalInfo) {
                 const mi = patient.medicalInfo;
                 document.getElementById('bloodPressure').value = mi.bloodPressure || '';
@@ -2442,7 +2414,7 @@
                 document.getElementById('hemoglobin').value = mi.hemoglobin || '';
                 document.getElementById('height').value = mi.height || '';
                 document.getElementById('weight').value = mi.weight || '';
-                calculateBMI(); 
+                calculateBMI(); // Recalculate and display BMI
 
                 const diabetesToggleYes = document.querySelector('#diabetesToggleSection .option-group[data-group-name="hasDiabetes"] .option.yes');
                 const diabetesToggleNo = document.querySelector('#diabetesToggleSection .option-group[data-group-name="hasDiabetes"] .option.no');
@@ -2454,15 +2426,18 @@
                         document.getElementById('hba1c').value = di.hba1c || '';
                         document.getElementById('diabetesType').value = di.diabetesType || '';
                         document.getElementById('diabetesDuration').value = di.diabetesDuration || '';
+                        // treatments (multi-select)
                         document.querySelectorAll('#diabetesInfoSection .option-group[data-group-name="diabetesTreatments"] .option').forEach(opt => {
                             if (di.treatments && di.treatments.includes(opt.textContent)) opt.classList.add('selected');
                             else opt.classList.remove('selected');
                         });
+                        // hasDiabeticWoundHistory
                         const woundHistoryYes = document.querySelector('#diabetesInfoSection .option-group[data-group-name="hasDiabeticWoundHistory"] .option.yes');
                         const woundHistoryNo = document.querySelector('#diabetesInfoSection .option-group[data-group-name="hasDiabeticWoundHistory"] .option.no');
                         if(di.hasDiabeticWoundHistory) { if(woundHistoryYes) toggleOptionSimple(woundHistoryYes, 'hasDiabeticWoundHistory', true); }
                         else { if(woundHistoryNo) toggleOptionSimple(woundHistoryNo, 'hasDiabeticWoundHistory', false); }
 
+                        // hasDiabeticComplications
                         const complicationsYes = document.querySelector('#diabetesInfoSection .option-group[data-group-name="hasDiabeticComplications"] .option.yes');
                         const complicationsNo = document.querySelector('#diabetesInfoSection .option-group[data-group-name="hasDiabeticComplications"] .option.no');
 
@@ -2478,15 +2453,18 @@
                 }
             }
             
+            // Populate other medical history
             document.getElementById('medicalHistory').value = patient.medicalHistoryText || '';
             document.getElementById('familyMedicalHistory').value = patient.familyMedicalHistoryText || '';
             document.getElementById('drugHistory').value = patient.drugHistoryText || '';
+             // substanceUse (multi-select)
             document.querySelectorAll('#medicalHistoryMainSection .option-group[data-group-name="substanceUse"] .option').forEach(opt => {
                 if (patient.substanceUse && patient.substanceUse.includes(opt.textContent)) opt.classList.add('selected');
                 else opt.classList.remove('selected');
             });
 
 
+            // Populate hospitalization history
             if(patient.hospitalizationHistory) {
                 const hh = patient.hospitalizationHistory;
                 const hospYes = document.querySelector('#hospitalizationMainSection .option-group[data-group-name="hasHospitalization"] .option.yes');
@@ -2498,6 +2476,7 @@
                 } else {
                     if(hospNo) toggleSection(hospNo, 'hospitalizationDetails', false, 'hasHospitalization');
                 }
+                // ... similar logic for surgicalInfection, dialysis, allergy ...
                 const surgInfYes = document.querySelector('#hospitalizationMainSection .option-group[data-group-name="hasSurgicalInfection"] .option.yes');
                 const surgInfNo = document.querySelector('#hospitalizationMainSection .option-group[data-group-name="hasSurgicalInfection"] .option.no');
                  if(hh.hasSurgicalInfection) {
@@ -2528,9 +2507,10 @@
             }
 
 
+            // Populate wound measurements
             if (patient.woundMeasurements) {
                 patient.woundMeasurements.forEach((m, index) => {
-                    const row = document.querySelectorAll('.wound-measurement-table tbody tr')[m.visit -1]; 
+                    const row = document.querySelectorAll('.wound-measurement-table tbody tr')[m.visit -1]; // m.visit is 1-based
                     if (row) {
                         row.cells[1].querySelector('input').value = m.date || '';
                         row.cells[2].querySelector('input').value = m.length || '';
@@ -2539,6 +2519,7 @@
                     }
                 });
             }
+             // Populate wound cultures
             if (patient.woundCultures) {
                 patient.woundCultures.forEach((c, index) => {
                     const row = document.querySelectorAll('.wound-culture-table tbody tr')[index];
@@ -2550,24 +2531,26 @@
                 });
             }
             
+            // Populate wound details (from snapshot)
             woundDetailsStorage = patient.woundDetailsSnapshot ? { ...patient.woundDetailsSnapshot } : {};
 
 
             document.getElementById('submitButtonText').textContent = 'ویرایش پرونده بیمار';
-            navigateToSection('dashboardSection'); 
+            navigateToSection('dashboardSection'); // Show the form
             window.scrollTo({ top: 0, behavior: 'smooth' });
             document.getElementById('nationalId').focus();
         }
 
 
         function deletePatient(patientId) {
+            // کامنت: در یک برنامه واقعی، از مودال سفارشی به جای confirm استفاده شود.
             if (confirm('آیا مطمئن هستید که می‌خواهید این پرونده را حذف کنید؟ این عمل برگشت‌ناپذیر است!')) {
                 try {
                     patients = patients.filter(p => p.id !== patientId);
                     savePatientsToStorage();
                     showAppMessage("پرونده با موفقیت حذف شد!", 'success');
-                    displayPatients(); 
-                    if (currentEditingPatientId === patientId) { 
+                    displayPatients(); // Refresh list
+                    if (currentEditingPatientId === patientId) { // If deleting the patient currently being edited
                         resetForm();
                     }
                 } catch (err) {
@@ -2578,6 +2561,9 @@
         }
         
         function saveDraft() {
+            // TODO: Implement save draft functionality
+            // This could save the current form to localStorage under a temporary key
+            // or send it to a backend endpoint for drafts.
             console.warn("عملکرد 'ذخیره پیش نویس' هنوز پیاده سازی نشده است.");
             showAppMessage("عملکرد 'ذخیره پیش نویس' هنوز در دسترس نیست.", 'info');
         }
@@ -2594,12 +2580,14 @@
 
         function exportPatientData(patientData) {
             try {
+                // اطمینان از اینکه Base64 داده‌های فایل خیلی بزرگ نیستند و باعث مشکل نمی‌شوند.
+                // در یک سیستم واقعی، فایل‌ها باید جداگانه مدیریت شوند، نه درون JSON.
                 const dataStr = JSON.stringify(patientData, null, 2);
-                const blob = new Blob([dataStr], { type: 'application/json;charset=utf-8' }); 
+                const blob = new Blob([dataStr], { type: 'application/json;charset=utf-8' }); // Use JSON type
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `patient_${patientData.nationalId}_${patientData.firstName}_${patientData.lastName}.wmd`; 
+                a.download = `patient_${patientData.nationalId}_${patientData.firstName}_${patientData.lastName}.wmd`; // .wmd or .json
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -2616,6 +2604,7 @@
                 showAppMessage("هیچ بیماری برای خروجی گرفتن وجود ندارد.", 'info');
                 return;
             }
+            // کامنت: در یک برنامه واقعی، از مودال سفارشی به جای confirm استفاده شود.
             if (!confirm(`آیا مطمئن هستید که می‌خواهید اطلاعات تمام ${patients.length} بیمار را خروجی بگیرید؟`)) {
                 return;
             }
@@ -2644,7 +2633,7 @@
 
             if (!file.name.endsWith('.wmd') && !file.name.endsWith('.json')) {
                 showAppMessage("لطفاً یک فایل با پسوند .wmd یا .json انتخاب کنید!", 'error');
-                event.target.value = null; 
+                event.target.value = null; // Reset file input
                 return;
             }
 
@@ -2653,6 +2642,7 @@
                 try {
                     const importedData = JSON.parse(e.target.result);
                     
+                    // Handle single patient or array of patients
                     const patientsToImport = Array.isArray(importedData) ? importedData : [importedData];
                     let importedCount = 0;
                     let skippedCount = 0;
@@ -2661,13 +2651,14 @@
                         if (!patientData.id || !patientData.nationalId || !patientData.firstName || !patientData.lastName) {
                             console.warn("فرمت داده وارداتی نامعتبر است - یکی از پرونده‌ها اطلاعات پایه لازم را ندارد.", patientData);
                             skippedCount++;
-                            return; 
+                            return; // Skip this patient
                         }
+                        // Check for duplicates
                         const exists = patients.some(p => p.id === patientData.id || p.nationalId === patientData.nationalId);
                         if (exists) {
                             console.warn(`بیمار با کد ملی ${patientData.nationalId} یا شناسه ${patientData.id} قبلاً وجود دارد. از وارد کردن مجدد صرف نظر شد.`);
                             skippedCount++;
-                            return; 
+                            return; // Skip this duplicate patient
                         }
                         patients.push(patientData);
                         importedCount++;
@@ -2689,19 +2680,20 @@
                     console.error("خطا در خواندن یا پردازش فایل وارداتی:", err);
                     showAppMessage(`خطا در وارد کردن فایل: ${err.message}`, 'error');
                 } finally {
-                     event.target.value = null; 
+                     event.target.value = null; // Reset file input
                 }
             };
             reader.onerror = () => {
                 showAppMessage("خطا در خواندن فایل.", 'error');
-                event.target.value = null; 
+                event.target.value = null; // Reset file input
             };
             reader.readAsText(file);
         }
         
         // ==================== PWA Service Worker ====================
+        // کامنت: فایل‌های sw.js و manifest1.json باید موجود باشند.
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js') 
+            navigator.serviceWorker.register('/sw.js') // مسیر فایل سرویس ورکر
                 .then(reg => {
                     console.log('سرویس ورکر با موفقیت ثبت شد.', reg);
                     reg.addEventListener('updatefound', () => {
@@ -2709,6 +2701,7 @@
                         if (newWorker) {
                             newWorker.addEventListener('statechange', () => {
                                 if (newWorker.state === 'activated') {
+                                    // کامنت: در اینجا بهتر است از یک نوتیفیکیشن سفارشی به جای confirm استفاده شود.
                                     if (confirm('نسخه جدیدی از برنامه در دسترس است. آیا مایل به بارگذاری مجدد هستید؟')) {
                                         window.location.reload();
                                     }
