@@ -2,8 +2,8 @@ const CACHE_NAME = 'my-pwa-cache-v4'; // نسخه را دستی افزایش د�
 const ASSETS = [
   '/',
   '/index.html',
-  'icone/Wound92.png',
-  'icone/Wound512.png',
+  '/Wound92.png',
+  '/Wound512.png',
   '/manifest1.json'
   // فایل‌های دیگر...
 ];
