@@ -1638,21 +1638,8 @@
 
 
         // ==================== Navigation ====================
-         function navigateToSection(sectionId, event) {
+        function navigateToSection(sectionId, event) {
           if (event) event.preventDefault();
-
-          // --- شروع کد حفاظتی جدید ---
-          // بررسی می‌کند آیا پنجره‌ای (مودال) باز است یا نه.
-          // اگر باز باشد، از جابجایی به صفحه دیگر جلوگیری می‌کند.
-          const isModalActive = document.getElementById('testModalContainer').style.display === 'flex' || 
-                                 document.getElementById('woundDetailsModal').classList.contains('active');
-                                 
-          if (isModalActive) {
-              // این شرط جلوی پرش ناخواسته به صفحه لیست بیماران را می‌گیرد.
-              console.warn(`جابجایی به '${sectionId}' متوقف شد چون یک پنجره باز است.`);
-              return; 
-          }
-          // --- پایان کد حفاظتی جدید ---
           
           activeMainSectionId = sectionId; 
 
@@ -1660,17 +1647,15 @@
           const targetSection = document.getElementById(sectionId);
           if(targetSection) targetSection.style.display = 'block';
 
-
           document.querySelectorAll('.sidebar-menu .menu-link').forEach(link => link.classList.remove('active'));
           
           const activeLink = document.querySelector(`.sidebar-menu a[onclick*="'${sectionId}'"]`);
           if (activeLink) {
               activeLink.classList.add('active');
           } else if (sectionId === 'dashboardSection') { 
-               const dashboardLink = document.querySelector('.sidebar-menu a[onclick*="dashboard"]');
-               if(dashboardLink) dashboardLink.classList.add('active');
+              const dashboardLink = document.querySelector('.sidebar-menu a[onclick*="dashboard"]');
+              if(dashboardLink) dashboardLink.classList.add('active');
           }
-
 
           if (window.innerWidth <= 992 && document.querySelector('.sidebar').classList.contains('active')) {
               toggleMobileMenu();
@@ -1832,37 +1817,37 @@
         }
 
         function updateUploadedFilesList(listId, filesArray, viewFunctionName, removeFunctionName) {
-            const container = document.getElementById(listId);
-            if (!container) return;
+          const container = document.getElementById(listId);
+          if (!container) return;
 
-            if (filesArray.length === 0) {
-                container.innerHTML = `<p style="color: var(--gray); text-align: center;">هیچ فایلی آپلود نشده است</p>`;
-                return;
-            }
-            container.innerHTML = ''; // Clear previous list
-            filesArray.forEach((file, index) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'uploaded-file-item'; // Generic class
-                itemDiv.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid var(--light-gray);';
-                
-                itemDiv.innerHTML = `
-                    <div style="flex: 1; direction: ltr; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                        <i class="${getFileIcon(file.type)}" style="color: ${getFileIconColor(file.type)}; margin-right: 8px;"></i>
-                        <span title="${file.name}">${file.name}</span>
-                        <small style="color: var(--gray); margin-left: 10px;">(${(file.size / 1024).toFixed(1)} KB)</small>
-                    </div>
-                    <div>
-                        <button class="btn btn-outline" onclick="event.stopPropagation(); ${viewFunctionName}(${index})" style="padding: 3px 8px; font-size: 12px; margin-left: 5px;">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-outline" onclick="event.stopPropagation(); ${removeFunctionName}(${index})" style="padding: 3px 8px; font-size: 12px; background-color: var(--danger); color: white;">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(itemDiv);
-            });
-        }
+          if (filesArray.length === 0) {
+              container.innerHTML = `<p style="color: var(--gray); text-align: center;">هیچ فایلی آپلود نشده است</p>`;
+              return;
+          }
+          container.innerHTML = ''; // Clear previous list
+          filesArray.forEach((file, index) => {
+              const itemDiv = document.createElement('div');
+              itemDiv.className = 'uploaded-file-item'; 
+              itemDiv.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid var(--light-gray);';
+              
+              itemDiv.innerHTML = `
+                  <div style="flex: 1; direction: ltr; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                      <i class="${getFileIcon(file.type)}" style="color: ${getFileIconColor(file.type)}; margin-right: 8px;"></i>
+                      <span title="${file.name}">${file.name}</span>
+                      <small style="color: var(--gray); margin-left: 10px;">(${(file.size / 1024).toFixed(1)} KB)</small>
+                  </div>
+                  <div>
+                      <button type="button" class="btn btn-outline" onclick="event.stopPropagation(); ${viewFunctionName}(${index})" style="padding: 3px 8px; font-size: 12px; margin-left: 5px;">
+                          <i class="fas fa-eye"></i>
+                      </button>
+                      <button type="button" class="btn btn-outline" onclick="event.stopPropagation(); ${removeFunctionName}(${index})" style="padding: 3px 8px; font-size: 12px; background-color: var(--danger); color: white;">
+                          <i class="fas fa-trash"></i>
+                      </button>
+                  </div>
+              `;
+              container.appendChild(itemDiv);
+          });
+      }
 
         function updateUploadedTestsList() {
             updateUploadedFilesList('uploadedTestsList', uploadedTests, 'viewTestFile', 'removeTestFile');
