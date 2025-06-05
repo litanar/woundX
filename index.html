@@ -12,19 +12,25 @@
         :root {
             --primary: #3a7bd5;
             --primary-dark: #2c5fb3;
+            --primary-rgb: 58, 123, 213; /* For use in rgba */
             --secondary: #f857a6;
             --accent: #00d2ff;
+            --accent-rgb: 0, 210, 255; /* For use in rgba */
             --light: #f8f9ff;
             --dark: #2d3748;
             --success: #38a169;
+            --success-rgb: 56, 161, 105;
             --warning: #f6ad55;
+            --warning-rgb: 246, 173, 85;
             --danger: #e53e3e;
+            --danger-rgb: 229, 62, 62;
             --gray: #6c757d;
             --light-gray: #e9ecef;
             --border-radius: 12px;
             --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --diabetic-color: #9c4221; /* Color for diabetic patient highlighting */
+            --diabetic-color: #9c4221; 
+            --diabetic-rgb: 156, 66, 33;
             --glass-effect: rgba(255, 255, 255, 0.15);
         }
 
@@ -40,7 +46,7 @@
             color: var(--dark);
             line-height: 1.6;
             min-height: 100vh;
-            font-size: 16px; /* Base font size */
+            font-size: 16px; 
         }
 
         .app-header {
@@ -117,18 +123,18 @@
         .app-container {
             display: grid;
             grid-template-columns: 280px 1fr;
-            min-height: calc(100vh - 72px); /* Header height approx 72px */
+            min-height: calc(100vh - 72px); 
         }
 
         .sidebar {
             background: rgba(255, 255, 255, 0.85);
-            border-left: 1px solid var(--light-gray); /* For RTL */
+            border-left: 1px solid var(--light-gray); 
             padding: 1.5rem;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05); /* Shadow on the right for RTL */
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05); 
             overflow-y: auto;
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Added transform for smooth sliding */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
         }
 
         .sidebar-menu {
@@ -152,26 +158,29 @@
         }
 
         .menu-link:hover, .menu-link.active {
-            background-color: rgba(var(--primary-rgb, 58, 123, 213), 0.1); /* Using RGB for opacity */
+            background-color: rgba(var(--primary-rgb), 0.1); 
             color: var(--primary);
-            transform: translateX(-5px); /* Moves left on hover for RTL */
-            box-shadow: 0 2px 8px rgba(var(--primary-rgb, 58, 123, 213), 0.2);
+            transform: translateX(-5px); 
+            box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.2);
         }
-        :root { /* Define primary-rgb for use in rgba */
-            --primary-rgb: 58, 123, 213;
-        }
-
 
         .menu-link i {
             width: 24px;
             text-align: center;
-            color: var(--primary); /* Icon color matches active/hover link */
+            color: var(--primary); 
         }
 
         .main-content {
             padding: 2rem;
             overflow-y: auto;
         }
+        .content-section { /* For SPA-like navigation */
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+
 
         .content-header {
             display: flex;
@@ -256,9 +265,9 @@
         .form-control {
             width: 100%;
             padding: 0.85rem 1rem;
-            border: 1px solid var(--light-gray); /* Subtle border */
+            border: 1px solid var(--light-gray); 
             border-bottom: 2px solid var(--primary);
-            border-radius: calc(var(--border-radius) - 4px); /* Slightly less rounded */
+            border-radius: calc(var(--border-radius) - 4px); 
             font-size: 1rem;
             transition: var(--transition);
             background-color: rgba(255, 255, 255, 0.8);
@@ -268,10 +277,7 @@
             outline: none;
             border-color: var(--accent);
             border-bottom-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(var(--accent-rgb, 0, 210, 255), 0.3); /* Accent focus ring */
-        }
-         :root {
-            --accent-rgb: 0, 210, 255;
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.3); 
         }
         
         .form-icon {
@@ -296,7 +302,7 @@
         .form-row {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem; /* Increased gap */
+            gap: 1.5rem; 
             margin-bottom: 1.25rem;
         }
 
@@ -305,14 +311,14 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            padding: 0.8rem 1.75rem; /* Slightly more padding */
+            padding: 0.8rem 1.75rem; 
             border-radius: 50px; 
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
             border: none;
             transform: translateY(0); 
-            text-decoration: none; /* Remove underline from <a> tags styled as buttons */
+            text-decoration: none; 
         }
         
         .btn:hover {
@@ -376,19 +382,19 @@
         .table th {
             background: linear-gradient(var(--primary), var(--primary-dark));
             color: white;
-            padding: 1rem 1.25rem; /* Increased padding */
+            padding: 1rem 1.25rem; 
             text-align: right; 
             font-weight: 600;
             position: sticky; 
             top: 0; 
-            z-index: 10; /* Ensure header is above content when scrolling */
+            z-index: 10; 
         }
-        .table th:first-child { border-top-right-radius: var(--border-radius); } /* Round corners for RTL */
+        .table th:first-child { border-top-right-radius: var(--border-radius); } 
         .table th:last-child { border-top-left-radius: var(--border-radius); }
 
 
         .table td {
-            padding: 1rem 1.25rem; /* Increased padding */
+            padding: 1rem 1.25rem; 
             border-bottom: 1px solid var(--light-gray);
             vertical-align: middle;
             background-color: white; 
@@ -401,7 +407,7 @@
         .table tr:last-child td {
             border-bottom: none; 
         }
-         .table tr:last-child td:first-child { border-bottom-right-radius: var(--border-radius); } /* Round corners for RTL */
+         .table tr:last-child td:first-child { border-bottom-right-radius: var(--border-radius); } 
         .table tr:last-child td:last-child { border-bottom-left-radius: var(--border-radius); }
 
 
@@ -410,13 +416,10 @@
         }
         
         .diabetic-row { 
-            background-color: rgba(var(--diabetic-rgb, 156, 66, 33), 0.08) !important; 
+            background-color: rgba(var(--diabetic-rgb), 0.08) !important; 
         }
         .diabetic-row:hover td {
-            background-color: rgba(var(--diabetic-rgb, 156, 66, 33), 0.15) !important;
-        }
-         :root {
-            --diabetic-rgb: 156, 66, 33;
+            background-color: rgba(var(--diabetic-rgb), 0.15) !important;
         }
 
         .badge {
@@ -425,7 +428,7 @@
             border-radius: 50px; 
             font-size: 0.875rem;
             font-weight: 600;
-            line-height: 1; /* Ensure consistent height */
+            line-height: 1; 
         }
 
         .badge-primary {
@@ -434,29 +437,18 @@
         }
 
         .badge-success {
-            background-color: rgba(var(--success-rgb, 56, 161, 105), 0.1);
+            background-color: rgba(var(--success-rgb), 0.1);
             color: var(--success);
         }
-         :root {
-            --success-rgb: 56, 161, 105;
-        }
-
 
         .badge-warning {
-            background-color: rgba(var(--warning-rgb, 246, 173, 85), 0.1);
+            background-color: rgba(var(--warning-rgb), 0.1);
             color: var(--warning);
         }
-         :root {
-            --warning-rgb: 246, 173, 85;
-        }
-
 
         .badge-danger {
-            background-color: rgba(var(--danger-rgb, 229, 62, 62), 0.1);
+            background-color: rgba(var(--danger-rgb), 0.1);
             color: var(--danger);
-        }
-         :root {
-            --danger-rgb: 229, 62, 62;
         }
 
 
@@ -473,7 +465,7 @@
             color: var(--gray);
             border-bottom: 3px solid transparent; 
             transition: var(--transition);
-            margin-left: 0.5rem; /* Spacing between tabs for RTL */
+            margin-left: 0.5rem; 
         }
          .tab:last-child { margin-left: 0; }
 
@@ -494,14 +486,14 @@
             left: 0; 
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); /* Darker overlay */
+            background-color: rgba(0, 0, 0, 0.6); 
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0s 0.3s; /* Delay visibility transition */
+            transition: opacity 0.3s ease, visibility 0s 0.3s; 
         }
 
         .modal.active {
@@ -517,14 +509,14 @@
             max-width: 800px; 
             max-height: 90vh; 
             overflow-y: auto; 
-            transform: scale(0.95) translateY(10px); /* Initial state for animation */
+            transform: scale(0.95) translateY(10px); 
             transition: transform 0.3s ease, opacity 0.3s ease;
             box-shadow: var(--box-shadow);
-            opacity: 0; /* Start hidden for transition */
+            opacity: 0; 
         }
 
         .modal.active .modal-content {
-            transform: scale(1) translateY(0); /* Final state for animation */
+            transform: scale(1) translateY(0); 
             opacity: 1;
         }
 
@@ -532,7 +524,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.25rem 1.5rem; /* Adjusted padding */
+            padding: 1.25rem 1.5rem; 
             border-bottom: 1px solid var(--light-gray);
         }
 
@@ -545,11 +537,11 @@
         .modal-close {
             background: none;
             border: none;
-            font-size: 1.75rem; /* Slightly larger */
+            font-size: 1.75rem; 
             cursor: pointer;
             color: var(--gray);
             transition: var(--transition);
-            padding: 0.5rem; /* Make it easier to click */
+            padding: 0.5rem; 
             line-height: 1;
         }
         .modal-close:hover {
@@ -564,7 +556,7 @@
 
         .image-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Smaller minmax for more items */
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
@@ -581,7 +573,7 @@
             transition: var(--transition);
             position: relative; 
             overflow: hidden; 
-            background-color: rgba(240,240,240,0.5); /* Lighter bg */
+            background-color: rgba(240,240,240,0.5); 
         }
         .image-upload:hover {
             border-color: var(--accent);
@@ -590,7 +582,7 @@
         }
 
         .image-upload i {
-            font-size: 2.25rem; /* Larger icon */
+            font-size: 2.25rem; 
             color: var(--gray);
             margin-bottom: 0.5rem;
             transition: color 0.3s;
@@ -634,7 +626,7 @@
             cursor: pointer;
             transition: var(--transition);
             border: 1px solid var(--light-gray);
-            font-size: 0.9rem; /* Slightly larger */
+            font-size: 0.9rem; 
         }
         .option:hover {
             transform: translateY(-2px) scale(1.02);
@@ -649,7 +641,7 @@
             box-shadow: 0 2px 5px rgba(var(--primary-rgb), 0.3);
         }
 
-        .option-toggle {
+        .option-toggle { /* For Yes/No buttons that control sections */
             transition: var(--transition);
             border: 2px solid transparent; 
         }
@@ -667,10 +659,10 @@
         .collapsible-section {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out, margin 0.4s ease-in-out; /* Smoother transition */
+            transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out, margin 0.4s ease-in-out, border-color 0.4s ease-in-out; 
             padding: 0 1rem; 
             margin: 0;  
-            border: 1px solid transparent; /* Start transparent for transition */
+            border: 1px solid transparent; 
             border-radius: var(--border-radius);
         }
         .collapsible-section.open {
@@ -689,9 +681,9 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            margin: 2rem 0 1rem 0; /* Increased top margin */
+            margin: 2rem 0 1rem 0; 
             padding-bottom: 0.5rem;
-            border-bottom: 1px dashed var(--light-gray); /* Subtle separator */
+            border-bottom: 1px dashed var(--light-gray); 
         }
 
         .section-title i {
@@ -700,7 +692,7 @@
         
         .details-section { 
             margin-top: 1rem;
-            padding: 1rem 1rem 1rem 1.5rem; /* More padding on the left for RTL to accommodate border */
+            padding: 1rem 1rem 1rem 1.5rem; 
             background-color: var(--light);
             border-radius: var(--border-radius);
             border: 1px solid var(--light-gray);
@@ -711,7 +703,7 @@
             position: absolute;
             top: 0;
             right: 0; 
-            width: 4px; /* Slightly thicker */
+            width: 4px; 
             height: 100%;
             background-color: var(--primary);
             border-radius: 0 var(--border-radius) var(--border-radius) 0; 
@@ -742,7 +734,7 @@
 
         .bmi-overweight {
             background-color: rgba(var(--warning-rgb), 0.3); 
-            color: #b87010; /* Darker orange for text */
+            color: #b87010; 
             border-color: #b87010;
         }
 
@@ -752,13 +744,13 @@
             border-color: var(--danger);
         }
 
-        .custom-message-box { /* Replaces success-message for more flexibility */
+        .custom-message-box { 
             position: fixed;
             top: 20px;
             right: 20px; 
             left: auto;  
-            min-width: 250px; /* Minimum width */
-            max-width: 400px; /* Maximum width */
+            min-width: 250px; 
+            max-width: 400px; 
             color: white;
             padding: 1rem 1.5rem;
             border-radius: var(--border-radius);
@@ -770,12 +762,12 @@
             animation: slideInMessage 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), fadeOutMessage 0.4s 2.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
         }
          .custom-message-box.success { background-color: var(--success); }
-        .custom-message-box.warning { background-color: var(--warning); color: var(--dark); } /* Dark text for warning */
+        .custom-message-box.warning { background-color: var(--warning); color: var(--dark); } 
         .custom-message-box.danger  { background-color: var(--danger); }
 
 
         @keyframes slideInMessage {
-            from { transform: translateX(100%); opacity: 0; } /* Slide from right for RTL */
+            from { transform: translateX(100%); opacity: 0; } 
             to { transform: translateX(0); opacity: 1; }
         }
         @keyframes fadeOutMessage {
@@ -786,16 +778,28 @@
         .file-input {
             display: none; 
         }
+        .uploaded-files-list { /* Style for the div containing uploaded file items */
+            margin-top: 10px;
+            border: 1px dashed var(--light-gray);
+            padding: 10px;
+            min-height: 50px;
+            border-radius: var(--border-radius);
+            background-color: rgba(255,255,255,0.5);
+        }
+        .uploaded-file-item:last-child {
+            border-bottom: none;
+        }
+
 
         .action-buttons {
             display: flex;
             gap: 0.5rem;
-            flex-wrap: nowrap; /* Prevent wrapping on small screens if possible */
+            flex-wrap: nowrap; 
         }
         .action-buttons .btn {
             padding: 0.5rem 0.75rem; 
             font-size: 0.875rem;
-            min-width: 40px; /* Ensure icons have space */
+            min-width: 40px; 
         }
 
         .test-image-item {
@@ -807,7 +811,7 @@
         }
         .test-image-item img {
             max-width: 100%; 
-            max-height: 75vh; /* Increased max height */
+            max-height: 75vh; 
             border-radius: 8px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             cursor: zoom-in; 
@@ -818,9 +822,9 @@
         }
 
         .form-disabled {
-            opacity: 0.6; /* Slightly more opaque */
+            opacity: 0.6; 
             pointer-events: none;
-            filter: blur(1px); /* Subtle blur */
+            filter: blur(1px); 
         }
         
         .test-modal-backdrop {
@@ -848,7 +852,7 @@
             left: 0; 
             width: 100%;
             height: 100%;
-            background-color: transparent; /* Backdrop handles dimming */
+            background-color: transparent; 
             z-index: 2000;
             display: none; 
             justify-content: center;
@@ -868,7 +872,7 @@
             max-width: 800px;
             max-height: 90vh;
             overflow: auto; 
-            padding: 0; /* Padding handled by header/body */
+            padding: 0; 
             position: relative; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             transform: scale(0.95);
@@ -886,7 +890,7 @@
         }
         
         .progress-track {
-            height: 10px; /* Slightly thicker */
+            height: 10px; 
             background: var(--light-gray); 
             border-radius: 5px;
             overflow: hidden; 
@@ -896,7 +900,7 @@
             height: 100%;
             background: linear-gradient(90deg, var(--primary), var(--accent));
             border-radius: 5px;
-            transition: width 0.6s ease-in-out; /* Smoother transition */
+            transition: width 0.6s ease-in-out; 
         }
         
         .progress-labels {
@@ -913,7 +917,7 @@
             align-items: center;
             justify-content: center;
             padding: 2rem;
-            text-align: center; /* Center text */
+            text-align: center; 
         }
         
         .loader-circle {
@@ -922,7 +926,7 @@
             border: 5px solid rgba(var(--primary-rgb), 0.2); 
             border-top-color: var(--primary); 
             border-radius: 50%;
-            animation: spin 0.8s linear infinite; /* Faster spin */
+            animation: spin 0.8s linear infinite; 
             margin-bottom: 1rem;
         }
         
@@ -955,7 +959,6 @@
 
         /* Responsive Styles */
         @media (max-width: 1200px) {
-            /* :root { font-size: 15px; } */ /* Base font size already good */
              .form-row { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
         }
 
@@ -966,21 +969,21 @@
             
             .sidebar {
                 position: fixed;
-                top: 0; /* Align with top */
-                right: -290px; /* Start off-screen for RTL */
+                top: 0; 
+                right: -290px; 
                 left: auto; 
                 width: 280px;
-                height: 100vh; /* Full height */
+                height: 100vh; 
                 transition: transform 0.3s ease-in-out;
-                z-index: 1001; /* Above header backdrop but below active modal */
+                z-index: 1001; 
                 border-left: none; 
                 border-right: 1px solid var(--light-gray); 
-                box-shadow: -3px 0 10px rgba(0,0,0,0.1); /* Shadow on the left for RTL */
-                transform: translateX(0); /* Base state */
+                box-shadow: -3px 0 10px rgba(0,0,0,0.1); 
+                transform: translateX(0); 
             }
             
             .sidebar.active {
-                transform: translateX(-290px); /* Slide in from right for RTL */
+                transform: translateX(-290px); 
             }
             
             .mobile-menu-toggle {
@@ -990,13 +993,12 @@
             .main-content {
                 padding: 1.5rem; 
             }
-            .app-header { z-index: 1000;} /* Ensure header is above sidebar when closed */
-            body.sidebar-active .app-header { z-index: 998; } /* Lower header z-index when sidebar is open */
+            .app-header { z-index: 1000;} 
+            body.sidebar-active .app-header { z-index: 998; } 
 
         }
 
         @media (max-width: 768px) { 
-            /* :root { font-size: 14px; } */
             
             .app-header {
                 padding: 0.8rem 1rem; 
@@ -1046,7 +1048,6 @@
             
             .modal-content, .test-modal-content {
                 width: 95%; 
-                padding: 1rem; /* Handled by internal modal-header/body now */
             }
             
             .option {
@@ -1056,7 +1057,6 @@
         }
 
         @media (max-width: 576px) { 
-             /* :root { font-size: 13px; } */
             
             .main-content {
                 padding: 1rem; 
@@ -1102,7 +1102,7 @@
         <aside class="sidebar" id="sidebar">
             <ul class="sidebar-menu">
                 <li class="menu-item">
-                    <a href="#" class="menu-link active" onclick="navigateToSection('dashboard', this)">
+                    <a href="#" class="menu-link active" onclick="navigateToSection('dashboardSection', this)">
                         <i class="fas fa-home" aria-hidden="true"></i>
                         <span>داشبورد</span>
                     </a>
@@ -1110,7 +1110,7 @@
                 <li class="menu-item">
                     <a href="#" class="menu-link" onclick="document.getElementById('fileImportInput').click(); closeMobileMenu();">
                         <i class="fas fa-file-import" aria-hidden="true"></i>
-                        <span>افزودن پرونده</span>
+                        <span>ورود پرونده (WMDJ)</span>
                     </a>
                 </li>
                 <li class="menu-item">
@@ -1130,12 +1130,16 @@
                 <div class="content-header">
                     <h1 class="page-title">
                         <i class="fas fa-user-plus" aria-hidden="true"></i>
-                        ثبت پرونده جدید
+                        ثبت / ویرایش پرونده بیمار
                     </h1>
                     <div class="actions">
                         <button type="button" class="btn btn-outline" onclick="saveDraft()">
                             <i class="fas fa-save" aria-hidden="true"></i>
                             ذخیره پیش نویس
+                        </button>
+                         <button type="button" class="btn btn-outline" onclick="loadDraft()" style="margin-right: 10px;">
+                            <i class="fas fa-upload" aria-hidden="true"></i>
+                            بارگذاری پیش نویس
                         </button>
                     </div>
                 </div>
@@ -1198,7 +1202,7 @@
                                     <label for="job" class="form-label">شغل</label>
                                     <input type="text" id="job" class="form-control" placeholder="شغل بیمار">
                                 </div>
-                                <div class="form-group"> <!-- Removed required for now, can be added back -->
+                                <div class="form-group"> 
                                     <label for="education" class="form-label">سطح تحصیلات</label>
                                     <select id="education" class="form-control">
                                          <option value="">انتخاب کنید...</option>
@@ -1360,8 +1364,8 @@
                             <div id="diabetesSection">
                                 <div class="form-row">
                                      <div class="option-group" data-multiple="false"> 
-                                        <div class="option option-toggle" onclick="toggleDiabetesSection(this, true)">بله (سابقه دیابت دارد)</div>
-                                        <div class="option option-toggle selected no" onclick="toggleDiabetesSection(this, false)">خیر (سابقه دیابت ندارد)</div>
+                                        <div class="option option-toggle yes" onclick="toggleDiabetesSection(this, true)">بله (سابقه دیابت دارد)</div>
+                                        <div class="option option-toggle no" onclick="toggleDiabetesSection(this, false)">خیر (سابقه دیابت ندارد)</div>
                                     </div>
                                 </div>
                                 
@@ -1419,7 +1423,7 @@
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label class="form-label">سابقه عوارض دیابت (نوروپاتی، رتینوپاتی و...):</label>
-                                            <div class="option-group" data-multiple="false">
+                                            <div class="option-group" data-multiple="false" data-controls-section="diabeticComplicationsDetails">
                                                 <div class="option" onclick="toggleOption(this, 'hasDiabeticComplications')">بله</div>
                                                 <div class="option selected" onclick="toggleOption(this, 'hasDiabeticComplications')">خیر</div>
                                             </div>
@@ -1480,8 +1484,8 @@
                                         <div class="form-group">
                                             <label class="form-label">سابقه بستری در بیمارستان:</label>
                                             <div class="option-group" data-multiple="false">
-                                                <div class="option option-toggle" onclick="toggleHospitalizationSection(this, true)">بله</div>
-                                                <div class="option option-toggle selected no" onclick="toggleHospitalizationSection(this, false)">خیر</div>
+                                                <div class="option option-toggle yes" onclick="toggleHospitalizationSection(this, true)">بله</div>
+                                                <div class="option option-toggle no" onclick="toggleHospitalizationSection(this, false)">خیر</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1503,8 +1507,8 @@
                                         <div class="form-group">
                                             <label class="form-label">سابقه عفونت محل جراحی:</label>
                                              <div class="option-group" data-multiple="false">
-                                                <div class="option option-toggle" onclick="toggleSurgicalInfectionSection(this, true)">بله</div>
-                                                <div class="option option-toggle selected no" onclick="toggleSurgicalInfectionSection(this, false)">خیر</div>
+                                                <div class="option option-toggle yes" onclick="toggleSurgicalInfectionSection(this, true)">بله</div>
+                                                <div class="option option-toggle no" onclick="toggleSurgicalInfectionSection(this, false)">خیر</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1526,8 +1530,8 @@
                                         <div class="form-group">
                                             <label class="form-label">سابقه دیالیز:</label>
                                             <div class="option-group" data-multiple="false">
-                                                <div class="option option-toggle" onclick="toggleDialysisSection(this, true)">بله</div>
-                                                <div class="option option-toggle selected no" onclick="toggleDialysisSection(this, false)">خیر</div>
+                                                <div class="option option-toggle yes" onclick="toggleDialysisSection(this, true)">بله</div>
+                                                <div class="option option-toggle no" onclick="toggleDialysisSection(this, false)">خیر</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1549,8 +1553,8 @@
                                         <div class="form-group">
                                             <label class="form-label">سابقه حساسیت دارویی/غذایی:</label>
                                             <div class="option-group" data-multiple="false">
-                                                <div class="option option-toggle" onclick="toggleAllergySection(this, true)">بله</div>
-                                                <div class="option option-toggle selected no" onclick="toggleAllergySection(this, false)">خیر</div>
+                                                <div class="option option-toggle yes" onclick="toggleAllergySection(this, true)">بله</div>
+                                                <div class="option option-toggle no" onclick="toggleAllergySection(this, false)">خیر</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1575,7 +1579,7 @@
                             </h2>
                         </div>
                         <div class="card-body">
-                             <div class="healing-progress" style="display:none;"> <!-- Initially hidden, shown if data exists -->
+                             <div class="healing-progress" style="display:none;"> 
                                 <div class="progress-track">
                                     <div class="progress-bar" id="healingProgressBar" style="width: 0%"></div>
                                 </div>
@@ -1599,8 +1603,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Rows will be dynamically added or pre-filled for edit -->
-                                        <!-- Example for first row -->
                                         <tr>
                                             <td>ویزیت ۱</td>
                                             <td><input type="date" class="form-control" aria-label="تاریخ ویزیت ۱"></td>
@@ -1763,7 +1765,7 @@
 
 
                     <!-- Submit Button -->
-                    <div class="form-group" style="text-align: left;"> <!-- Align button to left for RTL -->
+                    <div class="form-group" style="text-align: left;"> 
                         <button type="submit" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem;">
                             <i class="fas fa-save" aria-hidden="true"></i>
                             ثبت/ویرایش پرونده بیمار
@@ -1787,7 +1789,7 @@
                         <input type="text" id="patientSearchInput" class="form-control" placeholder="جستجو بر اساس نام یا کد ملی..." onkeyup="filterPatients()" style="max-width: 300px; display: inline-block; margin-left: 10px;">
                         <button type="button" class="btn btn-accent" onclick="exportAllPatients()">
                             <i class="fas fa-file-export" aria-hidden="true"></i>
-                            خروجی همه (WMD)
+                            خروجی همه (WMDJ)
                         </button>
                     </div>
                 </div>
@@ -1808,7 +1810,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="patientsListBody">
-                                    <!-- بیماران اینجا نمایش داده می‌شوند -->
+                                    <!-- Patients will be rendered here by JavaScript -->
                                 </tbody>
                             </table>
                              <p id="noPatientsMessage" style="text-align:center; color:var(--gray); padding: 1rem; display:none;">هیچ بیماری یافت نشد.</p>
@@ -1884,7 +1886,7 @@
                 </div>
 
                 <!-- Wound Changes Section -->
-                <div id="woundChangesSection" class="form-group collapsible-section"> <!-- Initially hidden, controlled by JS -->
+                <div id="woundChangesSection" class="form-group collapsible-section"> 
                     <h4 class="section-title" style="font-size: 1.1rem; margin-top: 0; border-bottom: none;">تغییرات زخم نسبت به ویزیت قبلی</h4>
                     <div class="form-row">
                         <div class="form-group">
@@ -1938,7 +1940,6 @@
             </div>
             <div class="modal-body">
                 <div id="fileViewContentContainer" class="test-image-container" style="min-height: 300px; display: flex; justify-content: center; align-items: center;">
-                    <!-- File content (image or iframe) will be loaded here -->
                      <div class="loader"><div class="loader-circle"></div><span class="loader-text">درحال بارگذاری...</span></div>
                 </div>
                  <div style="margin-top: 15px; text-align:center;">
@@ -1952,7 +1953,7 @@
 
 
     <!-- File Import Input -->
-    <input type="file" id="fileImportInput" class="file-input" accept=".wmdj" onchange="importPatientFromFile(event)"> <!-- Changed to .wmdj for JSON data -->
+    <input type="file" id="fileImportInput" class="file-input" accept=".wmdj" onchange="importPatientsFromFile(event)"> 
 
     <!-- Custom Confirmation Modal -->
     <div class="modal" id="confirmationModal" role="dialog" aria-labelledby="confirmationModalTitle" aria-modal="true">
@@ -1974,50 +1975,83 @@
 
     <script>
         // ==================== Global Variables & Constants ====================
-        const DB_KEY = 'woundCarePatientsDB_v1'; // Key for localStorage
-        let patients = []; // Holds all patient data
-        let currentVisitForModal = 1; // Tracks the visit number for the wound details modal
-        let woundDetailsData = {};   // { patientId_visitNum: { details } }
+        const DB_KEY = 'woundCarePatientsDB_v1'; 
+        let patients = []; 
+        let currentVisitForModal = 1; 
+        let woundDetailsData = {};   
         let currentEditingPatientId = null;
-        let uploadedTestFiles = []; // For tests files { name, type, size, data (base64) }
-        let uploadedSummaryFiles = []; // For summary files
-        let currentImageUploadSlot = 1; // 1, 2, or 3 for image placeholders in wound details modal
+        let uploadedTestFiles = []; 
+        let uploadedSummaryFiles = []; 
+        let currentImageUploadSlot = 1; 
         
-        let currentFileViewingData = null; // Stores data of the file (test/summary/image) being viewed in modal
-
-        // For PWA update notification
-        let newWorker;
+        let currentFileViewingData = null; 
+        let newWorker; // For PWA update notification
 
 
         // ==================== Initialize App ====================
         document.addEventListener('DOMContentLoaded', () => {
-            loadPatientsFromDB(); // Load from localStorage
+            console.log("DOM fully loaded and parsed.");
+            loadPatientsFromDB(); 
             updateCurrentDate();
             setupEventListeners();
             checkMobileView(); 
-            navigateToSection('dashboardSection', document.querySelector('.sidebar-menu .menu-link.active'), true); // Initial navigation
-            initializeCollapsibleSections(); // Set up default states for accordions
+            // Initial navigation might depend on URL hash or other state, defaulting to dashboard for now.
+            navigateToSection('dashboardSection', document.querySelector('.sidebar-menu .menu-link[onclick*="dashboardSection"]'), true);
+            initializeCollapsibleSections(); 
         });
 
         function setupEventListeners() {
+            console.log("Setting up event listeners.");
             document.getElementById('patientForm').addEventListener('submit', handleFormSubmit);
             document.getElementById('testFileUpload').addEventListener('change', (e) => handleFileUpload(e, 'test'));
             document.getElementById('summaryFileUpload').addEventListener('change', (e) => handleFileUpload(e, 'summary'));
             document.getElementById('woundImageUpload').addEventListener('change', handleWoundImageUploadInModal);
-            document.getElementById('fileImportInput').addEventListener('change', importPatientsFromFile); // Changed for multiple patients potentially
+            document.getElementById('fileImportInput').addEventListener('change', importPatientsFromFile); 
             window.addEventListener('resize', checkMobileView);
-            // Event listener for sidebar links will be handled in navigateToSection
+            
+            // Sidebar navigation links
+            document.querySelectorAll('.sidebar-menu .menu-link').forEach(link => {
+                if(link.getAttribute('onclick') && link.getAttribute('onclick').includes('navigateToSection')) {
+                    // The navigateToSection call is already in the onclick, no need to add another listener
+                    // Just ensure closeMobileMenu is also called if necessary, or handle it within navigateToSection
+                } else if (link.getAttribute('onclick') && link.getAttribute('onclick').includes('fileImportInput')) {
+                    // This is for file import, already handled
+                }
+            });
         }
         
         function initializeCollapsibleSections() {
-            // Set default states for accordions (e.g., "No" selected, section closed)
-            // This assumes the HTML already has 'selected no' and the section is closed by default.
-            // If not, explicitly set them here. Example:
-            toggleDiabetesSection(document.querySelector('#diabetesSection .option-toggle.no'), false);
-            toggleHospitalizationSection(document.querySelector('#hospitalizationSection .option-toggle[onclick*="Hospitalization"].no'), false);
-            toggleSurgicalInfectionSection(document.querySelector('#hospitalizationSection .option-toggle[onclick*="SurgicalInfection"].no'), false);
-            toggleDialysisSection(document.querySelector('#hospitalizationSection .option-toggle[onclick*="Dialysis"].no'), false);
-            toggleAllergySection(document.querySelector('#hospitalizationSection .option-toggle[onclick*="Allergy"].no'), false);
+            console.log("Initializing collapsible sections to default states.");
+            // Diabetes Section
+            const diabetesNoOption = document.querySelector('#diabetesSection .option-toggle.no');
+            if (diabetesNoOption) toggleDiabetesSection(diabetesNoOption, false);
+
+            // Hospitalization Section
+            const hospNoOption = document.querySelector('#hospitalizationSection .option-toggle[onclick*="Hospitalization"].no');
+            if (hospNoOption) toggleHospitalizationSection(hospNoOption, false);
+
+            // Surgical Infection Section
+            const surgicalNoOption = document.querySelector('#hospitalizationSection .option-toggle[onclick*="SurgicalInfection"].no');
+            if (surgicalNoOption) toggleSurgicalInfectionSection(surgicalNoOption, false);
+            
+            // Dialysis Section
+            const dialysisNoOption = document.querySelector('#hospitalizationSection .option-toggle[onclick*="Dialysis"].no');
+            if (dialysisNoOption) toggleDialysisSection(dialysisNoOption, false);
+
+            // Allergy Section
+            const allergyNoOption = document.querySelector('#hospitalizationSection .option-toggle[onclick*="Allergy"].no');
+            if (allergyNoOption) toggleAllergySection(allergyNoOption, false);
+
+            // Diabetic Complications section (within diabetesInfoSection)
+            // This section's visibility is dependent on its parent (diabetesInfoSection) AND its own toggle.
+            // Ensure its controlling "No" option is selected by default.
+            const complicationsNoOption = document.querySelector('#diabetesInfoSection .option-group[data-controls-section="diabeticComplicationsDetails"] .option:last-child');
+            if (complicationsNoOption) { // This is the "خیر" option
+                 const complicationsYesOption = document.querySelector('#diabetesInfoSection .option-group[data-controls-section="diabeticComplicationsDetails"] .option:first-child');
+                 if(complicationsYesOption) complicationsYesOption.classList.remove('selected');
+                 complicationsNoOption.classList.add('selected'); // Explicitly select "No"
+                 document.getElementById('diabeticComplicationsDetails').classList.remove('open'); // And close the section
+            }
         }
 
         // ==================== Database (localStorage) Functions ====================
@@ -2025,54 +2059,84 @@
             const storedData = localStorage.getItem(DB_KEY);
             if (storedData) {
                 try {
-                    patients = JSON.parse(storedData);
+                    const parsedData = JSON.parse(storedData);
+                    // Check if it's the new format with patients and woundDetailsStore
+                    if (parsedData.patients && parsedData.woundDetailsStore) {
+                        patients = parsedData.patients;
+                        woundDetailsData = parsedData.woundDetailsStore;
+                    } else if (Array.isArray(parsedData)) { // Old format (just array of patients)
+                        patients = parsedData;
+                        // Potentially migrate old woundDetails if they were stored differently
+                    } else {
+                        patients = []; // Unrecognized format
+                        woundDetailsData = {};
+                    }
+                    console.log("Patients loaded from DB:", patients.length);
                 } catch (error) {
-                    console.error("Error parsing patients from localStorage:", error);
-                    patients = []; // Reset if data is corrupted
-                    localStorage.removeItem(DB_KEY); // Clear corrupted data
+                    console.error("Error parsing data from localStorage:", error);
+                    patients = []; 
+                    woundDetailsData = {};
+                    // Consider clearing corrupted data: localStorage.removeItem(DB_KEY);
                 }
             } else {
                 patients = [];
+                woundDetailsData = {};
+                console.log("No patient data found in DB.");
             }
-             // After loading, refresh any UI that depends on patient data (e.g., patient list)
-            if (document.getElementById('patientsListBody')) { // Check if the element exists
+            if (document.getElementById('patientsListBody')) { 
                  displayPatientsList();
             }
         }
 
         function savePatientsToDB() {
             try {
-                localStorage.setItem(DB_KEY, JSON.stringify(patients));
+                const dataToStore = {
+                    patients: patients,
+                    woundDetailsStore: woundDetailsData // Store wound details alongside patients
+                };
+                localStorage.setItem(DB_KEY, JSON.stringify(dataToStore));
+                console.log("Patients and wound details saved to DB.");
             } catch (error) {
-                console.error("Error saving patients to localStorage:", error);
+                console.error("Error saving data to localStorage:", error);
                 showCustomMessage("خطا در ذخیره اطلاعات. ممکن است حافظه مرورگر پر باشد.", "danger");
             }
         }
         
         // ==================== Navigation & UI Toggling ====================
-        function navigateToSection(sectionId, clickedLink, isInitialLoad = false) {
+        function navigateToSection(sectionId, clickedLinkElement, isInitialLoad = false) {
+            console.log(`Navigating to section: ${sectionId}`);
             document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none'; // Hide all first
                 section.classList.remove('active');
-                section.style.display = 'none';
             });
-            document.getElementById(sectionId).style.display = 'block';
-            // Timeout to allow display:block to take effect before adding class for transition
-            setTimeout(() => {
-                 document.getElementById(sectionId).classList.add('active');
-            }, 10);
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                // Timeout to allow display:block to take effect for CSS transitions on 'active' class
+                setTimeout(() => {
+                     targetSection.classList.add('active');
+                }, 10); 
+            } else {
+                console.error(`Section with ID "${sectionId}" not found.`);
+                // Fallback to dashboard if section not found
+                 document.getElementById('dashboardSection').style.display = 'block';
+                 setTimeout(() => { document.getElementById('dashboardSection').classList.add('active'); }, 10);
+            }
 
 
             document.querySelectorAll('.sidebar-menu .menu-link').forEach(link => {
                 link.classList.remove('active');
             });
-            if (clickedLink) {
-                clickedLink.classList.add('active');
+            if (clickedLinkElement) { // Make sure clickedLinkElement is valid
+                clickedLinkElement.classList.add('active');
             }
             
             if (sectionId === 'patientsListSection') {
-                displayPatientsList(); // Refresh patient list when navigating to it
-            } else if (sectionId === 'dashboardSection' && !isInitialLoad) {
-                 resetFormAndState(); // Reset form when navigating to "Add New"
+                displayPatientsList(); 
+            } else if (sectionId === 'dashboardSection' && !isInitialLoad && !currentEditingPatientId) { 
+                 // Only reset if navigating to dashboard for a NEW entry, not if already editing
+                 resetFormAndState(); 
             }
             closeMobileMenu();
         }
@@ -2081,7 +2145,7 @@
         function toggleMobileMenu() {
             const sidebar = document.getElementById('sidebar');
             const isActive = sidebar.classList.toggle('active');
-            document.body.classList.toggle('sidebar-active', isActive); // Add class to body for potential overlay or main content adjustments
+            document.body.classList.toggle('sidebar-active', isActive); 
         }
         function closeMobileMenu() {
             const sidebar = document.getElementById('sidebar');
@@ -2098,7 +2162,7 @@
                 mobileToggle.style.display = 'block';
             } else {
                 mobileToggle.style.display = 'none';
-                closeMobileMenu(); // Ensure menu is closed on wider screens
+                closeMobileMenu(); 
             }
         }
 
@@ -2115,6 +2179,12 @@
             const file = event.target.files[0];
             if (!file || !file.type.match('image.*')) {
                 showCustomMessage('لطفا فقط فایل تصویر انتخاب کنید.', 'warning');
+                event.target.value = null; // Reset file input
+                return;
+            }
+             if (file.size > 2 * 1024 * 1024) { // Limit image size to 2MB
+                showCustomMessage(`تصویر "${file.name}" بزرگتر از ۲ مگابایت است. لطفاً تصویر کوچکتری انتخاب کنید.`, 'warning');
+                event.target.value = null;
                 return;
             }
 
@@ -2122,7 +2192,7 @@
             reader.onload = function(e_reader) {
                 const previewId = `woundImagePreview${currentImageUploadSlot}`;
                 const previewElement = document.getElementById(previewId);
-                previewElement.innerHTML = ''; // Clear placeholder
+                previewElement.innerHTML = ''; 
                 
                 const img = document.createElement('img');
                 img.src = e_reader.target.result;
@@ -2134,27 +2204,25 @@
                     viewFileInModal(e_reader.target.result, file.type, `عکس زخم ${currentImageUploadSlot}`);
                 };
                 
-                // Store image data in woundDetailsData (associated with patientId and visit)
-                const patientId = currentEditingPatientId || 'draft'; // Use 'draft' for new patients not yet saved
+                const patientId = currentEditingPatientId || 'draft'; 
                 const detailKey = `${patientId}_visit${currentVisitForModal}`;
                 if (!woundDetailsData[detailKey]) woundDetailsData[detailKey] = {};
                 if (!woundDetailsData[detailKey].woundImages) woundDetailsData[detailKey].woundImages = {};
                 woundDetailsData[detailKey].woundImages[`image${currentImageUploadSlot}`] = e_reader.target.result;
             };
             reader.readAsDataURL(file);
-            event.target.value = null; // Reset file input
+            event.target.value = null; 
         }
         
         // ==================== Wound Details Modal Functions ====================
         function openWoundDetailsModal(visitNumber) {
             currentVisitForModal = visitNumber;
-            const patientId = currentEditingPatientId || 'draft';
+            const patientId = currentEditingPatientId || 'draft'; // Use 'draft' if new patient not yet saved
             const detailKey = `${patientId}_visit${currentVisitForModal}`;
             const currentDetails = woundDetailsData[detailKey] || {};
 
             document.getElementById('modalVisitTitle').textContent = `جزئیات زخم - ویزیت ${visitNumber}`;
             
-            // Reset/Populate image previews
             for (let i = 1; i <= 3; i++) {
                 const previewElement = document.getElementById(`woundImagePreview${i}`);
                 const imageUrl = currentDetails.woundImages && currentDetails.woundImages[`image${i}`];
@@ -2170,7 +2238,6 @@
                 }
             }
             
-            // Populate options (woundTissue, surroundingSkin, woundEdge)
             ['woundTissue', 'surroundingSkin', 'woundEdge'].forEach(groupName => {
                 const optionsContainer = document.getElementById(`${groupName}Options`);
                 optionsContainer.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
@@ -2183,16 +2250,18 @@
                 }
             });
 
-            // Populate notes and changes section
             document.getElementById('woundNotes').value = currentDetails.woundNotes || '';
             const changesSection = document.getElementById('woundChangesSection');
             if (visitNumber > 1) {
-                changesSection.classList.add('open'); // Make it visible for transition
+                changesSection.classList.add('open'); 
                 document.getElementById('woundAreaChange').value = currentDetails.woundChanges?.area || '';
                 document.getElementById('woundDepthChange').value = currentDetails.woundChanges?.depth || '';
                 document.getElementById('woundChangeNotes').value = currentDetails.woundChanges?.notes || '';
             } else {
                 changesSection.classList.remove('open');
+                document.getElementById('woundAreaChange').value = ''; // Clear for visit 1
+                document.getElementById('woundDepthChange').value = '';
+                document.getElementById('woundChangeNotes').value = '';
             }
             
             document.getElementById('woundDetailsModal').classList.add('active');
@@ -2231,13 +2300,14 @@
 
         // ==================== Patient Form Submission & Data Handling ====================
         function handleFormSubmit(event) {
+            console.log("handleFormSubmit called");
             event.preventDefault();
-            // Validation
+            
             const requiredFields = ['nationalId', 'firstName', 'lastName', 'gender', 'phone'];
             for (const fieldId of requiredFields) {
                 const field = document.getElementById(fieldId);
                 if (!field.value.trim()) {
-                    showCustomMessage(`لطفا فیلد ضروری "${field.previousElementSibling.textContent}" را پر کنید.`, 'danger');
+                    showCustomMessage(`لطفا فیلد ضروری "${field.labels[0].textContent}" را پر کنید.`, 'danger');
                     field.focus();
                     return;
                 }
@@ -2248,12 +2318,14 @@
                  return;
             }
 
-
             const patientData = collectPatientDataFromForm();
+            console.log("Patient data collected:", patientData);
             
             if (currentEditingPatientId) {
+                console.log("Updating existing patient:", currentEditingPatientId);
                 updatePatientInStorage(patientData);
             } else {
+                console.log("Adding new patient.");
                 addNewPatientToStorage(patientData);
             }
         }
@@ -2265,10 +2337,12 @@
             document.querySelectorAll('.wound-measurement-table tbody tr').forEach((row, index) => {
                 const visitNum = index + 1;
                 const date = row.querySelector('input[type="date"]').value;
-                const length = row.querySelector('input[type="number"]:nth-of-type(1)').value; // Nth-of-type for clarity
+                const length = row.querySelector('input[type="number"]:nth-of-type(1)').value;
                 const width = row.querySelector('input[type="number"]:nth-of-type(2)').value;
                 const depth = row.querySelector('input[type="number"]:nth-of-type(3)').value;
-                const details = woundDetailsData[`${patientId}_visit${visitNum}`] || woundDetailsData[`draft_visit${visitNum}`] || null;
+                // Get details from woundDetailsData using the correct patientId (or 'draft' if new)
+                const currentPatientIdForDetails = currentEditingPatientId || 'draft';
+                const details = woundDetailsData[`${currentPatientIdForDetails}_visit${visitNum}`] || null;
 
                 if (date || length || width || depth || (details && Object.keys(details).length > 0)) {
                     woundMeasurements.push({ visit: `ویزیت ${visitNum}`, date, length, width, depth, details });
@@ -2352,18 +2426,19 @@
                                 diet: document.querySelector('#diabetesInfoSection .option[onclick*="treatmentDiet"].selected') !== null,
                                 none: document.querySelector('#diabetesInfoSection .option[onclick*="treatmentNone"].selected') !== null
                             },
-                            hasPreviousDiabeticWound: document.querySelector('#diabetesInfoSection .option[onclick*="hasPreviousDiabeticWound"].selected')?.textContent.includes('بله'),
-                            hasDiabeticComplications: document.querySelector('#diabetesInfoSection .option[onclick*="hasDiabeticComplications"].selected')?.textContent.includes('بله'),
+                            hasPreviousDiabeticWound: document.querySelector('#diabetesInfoSection .option-group[data-multiple="false"] .option[onclick*="hasPreviousDiabeticWound"].selected')?.textContent.includes('بله'),
+                            hasDiabeticComplications: document.querySelector('#diabetesInfoSection .option-group[data-controls-section="diabeticComplicationsDetails"] .option.selected')?.textContent.includes('بله'),
                             diabeticComplicationsDescription: document.getElementById('diabeticComplicationsDescription').value
                         } : null
                     }
                 },
-                createdAt: currentEditingPatientId ? patients.find(p=>p.id === currentEditingPatientId)?.createdAt || new Date().toISOString() : new Date().toISOString(),
+                createdAt: currentEditingPatientId ? (patients.find(p=>p.id === currentEditingPatientId)?.createdAt || new Date().toISOString()) : new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             };
         }
 
         function addNewPatientToStorage(patientData) {
+            console.log("Attempting to add new patient:", patientData.nationalId);
             const exists = patients.some(p => p.nationalId === patientData.nationalId);
             if (exists) {
                  showCustomMessage("بیماری با این کد ملی قبلاً ثبت شده است!", 'warning');
@@ -2371,9 +2446,9 @@
             }
             
             // Transfer draft wound details to the new patient ID
-            for (let i=1; i <= 7; i++) {
+            for (let i=1; i <= 7; i++) { // Assuming max 7 visits shown in table
                 if (woundDetailsData[`draft_visit${i}`]) {
-                    woundDetailsData[`${patientData.id}_visit${i}`] = woundDetailsData[`draft_visit${i}`];
+                    woundDetailsData[`${patientData.id}_visit${i}`] = { ...woundDetailsData[`draft_visit${i}`] }; // Deep copy
                     delete woundDetailsData[`draft_visit${i}`];
                 }
             }
@@ -2381,30 +2456,39 @@
             patients.push(patientData);
             savePatientsToDB();
             showCustomMessage("پرونده جدید با موفقیت ثبت شد!", 'success');
-            resetFormAndState();
-            displayPatientsList(); // Update list if currently viewing it
+            resetFormAndState(); // Reset form for next entry
+            displayPatientsList(); 
+            console.log("New patient added and list updated.");
         }
 
         function updatePatientInStorage(updatedPatientData) {
+            console.log("Attempting to update patient:", updatedPatientData.id);
             const index = patients.findIndex(p => p.id === currentEditingPatientId);
             if (index !== -1) {
                 patients[index] = updatedPatientData;
+                // Wound details are already updated in woundDetailsData under the patient's ID
                 savePatientsToDB();
                 showCustomMessage("پرونده با موفقیت ویرایش شد!", 'success');
-                resetFormAndState();
+                resetFormAndState(); // Reset form and editing state
                 displayPatientsList(); 
+                 console.log("Patient updated and list refreshed.");
             } else {
                 showCustomMessage("خطا: بیمار مورد نظر برای ویرایش یافت نشد.", 'danger');
+                 console.error("Patient not found for update:", currentEditingPatientId);
             }
         }
         
         function confirmAndDeletePatient(patientId) {
+            const patientToDelete = patients.find(p=>p.id === patientId);
+            if (!patientToDelete) {
+                showCustomMessage("خطا: بیمار مورد نظر یافت نشد.", "danger");
+                return;
+            }
             showConfirmationModal(
                 'حذف پرونده',
-                `آیا از حذف پرونده بیمار با کد ملی ${patients.find(p=>p.id === patientId)?.nationalId || ''} مطمئن هستید؟ این عمل قابل بازگشت نیست.`,
+                `آیا از حذف پرونده بیمار "${patientToDelete.firstName} ${patientToDelete.lastName}" با کد ملی ${patientToDelete.nationalId} مطمئن هستید؟ این عمل قابل بازگشت نیست.`,
                 () => {
                     patients = patients.filter(p => p.id !== patientId);
-                     // Also remove associated woundDetailsData
                     Object.keys(woundDetailsData).forEach(key => {
                         if (key.startsWith(`${patientId}_visit`)) {
                             delete woundDetailsData[key];
@@ -2422,12 +2506,12 @@
 
 
         function populateFormForEdit(patient) {
-            resetFormAndState(); // Start with a clean slate
+            console.log("Populating form for edit:", patient.id);
+            resetFormAndState(); 
             currentEditingPatientId = patient.id;
             
             document.getElementById('nationalId').value = patient.nationalId;
             document.getElementById('firstName').value = patient.firstName;
-            // ... (Populate all other basic fields similarly)
             document.getElementById('lastName').value = patient.lastName;
             document.getElementById('age').value = patient.age || '';
             document.getElementById('fatherName').value = patient.fatherName || '';
@@ -2438,16 +2522,15 @@
             document.getElementById('phone').value = patient.phone || '';
             document.getElementById('address').value = patient.address || '';
 
-            uploadedTestFiles = patient.medicalTests ? [...patient.medicalTests] : [];
+            uploadedTestFiles = patient.medicalTests ? JSON.parse(JSON.stringify(patient.medicalTests)) : [];
             updateUploadedFilesList('test', uploadedTestFiles, 'uploadedTestsList');
-            uploadedSummaryFiles = patient.patientSummaries ? [...patient.patientSummaries] : [];
+            uploadedSummaryFiles = patient.patientSummaries ? JSON.parse(JSON.stringify(patient.patientSummaries)) : [];
             updateUploadedFilesList('summary', uploadedSummaryFiles, 'uploadedSummariesList');
             
             if (patient.medicalInfo) {
                 const med = patient.medicalInfo;
                 document.getElementById('bloodPressure').value = med.bloodPressure || '';
                 document.getElementById('bloodSugar').value = med.bloodSugar || '';
-                // ... (Populate other general medical info)
                 document.getElementById('heartRate').value = med.heartRate || '';
                 document.getElementById('spo2').value = med.spo2 || '';
                 document.getElementById('temperature').value = med.temperature || '';
@@ -2456,44 +2539,53 @@
                 document.getElementById('weight').value = med.weight || '';
                 calculateBMI();
 
-                // Populate Diabetes Info
-                toggleDiabetesSection(document.querySelector(`#diabetesSection .option-toggle.${med.hasDiabetes ? 'yes' : 'no'}`), med.hasDiabetes);
+                const diabetesYesOption = document.querySelector('#diabetesSection .option-toggle.yes');
+                const diabetesNoOption = document.querySelector('#diabetesSection .option-toggle.no');
+                toggleDiabetesSection(med.hasDiabetes ? diabetesYesOption : diabetesNoOption, med.hasDiabetes);
+
                 if (med.hasDiabetes && med.medicalHistory?.diabetesInfo) {
                     const diabInfo = med.medicalHistory.diabetesInfo;
                     document.getElementById('fbs').value = diabInfo.fbs || '';
                     document.getElementById('hba1c').value = diabInfo.hba1c || '';
                     document.getElementById('diabetesType').value = diabInfo.diabetesType || '';
                     document.getElementById('diabetesDuration').value = diabInfo.diabetesDuration || '';
+                    
+                    const treatmentsContainer = document.querySelector('#diabetesInfoSection .option-group[data-multiple="true"]');
+                    treatmentsContainer.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
                     if (diabInfo.treatments) {
-                        if (diabInfo.treatments.pills) document.querySelector('#diabetesInfoSection .option[onclick*="treatmentPills"]').classList.add('selected');
-                        if (diabInfo.treatments.insulin) document.querySelector('#diabetesInfoSection .option[onclick*="treatmentInsulin"]').classList.add('selected');
-                        if (diabInfo.treatments.diet) document.querySelector('#diabetesInfoSection .option[onclick*="treatmentDiet"]').classList.add('selected');
-                        if (diabInfo.treatments.none) document.querySelector('#diabetesInfoSection .option[onclick*="treatmentNone"]').classList.add('selected');
+                        if (diabInfo.treatments.pills) treatmentsContainer.querySelector('.option[onclick*="treatmentPills"]').classList.add('selected');
+                        if (diabInfo.treatments.insulin) treatmentsContainer.querySelector('.option[onclick*="treatmentInsulin"]').classList.add('selected');
+                        if (diabInfo.treatments.diet) treatmentsContainer.querySelector('.option[onclick*="treatmentDiet"]').classList.add('selected');
+                        if (diabInfo.treatments.none) treatmentsContainer.querySelector('.option[onclick*="treatmentNone"]').classList.add('selected');
                     }
                     
-                    const hasPrevWoundOpt = document.querySelector(`#diabetesInfoSection .option[onclick*="hasPreviousDiabeticWound"][data-value="${diabInfo.hasPreviousDiabeticWound ? 'بله' : 'خیر'}"]`);
-                    if(hasPrevWoundOpt) {
-                        document.querySelectorAll(`#diabetesInfoSection .option[onclick*="hasPreviousDiabeticWound"]`).forEach(o => o.classList.remove('selected'));
-                        hasPrevWoundOpt.classList.add('selected');
+                    const prevWoundContainer = document.querySelector('#diabetesInfoSection .option-group[data-multiple="false"]'); // This selector is too generic
+                    const prevWoundOptions = Array.from(prevWoundContainer.querySelectorAll('.option[onclick*="hasPreviousDiabeticWound"]'));
+                     if (prevWoundOptions.length === 2) {
+                        prevWoundOptions.forEach(o => o.classList.remove('selected'));
+                        (diabInfo.hasPreviousDiabeticWound ? prevWoundOptions[0] : prevWoundOptions[1]).classList.add('selected');
                     }
 
 
-                    const hasComplicationsOptContainer = document.querySelector('#diabetesInfoSection .option-group[data-key="hasDiabeticComplications"]');
-                    if(hasComplicationsOptContainer){
-                        hasComplicationsOptContainer.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-                        const targetOpt = diabInfo.hasDiabeticComplications ? hasComplicationsOptContainer.querySelector('.option:first-child') : hasComplicationsOptContainer.querySelector('.option:last-child');
-                        if(targetOpt) targetOpt.classList.add('selected');
+                    const complicationsContainer = document.querySelector('#diabetesInfoSection .option-group[data-controls-section="diabeticComplicationsDetails"]');
+                    if(complicationsContainer){
+                        complicationsContainer.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                        const targetOpt = diabInfo.hasDiabeticComplications ? complicationsContainer.querySelector('.option:first-child') : complicationsContainer.querySelector('.option:last-child');
+                         if(targetOpt) {
+                            targetOpt.classList.add('selected');
+                            // Manually trigger the section visibility based on this state
+                            const detailsDiv = document.getElementById('diabeticComplicationsDetails');
+                            detailsDiv.classList.toggle('open', diabInfo.hasDiabeticComplications);
+                            if (diabInfo.hasDiabeticComplications) {
+                                document.getElementById('diabeticComplicationsDescription').value = diabInfo.diabeticComplicationsDescription || '';
+                            } else {
+                                 document.getElementById('diabeticComplicationsDescription').value = '';
+                            }
+                        }
                     }
-                    
-                    toggleOption(document.querySelector(`#diabetesInfoSection .option[onclick*="hasDiabeticComplications"].selected`) || document.querySelector(`#diabetesInfoSection .option[onclick*="hasDiabeticComplications"]`), diabInfo.hasDiabeticComplications);
-
-
-                    document.getElementById('diabeticComplicationsDescription').value = diabInfo.diabeticComplicationsDescription || '';
-                    document.getElementById('diabeticComplicationsDetails').classList.toggle('open', diabInfo.hasDiabeticComplications);
                 }
                 
-                // Populate Wound Measurements & Cultures (and transfer details to woundDetailsData)
-                woundDetailsData = {}; // Clear global before populating for this patient
+                // Populate Wound Measurements & Cultures, and copy details to global woundDetailsData
                 if (med.woundMeasurements) {
                     med.woundMeasurements.forEach((m, i) => {
                         const row = document.querySelectorAll('.wound-measurement-table tbody tr')[i];
@@ -2517,7 +2609,6 @@
                     });
                 }
 
-                // Populate Full Medical History
                 if (med.medicalHistory) {
                     const history = med.medicalHistory;
                     document.getElementById('medicalHistory').value = history.diseases || '';
@@ -2548,48 +2639,57 @@
             }
             
             document.querySelector('#patientForm button[type="submit"]').innerHTML = '<i class="fas fa-edit" aria-hidden="true"></i> ویرایش پرونده بیمار';
-            navigateToSection('dashboardSection', document.querySelector('.sidebar-menu a[onclick*="dashboard"]')); // Switch to form view
+            navigateToSection('dashboardSection', document.querySelector('.sidebar-menu a[onclick*="dashboardSection"]')); 
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            console.log("Form populated for patient:", patient.id);
         }
 
         function resetFormAndState() {
+            console.log("Resetting form and state.");
             document.getElementById('patientForm').reset();
             currentEditingPatientId = null;
-            woundDetailsData = {}; 
+            // Clear woundDetailsData related to 'draft' only, not all of it.
+             Object.keys(woundDetailsData).forEach(key => {
+                if (key.startsWith(`draft_visit`)) {
+                    delete woundDetailsData[key];
+                }
+            });
             uploadedTestFiles = [];
             uploadedSummaryFiles = [];
             updateUploadedFilesList('test', uploadedTestFiles, 'uploadedTestsList');
             updateUploadedFilesList('summary', uploadedSummaryFiles, 'uploadedSummariesList');
             
             document.querySelectorAll('.option.selected').forEach(opt => opt.classList.remove('selected'));
-            initializeCollapsibleSections(); // Reset accordions to default (closed, "No")
+            initializeCollapsibleSections(); 
             
             document.getElementById('bmiResult').textContent = '--';
             document.getElementById('bmiResult').className = 'bmi-result';
             document.querySelector('#patientForm button[type="submit"]').innerHTML = '<i class="fas fa-save" aria-hidden="true"></i> ثبت پرونده بیمار';
             
-            // Clear wound measurement and culture tables
             document.querySelectorAll('.wound-measurement-table tbody input, .wound-measurement-table tbody textarea').forEach(input => input.value = '');
             document.querySelectorAll('.wound-culture-table tbody input, .wound-culture-table tbody textarea').forEach(input => input.value = '');
 
-            // Clear image previews in wound details modal (though modal is not open, good practice)
              for (let i = 1; i <= 3; i++) {
                 document.getElementById(`woundImagePreview${i}`).innerHTML = `<i class="fas fa-camera"></i><span>عکس ${i}</span>`;
             }
-            showCustomMessage("فرم پاکسازی شد.", "success");
+            // showCustomMessage("فرم پاکسازی شد.", "success"); // This might be too intrusive on every reset.
         }
 
         // ==================== Display and UI Update Functions ====================
         function displayPatientsList() {
             const tbody = document.getElementById('patientsListBody');
             const noPatientsMsg = document.getElementById('noPatientsMessage');
+            if (!tbody || !noPatientsMsg) {
+                console.error("Patient list table body or message element not found.");
+                return;
+            }
             tbody.innerHTML = ''; 
 
-            const searchTerm = document.getElementById('patientSearchInput')?.value.toLowerCase() || "";
+            const searchTerm = document.getElementById('patientSearchInput')?.value.toLowerCase().trim() || "";
             const filteredPatients = patients.filter(p => 
-                p.firstName.toLowerCase().includes(searchTerm) ||
-                p.lastName.toLowerCase().includes(searchTerm) ||
-                p.nationalId.includes(searchTerm)
+                (p.firstName && p.firstName.toLowerCase().includes(searchTerm)) ||
+                (p.lastName && p.lastName.toLowerCase().includes(searchTerm)) ||
+                (p.nationalId && p.nationalId.includes(searchTerm))
             );
 
 
@@ -2599,7 +2699,7 @@
             }
             noPatientsMsg.style.display = 'none';
 
-            filteredPatients.sort((a,b) => new Date(b.updatedAt) - new Date(a.updatedAt)); // Sort by most recently updated
+            filteredPatients.sort((a,b) => new Date(b.updatedAt) - new Date(a.updatedAt)); 
 
             filteredPatients.forEach(patient => {
                 const tr = document.createElement('tr');
@@ -2607,23 +2707,28 @@
                     tr.classList.add('diabetic-row');
                 }
                 
+                // Sanitize patient data for JSON.stringify within HTML attributes
+                const escapedPatientJson = JSON.stringify(patient)
+                                             .replace(/'/g, "&apos;")
+                                             .replace(/"/g, "&quot;");
+
                 tr.innerHTML = `
-                    <td>${patient.nationalId}</td>
-                    <td>${patient.firstName}</td>
-                    <td>${patient.lastName}</td>
+                    <td>${patient.nationalId || '-'}</td>
+                    <td>${patient.firstName || '-'}</td>
+                    <td>${patient.lastName || '-'}</td>
                     <td>${patient.age || '-'}</td>
                     <td>${patient.gender === 'male' ? 'مرد' : (patient.gender === 'female' ? 'زن' : '-')}</td>
                     <td>${patient.medicalInfo?.hasDiabetes ? '<span class="badge badge-danger">دارد</span>' : '<span class="badge badge-success">ندارد</span>'}</td>
-                    <td>${new Date(patient.updatedAt).toLocaleDateString('fa-IR-u-nu-latn')}</td>
+                    <td>${patient.updatedAt ? new Date(patient.updatedAt).toLocaleDateString('fa-IR-u-nu-latn') : '-'}</td>
                     <td>
                         <div class="action-buttons">
-                            <button type="button" class="btn btn-outline" title="ویرایش" onclick='populateFormForEdit(${JSON.stringify(patient).replace(/'/g, "&apos;")})'>
+                            <button type="button" class="btn btn-outline" title="ویرایش" onclick='populateFormForEdit(${escapedPatientJson})'>
                                 <i class="fas fa-edit" aria-hidden="true"></i>
                             </button>
                             <button type="button" class="btn btn-outline" title="حذف" style="border-color: var(--danger); color: var(--danger);" onclick="confirmAndDeletePatient('${patient.id}')">
                                 <i class="fas fa-trash" aria-hidden="true"></i>
                             </button>
-                            <button type="button" class="btn btn-outline" title="خروجی WMDJ" style="border-color: var(--success); color: var(--success);" onclick='exportPatientToFile(${JSON.stringify(patient).replace(/'/g, "&apos;")})'>
+                            <button type="button" class="btn btn-outline" title="خروجی WMDJ" style="border-color: var(--success); color: var(--success);" onclick='exportPatientToFile(${escapedPatientJson})'>
                                 <i class="fas fa-download" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -2637,7 +2742,7 @@
         }
 
 
-        function updateUploadedFilesList(fileTypeStr, filesArray, listElementId) { // 'test' or 'summary'
+        function updateUploadedFilesList(fileTypeStr, filesArray, listElementId) { 
             const container = document.getElementById(listElementId);
             container.innerHTML = ''; 
             
@@ -2672,19 +2777,19 @@
 
 
         // ==================== File Handling (Upload, View, Remove for Tests & Summaries) ====================
-        function handleFileUpload(event, fileTypeStr) { // 'test' or 'summary'
+        function handleFileUpload(event, fileTypeStr) { 
             const files = event.target.files;
             if (!files || files.length === 0) return;
             
             const targetArray = fileTypeStr === 'test' ? uploadedTestFiles : uploadedSummaryFiles;
             
             Array.from(files).forEach(file => {
-                if (file.size > 5 * 1024 * 1024) { // Max 5MB per file
+                if (file.size > 5 * 1024 * 1024) { 
                     showCustomMessage(`فایل "${file.name}" بزرگتر از ۵ مگابایت است و بارگذاری نشد.`, 'warning');
                     return;
                 }
                 const reader = new FileReader();
-                reader.onload = function(e_reader) {
+                reader.onload = function(e_reader) { 
                     targetArray.push({
                         name: file.name,
                         type: file.type,
@@ -2708,9 +2813,9 @@
             const container = document.getElementById('fileViewContentContainer');
             const modalTitle = document.getElementById('fileViewModalTitle');
             modalTitle.textContent = `نمایش: ${fileName}`;
-            container.innerHTML = '<div class="loader"><div class="loader-circle"></div><span class="loader-text">درحال بارگذاری...</span></div>'; // Show loader
+            container.innerHTML = '<div class="loader"><div class="loader-circle"></div><span class="loader-text">درحال بارگذاری...</span></div>'; 
 
-            setTimeout(() => { // Simulate loading for non-image files that might take time to render in iframe
+            setTimeout(() => { 
                 if (fileType.startsWith('image/')) {
                     container.innerHTML = `<img src="${fileData}" alt="${fileName}" style="max-width: 100%; max-height: 70vh; object-fit: contain;">`;
                 } else if (fileType === 'application/pdf') {
@@ -2718,7 +2823,7 @@
                 } else {
                     container.innerHTML = `<p style="padding: 2rem; text-align:center;">پیش‌نمایش برای این نوع فایل (${fileType}) در دسترس نیست. لطفاً فایل را دانلود کنید.</p>`;
                 }
-            }, 100); // Small delay for loader to be visible
+            }, 100); 
 
             document.getElementById('fileViewModalBackdrop').classList.add('active');
             document.getElementById('fileViewModalContainer').classList.add('active');
@@ -2727,7 +2832,7 @@
         function closeFileViewModal() {
             document.getElementById('fileViewModalContainer').classList.remove('active');
             document.getElementById('fileViewModalBackdrop').classList.remove('active');
-            document.getElementById('fileViewContentContainer').innerHTML = ''; // Clear content
+            document.getElementById('fileViewContentContainer').innerHTML = ''; 
             currentFileViewingData = null;
         }
 
@@ -2758,40 +2863,57 @@
 
         // ==================== Option Selection & Toggling UI (Collapsible Sections) ====================
         function selectOption(element) { 
-            // This is for multi-select groups within wound details modal
             element.classList.toggle('selected');
         }
 
-        function toggleOption(element, dataKeyAttribute) { 
-            // General toggle for options in main form (e.g., substance use)
+        function toggleOption(element, dataKey) { 
             const group = element.parentElement;
             const isMultiSelect = group.getAttribute('data-multiple') === 'true';
 
-            if (!isMultiSelect) { // Single select behavior
+            if (!isMultiSelect) {
                 group.querySelectorAll('.option').forEach(opt => {
                     if (opt !== element) opt.classList.remove('selected');
                 });
+                 element.classList.add('selected'); // Ensure the clicked one is selected
+            } else {
+                element.classList.toggle('selected'); 
             }
-             // For single select, if already selected, deselecting it might be desired or not.
-            // Current behavior: toggles. If it should always have one selected, this logic needs adjustment.
-            element.classList.toggle('selected'); 
 
-            // Specific logic for diabetic complications visibility (example)
-            if (element.parentElement.id === 'diabetesInfoSection' && element.textContent.includes('عوارض دیابت')) {
-                 const detailsDiv = document.getElementById('diabeticComplicationsDetails');
-                 const isYesSelected = element.textContent.includes('بله') && element.classList.contains('selected');
-                 detailsDiv.classList.toggle('open', isYesSelected);
+            // Specific logic for sections controlled by these options
+            const controlledSectionId = group.getAttribute('data-controls-section');
+            if (controlledSectionId) {
+                const detailsDiv = document.getElementById(controlledSectionId);
+                const isYesSelected = element.textContent.includes('بله') && element.classList.contains('selected');
+                detailsDiv.classList.toggle('open', isYesSelected);
+                if (!isYesSelected && detailsDiv.querySelector('textarea')) { // If "No" is selected, clear related textareas
+                    detailsDiv.querySelectorAll('textarea, input[type="number"], input[type="text"]').forEach(input => input.value = '');
+                     // Also reset any selects within this controlled section if needed
+                    detailsDiv.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+                }
             }
         }
+
 
         // Specific toggle functions for Yes/No sections that control collapsible areas
         function toggleSection(element, show, sectionId) {
             const options = element.parentElement.querySelectorAll('.option-toggle');
-            options.forEach(opt => opt.classList.remove('selected', 'yes', 'no'));
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'yes', 'no');
+            });
             
             element.classList.add('selected');
             element.classList.add(show ? 'yes' : 'no');
-            document.getElementById(sectionId).classList.toggle('open', show);
+            const sectionToToggle = document.getElementById(sectionId);
+            sectionToToggle.classList.toggle('open', show);
+            if (!show) { // If hiding, clear inputs within the section
+                sectionToToggle.querySelectorAll('input, textarea, select').forEach(input => {
+                    if (input.type === 'checkbox' || input.type === 'radio') input.checked = false;
+                    else if (input.tagName === 'SELECT') input.selectedIndex = 0;
+                    else input.value = '';
+                });
+                 // Also reset any multi-option groups within the hidden section
+                sectionToToggle.querySelectorAll('.option.selected').forEach(opt => opt.classList.remove('selected'));
+            }
         }
 
         function toggleDiabetesSection(element, show) { toggleSection(element, show, 'diabetesInfoSection'); }
@@ -2803,9 +2925,9 @@
 
         // ==================== Utility Functions ====================
         function formatBloodPressure(input) {
-            let value = input.value.replace(/[^0-9\/]/g, ''); // Allow only numbers and slash
+            let value = input.value.replace(/[^0-9\/]/g, ''); 
             const parts = value.split('/');
-            if (parts.length > 2) value = parts.slice(0, 2).join('/'); // Max one slash
+            if (parts.length > 2) value = parts.slice(0, 2).join('/'); 
             if (parts[0] && parts[0].length > 3) parts[0] = parts[0].substring(0,3);
             if (parts[1] && parts[1].length > 3) parts[1] = parts[1].substring(0,3);
             input.value = parts.join('/');
@@ -2834,7 +2956,7 @@
             bmiResultEl.className = 'bmi-result';
         }
 
-        function getFileIcon(fileType) { /* ... (same as before, ensure it's robust) ... */ 
+        function getFileIcon(fileType) { 
             if (!fileType) return 'fas fa-file-alt';
             if (fileType.startsWith('image/')) return 'fas fa-file-image';
             if (fileType === 'application/pdf') return 'fas fa-file-pdf';
@@ -2843,7 +2965,7 @@
             if (fileType.includes('text')) return 'fas fa-file-alt';
             return 'fas fa-file';
         }
-        function getFileIconColor(fileType) { /* ... (same, using CSS vars) ... */ 
+        function getFileIconColor(fileType) { 
              if (!fileType) return 'var(--gray)';
             if (fileType.startsWith('image/')) return 'var(--success)';
             if (fileType === 'application/pdf') return 'var(--danger)';
@@ -2855,8 +2977,7 @@
         // ==================== Import/Export Patient Data (WMDJ Format) ====================
         function exportPatientToFile(patient) {
             try {
-                const patientDataToExport = JSON.parse(JSON.stringify(patient)); // Deep clone to avoid issues
-                 // Include relevant woundDetailsData for this patient
+                const patientDataToExport = JSON.parse(JSON.stringify(patient)); 
                 patientDataToExport.woundDetailsStore = {};
                 Object.keys(woundDetailsData).forEach(key => {
                     if (key.startsWith(`${patient.id}_visit`)) {
@@ -2865,12 +2986,12 @@
                 });
 
                 const dataStr = JSON.stringify(patientDataToExport, null, 2);
-                const blob = new Blob([dataStr], { type: 'application/json' }); // Use JSON mime type
+                const blob = new Blob([dataStr], { type: 'application/json' }); 
                 const url = URL.createObjectURL(blob);
                 
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `Patient_${patient.nationalId}_${patient.lastName}.wmdj`; // .wmdj for JSON
+                a.download = `Patient_${patient.nationalId}_${patient.lastName}.wmdj`; 
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -2889,8 +3010,8 @@
             }
             try {
                 const exportData = {
-                    patients: JSON.parse(JSON.stringify(patients)), // Deep clone
-                    woundDetailsStore: JSON.parse(JSON.stringify(woundDetailsData)) // Include all wound details
+                    patients: JSON.parse(JSON.stringify(patients)), 
+                    woundDetailsStore: JSON.parse(JSON.stringify(woundDetailsData)) 
                 };
                 const dataStr = JSON.stringify(exportData, null, 2);
                 const blob = new Blob([dataStr], { type: 'application/json' });
@@ -2911,9 +3032,9 @@
             }
         }
 
-        function importPatientsFromFile(event) {
+        function importPatientsFromFile(event) { // Renamed from importPatientFromFile
             const file = event.target.files[0];
-            if (!file || !file.name.endsWith('.wmdj')) { // Expect .wmdj for JSON
+            if (!file || !file.name.endsWith('.wmdj')) { 
                 showCustomMessage("لطفاً یک فایل با پسوند .wmdj انتخاب کنید!", 'warning');
                 event.target.value = null;
                 return;
@@ -2922,62 +3043,75 @@
             const reader = new FileReader();
             reader.onload = (e_reader) => {
                 try {
-                    const importedData = JSON.parse(e_reader.target.result);
+                    const importedDataContainer = JSON.parse(e_reader.target.result);
                     let importedPatientsArray = [];
-                    let newWoundDetails = {};
+                    let importedWoundDetails = {};
 
-                    if (Array.isArray(importedData)) { // Old format: array of patients
-                        importedPatientsArray = importedData;
-                    } else if (importedData.patients && importedData.woundDetailsStore) { // New format
-                        importedPatientsArray = importedData.patients;
-                        newWoundDetails = importedData.woundDetailsStore || {};
-                    } else if (importedData.nationalId) { // Single patient object (old format)
-                         importedPatientsArray = [importedData];
+                    // Determine the structure of the imported file
+                    if (Array.isArray(importedDataContainer)) { 
+                        importedPatientsArray = importedDataContainer;
+                        // Old format might not have separate woundDetailsStore, details might be nested
+                        // This part needs careful migration if old format had wound details differently
+                    } else if (importedDataContainer.patients && importedDataContainer.woundDetailsStore) { // New format
+                        importedPatientsArray = importedDataContainer.patients;
+                        importedWoundDetails = importedDataContainer.woundDetailsStore || {};
+                    } else if (importedDataContainer.nationalId) { // Single patient object (potentially old format)
+                         importedPatientsArray = [importedDataContainer];
+                         if (importedDataContainer.woundDetailsStore) { // If single patient export included its details
+                            Object.assign(importedWoundDetails, importedDataContainer.woundDetailsStore);
+                         }
                     } else {
-                         throw new Error("فرمت فایل نامعتبر است.");
+                         throw new Error("فرمت فایل نامعتبر است. فایل باید شامل آرایه‌ای از بیماران یا یک شیء با کلید 'patients' باشد.");
                     }
                     
-                    let importedCount = 0;
+                    let newPatientsAddedCount = 0;
                     let skippedCount = 0;
 
                     importedPatientsArray.forEach(newPatient => {
-                        if (!newPatient.id) newPatient.id = `patient_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`; // Assign ID if missing
+                        if (!newPatient.id) newPatient.id = `patient_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
                         if (!newPatient.nationalId || !newPatient.firstName || !newPatient.lastName) {
-                            console.warn("Skipping patient due to missing essential fields:", newPatient);
+                            console.warn("Skipping patient due to missing essential fields:", newPatient.nationalId);
                             skippedCount++;
                             return;
                         }
-                        const exists = patients.some(p => p.nationalId === newPatient.nationalId || p.id === newPatient.id);
+                        const exists = patients.some(p => p.id === newPatient.id || p.nationalId === newPatient.nationalId);
                         if (exists) {
                             console.warn(`Patient ${newPatient.nationalId} already exists, skipping.`);
                             skippedCount++;
                         } else {
                             patients.push(newPatient);
-                            // If importing from new format, merge woundDetailsStore
-                            if (newPatient.woundDetailsStore) { // If details are nested in patient object
+                            // If the imported patient had its own woundDetailsStore, merge it.
+                            // This is primarily for single patient exports that included their details.
+                            if (newPatient.woundDetailsStore) {
                                 Object.keys(newPatient.woundDetailsStore).forEach(key => {
-                                     woundDetailsData[key] = newPatient.woundDetailsStore[key];
+                                    if (key.startsWith(`${newPatient.id}_visit`)) { // Ensure keys match the patient ID
+                                        woundDetailsData[key] = newPatient.woundDetailsStore[key];
+                                    }
                                 });
-                                delete newPatient.woundDetailsStore; // Remove from patient object after merging
+                                delete newPatient.woundDetailsStore; // Clean up after merging
                             }
-                            importedCount++;
+                            newPatientsAddedCount++;
                         }
                     });
                     
-                    // Merge woundDetailsStore if it was at the root of the imported file
-                     if (importedData.woundDetailsStore && !Array.isArray(importedData)) {
-                        Object.assign(woundDetailsData, importedData.woundDetailsStore);
+                    // Merge the main woundDetailsStore from the imported file (if present at root)
+                    if (importedDataContainer.woundDetailsStore && !Array.isArray(importedDataContainer)) {
+                        Object.keys(importedWoundDetails).forEach(key => {
+                            // Only add if it doesn't already exist or if we want to overwrite (be careful with overwriting)
+                            if (!woundDetailsData[key]) {
+                                woundDetailsData[key] = importedWoundDetails[key];
+                            }
+                        });
                     }
 
-
-                    if (importedCount > 0) {
-                        savePatientsToDB(); // Save all changes
+                    if (newPatientsAddedCount > 0) {
+                        savePatientsToDB(); 
                         displayPatientsList(); 
-                        showCustomMessage(`${importedCount} پرونده با موفقیت وارد شد. ${skippedCount > 0 ? `${skippedCount} پرونده تکراری یا ناقص نادیده گرفته شد.` : ''}`, 'success');
+                        showCustomMessage(`${newPatientsAddedCount} پرونده با موفقیت وارد شد. ${skippedCount > 0 ? `${skippedCount} پرونده تکراری یا ناقص نادیده گرفته شد.` : ''}`, 'success');
                     } else if (skippedCount > 0) {
                         showCustomMessage(`هیچ پرونده جدیدی وارد نشد. ${skippedCount} پرونده تکراری یا ناقص بود.`, 'warning');
                     } else {
-                         showCustomMessage("فایل خالی بود یا فرمت نامعتبر داشت.", "warning");
+                         showCustomMessage("فایل خالی بود یا هیچ پرونده جدیدی برای ورود یافت نشد.", "warning");
                     }
                     
                 } catch (err) {
@@ -2993,6 +3127,9 @@
 
         // ==================== UI Feedback & Helpers ====================
         function showCustomMessage(message, type = 'success') { 
+            const existingMsgBox = document.querySelector('.custom-message-box');
+            if(existingMsgBox) existingMsgBox.remove(); // Remove previous message if any
+
             const msgBox = document.createElement('div');
             msgBox.className = `custom-message-box ${type}`;
             let iconClass = 'fa-check-circle';
@@ -3002,11 +3139,10 @@
             msgBox.innerHTML = `<i class="fas ${iconClass}" aria-hidden="true"></i> ${message}`;
             document.body.appendChild(msgBox);
             
-            // Automatically remove after a delay
             setTimeout(() => {
                 msgBox.style.animation = 'fadeOutMessage 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards';
                 setTimeout(() => msgBox.remove(), 400);
-            }, 3000); // Start fade out after 3s
+            }, 3000); 
         }
         
         function showConfirmationModal(title, message, onConfirm) {
@@ -3014,10 +3150,11 @@
             document.getElementById('confirmationModalMessage').textContent = message;
             
             const confirmButton = document.getElementById('confirmActionButton');
-            const newConfirmButton = confirmButton.cloneNode(true); // Remove old listeners
+            // Clone and replace to remove previous event listeners
+            const newConfirmButton = confirmButton.cloneNode(true); 
             confirmButton.parentNode.replaceChild(newConfirmButton, confirmButton);
             
-            newConfirmButton.onclick = () => {
+            newConfirmButton.onclick = () => { // Assign new listener
                 onConfirm();
                 closeModal('confirmationModal');
             };
@@ -3034,27 +3171,76 @@
         }
         
         function saveDraft() {
-            // This is a placeholder. Implement actual draft saving logic.
-            // Could save the current form state to localStorage under a specific "draft" key.
-            const draftData = collectPatientDataFromForm(); // Use existing data collection
-            localStorage.setItem('woundCareDraftPatient', JSON.stringify(draftData));
-            showCustomMessage("پیش‌نویس با موفقیت ذخیره شد.", "success");
+            try {
+                const draftData = collectPatientDataFromForm(); 
+                // Mark it as a draft, so it doesn't get a real patient ID yet if it's a new form
+                draftData.isDraft = true; 
+                // If currentEditingPatientId is null, it's a new form draft.
+                // If currentEditingPatientId exists, it's a draft of an edit.
+                const draftKey = currentEditingPatientId ? `woundCareDraft_edit_${currentEditingPatientId}` : 'woundCareDraft_new';
+                localStorage.setItem(draftKey, JSON.stringify(draftData));
+
+                 // Save draft wound details separately
+                const draftWoundDetails = {};
+                const tempPatientIdForDraft = currentEditingPatientId || 'draft';
+                for (let i = 1; i <= 7; i++) {
+                    if (woundDetailsData[`${tempPatientIdForDraft}_visit${i}`]) {
+                        draftWoundDetails[`draft_visit${i}`] = woundDetailsData[`${tempPatientIdForDraft}_visit${i}`];
+                    }
+                }
+                localStorage.setItem('woundCareDraft_woundDetails', JSON.stringify(draftWoundDetails));
+
+
+                showCustomMessage("پیش‌نویس با موفقیت ذخیره شد.", "success");
+            } catch (error) {
+                console.error("Error saving draft:", error);
+                showCustomMessage("خطا در ذخیره پیش‌نویس.", "danger");
+            }
         }
 
         function loadDraft() {
-            // Placeholder: Implement loading draft data into the form.
-            const draftDataString = localStorage.getItem('woundCareDraftPatient');
+            const draftKey = currentEditingPatientId ? `woundCareDraft_edit_${currentEditingPatientId}` : 'woundCareDraft_new';
+            const draftDataString = localStorage.getItem(draftKey);
+            const draftWoundDetailsString = localStorage.getItem('woundCareDraft_woundDetails');
+
             if (draftDataString) {
                 try {
                     const draftPatient = JSON.parse(draftDataString);
-                    // currentEditingPatientId should NOT be set from a draft, it's for new/existing patients.
-                    // Drafts are typically for NEW entries. If a draft is loaded, it's like starting a new entry.
-                    currentEditingPatientId = null; // Ensure it's treated as a new entry if submitted
-                    populateFormForEdit(draftPatient); // populateForm can work if we ensure ID is not set from draft
-                     // Manually clear ID from form if populateFormForEdit sets it for some reason from a draft
-                    // document.getElementById('nationalId').value = draftPatient.nationalId; // Example
+                    
+                    // Important: When loading a draft for a *new* patient, ensure currentEditingPatientId is null
+                    // If it was a draft of an *edit*, currentEditingPatientId would be set before calling loadDraft (e.g. from patient list)
+                    // For simplicity, let's assume loading a draft always means starting "fresh" or continuing a new entry.
+                    // If it's an edit draft, the populateFormForEdit would handle it.
+                    // This function is more for a general "load last draft" for a new form.
+
+                    currentEditingPatientId = draftPatient.id && !draftPatient.isDraft ? draftPatient.id : null; // If it was a saved patient draft
+                    
+                    populateFormForEdit(draftPatient); // This will also clear and set currentEditingPatientId
+
+                     // Restore wound details from draft
+                    if (draftWoundDetailsString) {
+                        const loadedWoundDetails = JSON.parse(draftWoundDetailsString);
+                        const tempPatientIdForDraft = currentEditingPatientId || 'draft';
+                         for (let i = 1; i <= 7; i++) {
+                            if (loadedWoundDetails[`draft_visit${i}`]) { // Assuming draft details were saved with 'draft_visit' prefix
+                                woundDetailsData[`${tempPatientIdForDraft}_visit${i}`] = loadedWoundDetails[`draft_visit${i}`];
+                            }
+                        }
+                    }
+                    
+                    // If it was truly a draft of a new patient, remove the temporary draft ID
+                    if (draftPatient.isDraft && draftPatient.id.startsWith('patient_')) {
+                        // The new patient will get a new ID on actual submission
+                        // We might not need to do anything with draftPatient.id here if populateFormForEdit handles ID correctly.
+                    }
+
+
                     showCustomMessage("پیش‌نویس بارگذاری شد. در صورت تمایل، پس از تکمیل، آن را ثبت کنید.", "success");
+                    // Optionally, clear the draft from localStorage after loading
+                    // localStorage.removeItem(draftKey);
+                    // localStorage.removeItem('woundCareDraft_woundDetails');
                 } catch (e) {
+                    console.error("Error loading draft:", e);
                     showCustomMessage("خطا در بارگذاری پیش‌نویس.", "danger");
                 }
             } else {
@@ -3066,14 +3252,13 @@
         // ==================== Service Worker (PWA Functionality) ====================
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js') // Assuming sw.js is in the root
+                navigator.serviceWorker.register('sw.js') 
                     .then(reg => {
                         console.log('Service Worker: Registered');
                         reg.onupdatefound = () => {
                             newWorker = reg.installing;
                             newWorker.onstatechange = () => {
                                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    // New content is available, please refresh.
                                     showCustomMessageWithAction(
                                         'نسخه جدید برنامه در دسترس است!',
                                         'رفرش برای بروزرسانی',
@@ -3097,19 +3282,22 @@
         }
 
         function showCustomMessageWithAction(message, buttonText, actionCallback) {
+            const existingMsgBox = document.querySelector('.custom-message-box');
+            if(existingMsgBox) existingMsgBox.remove();
+
             const msgBox = document.createElement('div');
-            msgBox.className = 'custom-message-box success'; // Or any other style
-            msgBox.style.animation = 'slideInMessage 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)'; // No auto fade out
+            msgBox.className = 'custom-message-box success'; 
+            msgBox.style.animation = 'slideInMessage 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)'; 
 
             const messageText = document.createElement('span');
             messageText.textContent = message;
 
             const actionButton = document.createElement('button');
             actionButton.textContent = buttonText;
-            actionButton.className = 'btn btn-outline'; // Style as a button
-            actionButton.style.color = 'white'; // Adjust for contrast
+            actionButton.className = 'btn btn-outline'; 
+            actionButton.style.color = 'white'; 
             actionButton.style.borderColor = 'white';
-            actionButton.style.marginLeft = '10px'; // For RTL, should be margin-right
+            actionButton.style.marginLeft = '10px'; 
             actionButton.style.marginRight = '10px';
 
 
