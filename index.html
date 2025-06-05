@@ -1905,12 +1905,15 @@
         function viewSummaryFile(index) { if (index >= 0 && index < uploadedSummaries.length) viewFileInModal(uploadedSummaries[index]); }
 
        function closeTestViewModal() {
+          // برای اشکال‌زدایی: مقدار بخش فعال فعلی را در کنسول مرورگر نمایش می‌دهیم
+          console.log('Modal در حال بسته شدن است. بخش فعال فعلی:', activeMainSectionId);
+
           document.getElementById('testModalContainer').style.display = 'none';
           document.getElementById('testModalBackdrop').style.display = 'none';
           currentlyViewedTestFile = null;
-          // نیازی به فراخوانی navigateToSection نیست، چون مودال فقط روی صفحه فعلی نمایش داده شده بود.
-          // با حذف خط زیر، مشکل حل می‌شود.
-          // navigateToSection(activeMainSectionId); 
+          
+          // خطی که باعث پرش به صفحه دیگر میشد، همچنان حذف شده است.
+          // navigateToSection(activeMainSectionId);
       }
         function downloadCurrentViewedTestFile() {
             if (!currentlyViewedTestFile) return;
