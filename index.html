@@ -1,0 +1,3078 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سیستم پیشرفته مدیریت زخم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts.css" rel="stylesheet">
+     <link rel="manifest" href="/manifest1.json">
+    <style>
+        :root {
+            --primary: #3a7bd5;
+            --primary-dark: #2c5fb3;
+            --secondary: #f857a6;
+            --accent: #00d2ff;
+            --light: #f8f9ff;
+            --dark: #2d3748;
+            --success: #38a169;
+            --warning: #f6ad55;
+            --danger: #e53e3e;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --diabetic-color: #9c4221;
+            --glass-effect: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Vazirmatn, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 2rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-effect);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, white, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .current-date {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-toggle:hover {
+            transform: rotate(90deg);
+        }
+
+        .app-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: calc(100vh - 72px);
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.8);
+            border-left: 1px solid var(--light-gray);
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+            transition: var(--transition);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .menu-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius);
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .menu-link:hover, .menu-link.active {
+            background-color: rgba(74, 111, 165, 0.1);
+            color: var(--primary);
+            transform: translateX(-5px);
+        }
+
+        .menu-link i {
+            width: 24px;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .main-content {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            color: var(--primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .page-title i {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .card:hover {
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-title i {
+            color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .required-field .form-label::after {
+            content: " *";
+            color: var(--danger);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-bottom: 2px solid var(--primary);
+            border-radius: 0;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-bottom-color: var(--accent);
+            box-shadow: none;
+        }
+
+        .form-icon {
+            position: relative;
+        }
+
+        .form-icon i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+
+        .form-icon .form-control {
+            padding-right: 40px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            transform: translateY(0);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), #ff5858);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #ff5858, var(--secondary));
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #00b4db);
+            color: var(--dark);
+        }
+
+        .btn-accent:hover {
+            background: linear-gradient(135deg, #00b4db, var(--accent));
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(74, 111, 165, 0.1);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: var(--border-radius);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table th {
+            background: linear-gradient(var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem;
+            text-align: right;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+            vertical-align: middle;
+            background-color: white;
+        }
+
+        .table tr:nth-child(even) td {
+            background-color: rgba(247, 250, 252, 0.8);
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tr:hover td {
+            background-color: rgba(226, 232, 240, 0.5);
+        }
+
+        .diabetic-row {
+            background-color: rgba(156, 66, 33, 0.08);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .badge-primary {
+            background-color: rgba(74, 111, 165, 0.1);
+            color: var(--primary);
+        }
+
+        .badge-success {
+            background-color: rgba(56, 161, 105, 0.1);
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background-color: rgba(246, 173, 85, 0.1);
+            color: var(--warning);
+        }
+
+        .badge-danger {
+            background-color: rgba(229, 62, 62, 0.1);
+            color: var(--danger);
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray);
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--dark);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .image-upload {
+            border: 2px dashed var(--light-gray);
+            border-radius: var(--border-radius);
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .image-upload:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .image-upload i {
+            font-size: 2rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .image-upload span {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        .image-upload img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .image-upload img:hover {
+            transform: scale(1.05);
+        }
+
+        .option-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option {
+            padding: 0.75rem 1.25rem;
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--light-gray);
+            font-size: 0.875rem;
+        }
+
+        .option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .option.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* استایل‌های جدید برای آکاردئون */
+        .option-toggle {
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .option-toggle.selected.yes {
+            background-color: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .option-toggle.selected.no {
+            background-color: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        /* استایل بخش‌های مخفی */
+        .collapsible-section {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+
+        .collapsible-section.open {
+            max-height: 2000px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .section-title i {
+            color: var(--accent);
+        }
+
+        .details-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--light-gray);
+            position: relative;
+        }
+
+        .details-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 3px;
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        .bmi-result {
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            margin-top: 0.5rem;
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid var(--light-gray);
+        }
+
+        .bmi-underweight {
+            background-color: rgba(255, 243, 205, 0.7);
+            color: #856404;
+            border-color: rgba(255, 238, 186, 0.7);
+        }
+
+        .bmi-normal {
+            background-color: rgba(212, 237, 218, 0.7);
+            color: #155724;
+            border-color: rgba(195, 230, 203, 0.7);
+        }
+
+        .bmi-overweight {
+            background-color: rgba(255, 238, 186, 0.7);
+            color: #856404;
+            border-color: rgba(255, 223, 126, 0.7);
+        }
+
+        .bmi-obese {
+            background-color: rgba(248, 215, 218, 0.7);
+            color: #721c24;
+            border-color: rgba(245, 198, 203, 0.7);
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-buttons .btn {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .test-image-item {
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        .test-image-item img {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: zoom-in;
+            transition: transform 0.3s;
+        }
+
+        .test-image-item img:hover {
+            transform: scale(1.02);
+        }
+
+        .form-disabled {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .test-modal-backdrop {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1999;
+            display: none;
+        }
+
+        .test-modal-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .test-modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow: auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Healing Progress */
+        .healing-progress {
+            margin: 1.5rem 0;
+        }
+        
+        .progress-track {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 4px;
+            transition: width 0.6s ease;
+        }
+        
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Loader */
+        .loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .loader-circle {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(58, 123, 213, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        .loader-text {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            :root {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: fixed;
+                top: 72px;
+                right: -280px;
+                width: 280px;
+                height: calc(100vh - 72px);
+                transition: var(--transition);
+                z-index: 999;
+            }
+            
+            .sidebar.active {
+                right: 0;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .main-content {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                font-size: 14px;
+            }
+            
+            .app-header {
+                padding: 0.8rem 1rem;
+            }
+            
+            .logo-text {
+                font-size: 1.2rem;
+            }
+            
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .page-title {
+                font-size: 1.4rem;
+            }
+            
+            .card {
+                padding: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                width: 100%;
+                padding: 0.8rem;
+            }
+            
+            .table th, .table td {
+                padding: 0.75rem;
+                font-size: 0.875rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+            
+            .option {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            :root {
+                font-size: 13px;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .card-title {
+                font-size: 1.1rem;
+            }
+            
+            .form-control, .btn {
+                padding: 0.7rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-buttons .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="logo">
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="logo-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <div class="logo-text">سیستم مدیریت زخم</div>
+        </div>
+        <div class="header-actions">
+            <div class="current-date" id="currentDate"></div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="menu-item">
+                    <a href="#" class="menu-link active">
+                        <i class="fas fa-home"></i>
+                        <span>داشبورد</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link" onclick="document.getElementById('fileImportInput').click()">
+                        <i class="fas fa-file-import"></i>
+                        <span>افزودن پرونده</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="fas fa-users"></i>
+                        <span>لیست بیماران</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>گزارشات</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>تقویم ویزیت</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="fas fa-cog"></i>
+                        <span>تنظیمات</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1 class="page-title">
+                    <i class="fas fa-user-plus"></i>
+                    ثبت پرونده جدید
+                </h1>
+                <div class="actions">
+                    <button class="btn btn-outline">
+                        <i class="fas fa-save"></i>
+                        ذخیره پیش نویس
+                    </button>
+                </div>
+            </div>
+
+            <!-- Patient Form -->
+            <form id="patientForm">
+                <!-- Basic Info Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-user-edit"></i>
+                            اطلاعات پایه بیمار
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group required-field">
+                                <label for="nationalId" class="form-label">کد ملی</label>
+                                <input type="text" id="nationalId" class="form-control" placeholder="کد ملی" required>
+                            </div>
+                            <div class="form-group required-field">
+                                <label for="firstName" class="form-label">نام</label>
+                                <input type="text" id="firstName" class="form-control" placeholder="نام" required>
+                            </div>
+                            <div class="form-group required-field">
+                                <label for="lastName" class="form-label">نام خانوادگی</label>
+                                <input type="text" id="lastName" class="form-control" placeholder="نام خانوادگی" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age" class="form-label">سن</label>
+                                <input type="number" id="age" class="form-control" placeholder="سن">
+                            </div>
+                            <div class="form-group">
+                                <label for="fatherName" class="form-label">نام پدر</label>
+                                <input type="text" id="fatherName" class="form-control" placeholder="نام پدر">
+                            </div>
+                            <div class="form-group required-field">
+                                <label for="gender" class="form-label">جنسیت</label>
+                                <select id="gender" class="form-control" required>
+                                    <option value="">انتخاب کنید</option>
+                                    <option value="male">مرد</option>
+                                    <option value="female">زن</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="maritalStatus" class="form-label">وضعیت تاهل</label>
+                                <select id="maritalStatus" class="form-control">
+                                    <option value="">انتخاب کنید</option>
+                                    <option value="single">مجرد</option>
+                                    <option value="married">متأهل</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="job" class="form-label">شغل</label>
+                                <input type="text" id="job" class="form-control" placeholder="شغل">
+                            </div>
+                            <div class="form-group required-field">
+                                <label for="education" class="form-label">سطح تحصیلات</label>
+                                <select id="education" class="form-control" required>
+                                    <option value="">انتخاب کنید</option>
+                                    <option value="belowDiploma">زیر دیپلم</option>
+                                    <option value="diploma">دیپلم</option>
+                                    <option value="associate">فوق دیپلم</option>
+                                    <option value="bachelor">لیسانس</option>
+                                    <option value="master">فوق لیسانس</option>
+                                    <option value="phd">دکترا</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Tests Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-file-medical"></i>
+                            آزمایش‌های بیمار
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label">آزمایش‌های آپلود شده:</label>
+                            <div id="uploadedTestsList" style="margin-top: 10px; border: 1px dashed var(--light-gray); padding: 10px; min-height: 50px; border-radius: var(--border-radius);">
+                                <p style="color: var(--gray); text-align: center;">هیچ آزمایشی آپلود نشده است</p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="testFileUpload" class="form-label">آپلود آزمایش جدید:</label>
+                                <input type="file" id="testFileUpload" class="file-input" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx">
+                                <button type="button" class="btn btn-outline" onclick="document.getElementById('testFileUpload').click()" style="width: 100%;">
+                                    <i class="fas fa-upload"></i> انتخاب فایل‌های آزمایش
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Patient Summary Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-file-medical-alt"></i>
+                            خلاصه پرونده بیمار
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label">خلاصه‌های آپلود شده:</label>
+                            <div id="uploadedSummariesList" style="margin-top: 10px; border: 1px dashed var(--light-gray); padding: 10px; min-height: 50px; border-radius: var(--border-radius);">
+                                <p style="color: var(--gray); text-align: center;">هیچ خلاصه‌ای آپلود نشده است</p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="summaryFileUpload" class="form-label">آپلود خلاصه جدید:</label>
+                                <input type="file" id="summaryFileUpload" class="file-input" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                                <button type="button" class="btn btn-outline" onclick="document.getElementById('summaryFileUpload').click()" style="width: 100%;">
+                                    <i class="fas fa-upload"></i> انتخاب فایل‌های خلاصه پرونده
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Info Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-address-book"></i>
+                            اطلاعات تماس
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group required-field">
+                                <label for="phone" class="form-label">تلفن همراه</label>
+                                <input type="tel" id="phone" class="form-control" placeholder="تلفن همراه" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address" class="form-label">آدرس کامل</label>
+                            <textarea id="address" class="form-control" placeholder="آدرس کامل" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- General Medical Info Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-heartbeat"></i>
+                            اطلاعات پزشکی عمومی
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bloodPressure" class="form-label">فشارخون</label>
+                                <input type="text" id="bloodPressure" class="form-control" placeholder="مثال: 12/8" oninput="formatBloodPressure(this)">
+                            </div>
+                            <div class="form-group">
+                                <label for="bloodSugar" class="form-label">قند خون (BS)</label>
+                                <input type="number" id="bloodSugar" class="form-control" placeholder="قند خون">
+                            </div>
+                            <div class="form-group">
+                                <label for="heartRate" class="form-label">ضربان قلب (HR)</label>
+                                <input type="number" id="heartRate" class="form-control" placeholder="ضربان قلب">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="spo2" class="form-label">اشباع اکسیژن (SPO2)</label>
+                                <input type="number" id="spo2" class="form-control" placeholder="اشباع اکسیژن">
+                            </div>
+                            <div class="form-group">
+                                <label for="temperature" class="form-label">دمای بدن (T)</label>
+                                <input type="number" id="temperature" class="form-control" placeholder="دمای بدن" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="hemoglobin" class="form-label">هموگلوبین (HB)</label>
+                                <input type="number" id="hemoglobin" class="form-control" placeholder="هموگلوبین (g/dL)" step="0.1">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="height" class="form-label">قد (سانتی‌متر)</label>
+                                <input type="number" id="height" class="form-control" placeholder="قد" oninput="calculateBMI()">
+                            </div>
+                            <div class="form-group">
+                                <label for="weight" class="form-label">وزن (کیلوگرم)</label>
+                                <input type="number" id="weight" class="form-control" placeholder="وزن" oninput="calculateBMI()">
+                            </div>
+                            <div class="form-group">
+                                <label for="bmi" class="form-label">شاخص توده بدنی (BMI)</label>
+                                <div id="bmiResult" class="bmi-result">--</div>
+                            </div>
+                        </div>
+
+                        <!-- Diabetes Info Section (Always Visible) -->
+                        <h3 class="section-title">
+                            <i class="fas fa-file-medical"></i>
+                            اطلاعات دیابت
+                        </h3>
+                        <div id="diabetesSection">
+                            <div class="form-row">
+                                <div class="option-group" data-multiple="false">
+                                    <div class="option option-toggle" onclick="toggleDiabetesSection(this, true)">بله (سابقه دیابت دارد)</div>
+                                    <div class="option option-toggle selected no" onclick="toggleDiabetesSection(this, false)">خیر (سابقه دیابت ندارد)</div>
+                                </div>
+                            </div>
+                            
+                            <div id="diabetesInfoSection" class="collapsible-section">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="fbs" class="form-label">FBS (قند ناشتا)</label>
+                                        <input type="number" id="fbs" class="form-control" placeholder="قند ناشتا">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hba1c" class="form-label">HbA1c</label>
+                                        <input type="number" id="hba1c" class="form-control" placeholder="HbA1c">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="diabetesType" class="form-label">نوع دیابت</label>
+                                        <select id="diabetesType" class="form-control">
+                                            <option value="">انتخاب کنید</option>
+                                            <option value="type1">نوع 1</option>
+                                            <option value="type2">نوع 2</option>
+                                            <option value="gestational">دیابت بارداری</option>
+                                            <option value="other">سایر</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="diabetesDuration" class="form-label">مدت ابتلا (سال)</label>
+                                        <input type="number" id="diabetesDuration" class="form-control" placeholder="مدت ابتلا">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">نوع درمان:</label>
+                                        <div class="option-group">
+                                            <div class="option" onclick="toggleOption(this, 'treatmentPills')">قرص</div>
+                                            <div class="option" onclick="toggleOption(this, 'treatmentInsulin')">انسولین</div>
+                                            <div class="option" onclick="toggleOption(this, 'treatmentDiet')">رژیم غذایی</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">سابقه زخم دیابتی:</label>
+                                        <div class="option-group" data-multiple="false">
+                                            <div class="option" onclick="toggleOption(this, 'hasDiabeticWound')">بله</div>
+                                            <div class="option" onclick="toggleOption(this, 'hasDiabeticWound')">خیر</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">سابقه عوارض دیابت:</label>
+                                        <div class="option-group" data-multiple="false">
+                                            <div class="option" onclick="toggleOption(this, 'hasDiabeticComplications')">بله</div>
+                                            <div class="option" onclick="toggleOption(this, 'hasDiabeticComplications')">خیر</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="diabeticComplicationsDetails" class="details-section" style="display: none;">
+                                    <h4>انواع عوارض شایع دیابت:</h4>
+                                    <ul style="padding-right:20px; margin:10px 0;">
+                                        <li>هیپوگلیسمی (افت قند خون)</li>
+                                        <li>نوروپاتی دیابتی</li>
+                                        <li>رتینوپاتی دیابتی</li>
+                                        <li>نفروپاتی دیابتی</li>
+                                        <li>زخم پای دیابتی</li>
+                                    </ul>
+                                    <div class="form-group">
+                                        <label for="diabeticComplicationsDescription" class="form-label">توضیحات عوارض:</label>
+                                        <textarea id="diabeticComplicationsDescription" class="form-control" rows="3" placeholder="نوع عارضه و توضیحات مربوطه را وارد نمایید"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Medical History Section (Always Visible) -->
+                        <h3 class="section-title">
+                            <i class="fas fa-medal"></i>
+                            سابقه بیماری‌ها
+                        </h3>
+                        <div id="medicalHistorySection">
+                            <div class="form-group">
+                                <label for="medicalHistory" class="form-label">سابقه بیماری:</label>
+                                <textarea id="medicalHistory" class="form-control" rows="3" placeholder="بیماری‌های قبلی و فعلی را ذکر کنید"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="familyMedicalHistory" class="form-label">سابقه بیماری خانوادگی:</label>
+                                <textarea id="familyMedicalHistory" class="form-control" rows="3" placeholder="بیماری‌های ارثی و خانوادگی را ذکر کنید"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">سابقه مصرف مواد:</label>
+                                <div class="option-group">
+                                    <div class="option" onclick="toggleOption(this, 'smoking')">سیگار</div>
+                                    <div class="option" onclick="toggleOption(this, 'alcohol')">الکل</div>
+                                    <div class="option" onclick="toggleOption(this, 'opium')">تریاک</div>
+                                    <div class="option" onclick="toggleOption(this, 'hookah')">قلیان</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hospitalization History Section (Always Visible) -->
+                        <h3 class="section-title">
+                            <i class="fas fa-procedures"></i>
+                            سابقه بستری و جراحی
+                        </h3>
+                        <div id="hospitalizationSection">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">سابقه بستری:</label>
+                                    <div class="option-group" data-multiple="false">
+                                        <div class="option option-toggle" onclick="toggleHospitalizationSection(this, true)">بله</div>
+                                        <div class="option option-toggle selected no" onclick="toggleHospitalizationSection(this, false)">خیر</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="hospitalizationDetails" class="collapsible-section">
+                                <div class="form-group">
+                                    <label for="hospitalizationDescription" class="form-label">توضیحات بستری:</label>
+                                    <textarea id="hospitalizationDescription" class="form-control" rows="3" placeholder="علت و جزئیات بستری را ذکر کنید"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="hospitalizationDuration" class="form-label">مدت زمان بستری (روز)</label>
+                                        <input type="number" id="hospitalizationDuration" class="form-control" placeholder="مدت زمان بستری">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">عفونت ناشی از جراحی:</label>
+                                    <div class="option-group" data-multiple="false">
+                                        <div class="option option-toggle" onclick="toggleSurgicalInfectionSection(this, true)">بله</div>
+                                        <div class="option option-toggle selected no" onclick="toggleSurgicalInfectionSection(this, false)">خیر</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="surgicalInfectionDetails" class="collapsible-section">
+                                <div class="form-group">
+                                    <label for="surgicalInfectionDescription" class="form-label">توضیحات عفونت:</label>
+                                    <textarea id="surgicalInfectionDescription" class="form-control" rows="3" placeholder="نوع و جزئیات عفونت ناشی از جراحی را ذکر کنید"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="surgicalInfectionDuration" class="form-label">مدت زمان بستری ناشی از عفونت (روز)</label>
+                                        <input type="number" id="surgicalInfectionDuration" class="form-control" placeholder="مدت زمان بستری">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">سابقه دیالیز:</label>
+                                    <div class="option-group" data-multiple="false">
+                                        <div class="option option-toggle" onclick="toggleDialysisSection(this, true)">بله</div>
+                                        <div class="option option-toggle selected no" onclick="toggleDialysisSection(this, false)">خیر</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="dialysisDetails" class="collapsible-section">
+                                <div class="form-group">
+                                    <label for="dialysisDescription" class="form-label">توضیحات دیالیز:</label>
+                                    <textarea id="dialysisDescription" class="form-control" rows="3" placeholder="نوع و مدت زمان دیالیز را ذکر کنید"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="drugHistory" class="form-label">سابقه دارویی:</label>
+                                <textarea id="drugHistory" class="form-control" rows="3" placeholder="داروهای مصرفی فعلی و قبلی را ذکر کنید"></textarea>
+                            </div>
+
+                            <!-- Allergy Section -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">سابقه حساسیت دارویی/غذایی:</label>
+                                    <div class="option-group" data-multiple="false">
+                                        <div class="option option-toggle" onclick="toggleAllergySection(this, true)">بله</div>
+                                        <div class="option option-toggle selected no" onclick="toggleAllergySection(this, false)">خیر</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="allergyDetails" class="collapsible-section">
+                                <div class="form-group">
+                                    <label for="allergyDescription" class="form-label">نوع حساسیت و توضیحات:</label>
+                                    <textarea id="allergyDescription" class="form-control" rows="3" placeholder="مثال: پنی سیلین، بادام زمینی، تخم مرغ و..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wound Measurement Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-ruler-combined"></i>
+                            اندازه‌گیری زخم
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="healing-progress">
+                            <div class="progress-track">
+                                <div class="progress-bar" style="width: 65%"></div>
+                            </div>
+                            <div class="progress-labels">
+                                <span>ویزیت اول</span>
+                                <span>65% بهبودی</span>
+                                <span>امروز</span>
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="table wound-measurement-table">
+                                <thead>
+                                    <tr>
+                                        <th>ویزیت</th>
+                                        <th>تاریخ</th>
+                                        <th>طول (سانتی‌متر)</th>
+                                        <th>عرض (سانتی‌متر)</th>
+                                        <th>عمق (سانتی‌متر)</th>
+                                        <th>جزئیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>ویزیت اول</td>
+                                        <td><input type="date" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline" onclick="openWoundDetailsModal(1)">
+                                                <i class="fas fa-info-circle"></i>
+                                                جزئیات
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ویزیت دوم</td>
+                                        <td><input type="date" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline" onclick="openWoundDetailsModal(2)">
+                                                <i class="fas fa-info-circle"></i>
+                                                جزئیات
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ویزیت سوم</td>
+                                        <td><input type="date" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline" onclick="openWoundDetailsModal(3)">
+                                                <i class="fas fa-info-circle"></i>
+                                                جزئیات
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ویزیت چهارم</td>
+                                        <td><input type="date" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline" onclick="openWoundDetailsModal(4)">
+                                                <i class="fas fa-info-circle"></i>
+                                                جزئیات
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ویزیت پنجم</td>
+                                        <td><input type="date" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline" onclick="openWoundDetailsModal(5)">
+                                                <i class="fas fa-info-circle"></i>
+                                                جزئیات
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ویزیت ششم</td>
+                                        <td><input type="date" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline" onclick="openWoundDetailsModal(6)">
+                                                <i class="fas fa-info-circle"></i>
+                                                جزئیات
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ویزیت هفتم</td>
+                                        <td><input type="date" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td><input type="number" step="0.1" min="0" class="form-control"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline" onclick="openWoundDetailsModal(7)">
+                                                <i class="fas fa-info-circle"></i>
+                                                جزئیات
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wound Culture Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-flask"></i>
+                            کشت زخم
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table wound-culture-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40%;">کشت زخم</th>
+                                        <th style="width: 60%;">توضیحات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" placeholder="تاریخ کشت">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="کشت اول">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <textarea class="form-control" rows="3" placeholder="توضیحات کشت اول"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" placeholder="تاریخ کشت">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="کشت دوم">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <textarea class="form-control" rows="3" placeholder="توضیحات کشت دوم"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" placeholder="تاریخ کشت">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="کشت سوم">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <textarea class="form-control" rows="3" placeholder="توضیحات کشت سوم"></textarea>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" style="padding: 1rem 2rem;">
+                        <i class="fas fa-save"></i>
+                        ثبت پرونده بیمار
+                    </button>
+                </div>
+            </form>
+
+            <!-- Patients List Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-list-ol"></i>
+                        لیست بیماران ثبت‌شده
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="patientsTable">
+                            <thead>
+                                <tr>
+                                    <th>کد ملی</th>
+                                    <th>نام</th>
+                                    <th>نام خانوادگی</th>
+                                    <th>سن</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patientsList">
+                                <!-- بیماران اینجا نمایش داده می‌شوند -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Wound Details Modal -->
+    <div class="modal" id="woundDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalVisitTitle">جزئیات زخم - ویزیت اول</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="image-grid">
+                    <div class="image-upload" onclick="triggerImageUpload(1, event)" id="woundImagePreview1">
+                        <i class="fas fa-camera"></i>
+                        <span>عکس ۱</span>
+                    </div>
+                    <div class="image-upload" onclick="triggerImageUpload(2, event)" id="woundImagePreview2">
+                        <i class="fas fa-camera"></i>
+                        <span>عکس ۲</span>
+                    </div>
+                    <div class="image-upload" onclick="triggerImageUpload(3, event)" id="woundImagePreview3">
+                        <i class="fas fa-camera"></i>
+                        <span>عکس ۳</span>
+                    </div>
+                </div>
+                <input type="file" id="woundImageUpload" accept="image/*" style="display: none;">
+
+                <div class="form-group">
+                    <label class="form-label">نوع بافت زخم (چند گزینه‌ای)</label>
+                    <div class="option-group" id="woundTissue">
+                        <div class="option" onclick="selectOption(this, 'woundTissue')">اگزودا</div>
+                        <div class="option" onclick="selectOption(this, 'woundTissue')">عفونت</div>
+                        <div class="option" onclick="selectOption(this, 'woundTissue')">گرانوله</div>
+                        <div class="option" onclick="selectOption(this, 'woundTissue')">اسلاف</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">پوست اطراف زخم (چند گزینه‌ای)</label>
+                    <div class="option-group" id="surroundingSkin">
+                        <div class="option" onclick="selectOption(this, 'surroundingSkin')">خیس خوردگی</div>
+                        <div class="option" onclick="selectOption(this, 'surroundingSkin')">خراشیدگی</div>
+                        <div class="option" onclick="selectOption(this, 'surroundingSkin')">پوست خشک</div>
+                        <div class="option" onclick="selectOption(this, 'surroundingSkin')">هایپرکراتوز</div>
+                        <div class="option" onclick="selectOption(this, 'surroundingSkin')">پینه</div>
+                        <div class="option" onclick="selectOption(this, 'surroundingSkin')">اگزما</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">لبه زخم (چند گزینه‌ای)</label>
+                    <div class="option-group" id="woundEdge">
+                        <div class="option" onclick="selectOption(this, 'woundEdge')">خیس خوردگی</div>
+                        <div class="option" onclick="selectOption(this, 'woundEdge')">دهیدراتاسیون</div>
+                        <div class="option" onclick="selectOption(this, 'woundEdge')">رول شده</div>
+                        <div class="option" onclick="selectOption(this, 'woundEdge')">حفره زیر پوستی</div>
+                    </div>
+                </div>
+
+                <!-- Wound Changes Section -->
+                <div id="woundChangesSection" class="form-group" style="display: none;">
+                    <label class="form-label">تغییرات زخم نسبت به ویزیت قبلی</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="woundAreaChange" class="form-label">مساحت زخم:</label>
+                            <select id="woundAreaChange" class="form-control">
+                                <option value="">انتخاب کنید</option>
+                                <option value="increased">بزرگ‌تر شده</option>
+                                <option value="decreased">کوچک‌تر شده</option>
+                                <option value="noChange">هیچکدام</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="woundDepthChange" class="form-label">عمق زخم:</label>
+                            <select id="woundDepthChange" class="form-control">
+                                <option value="">انتخاب کنید</option>
+                                <option value="increased">بیشتر شده</option>
+                                <option value="decreased">کوچک‌تر شده</option>
+                                <option value="noChange">هیچکدام</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="woundChangeNotes" class="form-label">توضیحات تغییرات:</label>
+                        <textarea id="woundChangeNotes" class="form-control" rows="2" placeholder="توضیحات بیشتری در مورد تغییرات زخم وارد نمایید"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="woundNotes" class="form-label">توضیحات اضافی:</label>
+                    <textarea id="woundNotes" class="form-control" rows="3" placeholder="توضیحات بیشتری در مورد زخم وارد نمایید"></textarea>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveWoundDetails()">
+                    <i class="fas fa-save"></i>
+                    ذخیره جزئیات
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test View Modal Backdrop -->
+    <div class="test-modal-backdrop" id="testModalBackdrop"></div>
+
+    <!-- Test View Modal -->
+    <div class="test-modal-container" id="testModalContainer">
+        <div class="test-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">نمایش تصویر زخم</h3>
+                <button class="modal-close" onclick="closeTestModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="testImageContainer" class="test-image-container">
+                    <!-- تصاویر زخم اینجا نمایش داده می‌شوند -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Actions -->
+    <input type="file" id="fileImportInput" class="file-input" accept=".wmd">
+
+    <script>
+        // ==================== Global Variables ====================
+        let patients = JSON.parse(localStorage.getItem('woundPatients')) || [];
+        let currentVisit = 1;
+        let woundDetails = {};
+        let currentEditingPatientId = null;
+        let uploadedTests = [];
+        let uploadedSummaries = [];
+        let currentImageUpload = 1;
+        let isViewingTests = false;
+        let testsViewingData = null;
+
+        // ==================== Initialize App ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCurrentDate();
+            displayPatients();
+            checkMobileView();
+            
+            document.getElementById('patientForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (isViewingTests) return;
+                submitPatientForm();
+            });
+            
+            document.getElementById('testFileUpload').addEventListener('change', function(e) {
+                handleTestFileUpload(e);
+            });
+            
+            document.getElementById('summaryFileUpload').addEventListener('change', function(e) {
+                handleSummaryFileUpload(e);
+            });
+            
+            // Initialize accordions with "No" selected by default
+            toggleDiabetesSection(document.querySelector('#diabetesSection .option:last-child'), false);
+            toggleHospitalizationSection(document.querySelector('#hospitalizationSection .option:last-child'), false);
+            toggleSurgicalInfectionSection(document.querySelector('#hospitalizationSection .option[onclick*="SurgicalInfection"]:last-child'), false);
+            toggleDialysisSection(document.querySelector('#hospitalizationSection .option[onclick*="Dialysis"]:last-child'), false);
+            toggleAllergySection(document.querySelector('#hospitalizationSection .option[onclick*="Allergy"]:last-child'), false);
+
+            document.getElementById('woundImageUpload').addEventListener('change', handleImageUpload);
+        });
+
+        // ==================== Image Upload Functions ====================
+        function triggerImageUpload(imageNumber, event) {
+            event.stopPropagation();
+            currentImageUpload = imageNumber;
+            document.getElementById('woundImageUpload').click();
+        }
+
+        function handleImageUpload(event) {
+            event.stopPropagation();
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.match('image.*')) {
+                alert('لطفا فقط فایل تصویر انتخاب کنید');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewId = `woundImagePreview${currentImageUpload}`;
+                const preview = document.getElementById(previewId);
+                preview.innerHTML = '';
+                
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                preview.appendChild(img);
+                
+                img.style.cursor = 'pointer';
+                img.onclick = (e) => {
+                    e.stopPropagation();
+                    viewWoundImage(img.src);
+                };
+                
+                if (!woundDetails[currentVisit]) {
+                    woundDetails[currentVisit] = {};
+                }
+                if (!woundDetails[currentVisit].woundImages) {
+                    woundDetails[currentVisit].woundImages = {};
+                }
+                woundDetails[currentVisit].woundImages[`image${currentImageUpload}`] = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function openWoundDetailsModal(visitNumber) {
+            currentVisit = visitNumber;
+            document.getElementById('modalVisitTitle').textContent = `جزئیات زخم - ویزیت ${visitNumber}`;
+            document.getElementById('woundDetailsModal').classList.add('active');
+            
+            currentImageUpload = 1;
+            
+            if (woundDetails[visitNumber]?.woundImages) {
+                for (let i = 1; i <= 3; i++) {
+                    const imageKey = `image${i}`;
+                    const previewId = `woundImagePreview${i}`;
+                    const preview = document.getElementById(previewId);
+                    
+                    if (woundDetails[visitNumber].woundImages[imageKey]) {
+                        preview.innerHTML = `<img src="${woundDetails[visitNumber].woundImages[imageKey]}" alt="عکس زخم">`;
+                        const img = preview.querySelector('img');
+                        img.onclick = (e) => {
+                            e.stopPropagation();
+                            viewWoundImage(woundDetails[visitNumber].woundImages[imageKey]);
+                        };
+                    } else {
+                        preview.innerHTML = '<i class="fas fa-camera"></i><span class="image-label">عکس ' + i + '</span>';
+                    }
+                }
+            } else {
+                for (let i = 1; i <= 3; i++) {
+                    const preview = document.getElementById(`woundImagePreview${i}`);
+                    preview.innerHTML = '<i class="fas fa-camera"></i><span class="image-label">عکس ' + i + '</span>';
+                }
+            }
+            
+            const changesSection = document.getElementById('woundChangesSection');
+            if (visitNumber > 1) {
+                changesSection.style.display = 'block';
+            } else {
+                changesSection.style.display = 'none';
+            }
+            
+            if (woundDetails[visitNumber]) {
+                document.getElementById('woundNotes').value = woundDetails[visitNumber].woundNotes || '';
+                
+                if (visitNumber > 1 && woundDetails[visitNumber].woundChanges) {
+                    document.getElementById('woundAreaChange').value = woundDetails[visitNumber].woundChanges.area || '';
+                    document.getElementById('woundDepthChange').value = woundDetails[visitNumber].woundChanges.depth || '';
+                    document.getElementById('woundChangeNotes').value = woundDetails[visitNumber].woundChanges.notes || '';
+                }
+                
+                const groups = ['woundTissue', 'surroundingSkin', 'woundEdge'];
+                groups.forEach(group => {
+                    if (woundDetails[visitNumber][group]) {
+                        woundDetails[visitNumber][group].forEach(option => {
+                            const options = document.querySelectorAll(`#${group} .option`);
+                            options.forEach(opt => {
+                                if (opt.textContent === option) {
+                                    opt.classList.add('selected');
+                                }
+                            });
+                        });
+                    }
+                });
+            } else {
+                document.getElementById('woundNotes').value = '';
+                document.getElementById('woundChangeNotes').value = '';
+                document.getElementById('woundAreaChange').value = '';
+                document.getElementById('woundDepthChange').value = '';
+                document.querySelectorAll('.wound-option').forEach(opt => opt.classList.remove('selected'));
+            }
+        }
+        
+        function closeModal() {
+            document.getElementById('woundDetailsModal').classList.remove('active');
+        }
+        
+        function viewWoundImage(imageUrl) {
+            // فقط داده‌های مربوط به تصاویر را ذخیره کنید
+            const woundImageBackup = {
+                woundImages: woundDetails[currentVisit]?.woundImages || null,
+                woundNotes: document.getElementById('woundNotes').value,
+                woundChanges: woundDetails[currentVisit]?.woundChanges || null
+            };
+
+            disableForm(true);
+            
+            document.getElementById('testImageContainer').innerHTML = `
+                <div class="test-image-item" style="max-width: 90vw;">
+                    <img src="${imageUrl}" style="max-width: 100%; max-height: 80vh;">
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-primary" onclick="closeTestModal()">
+                            <i class="fas fa-times"></i> بستن
+                        </button>
+                        <button class="btn btn-secondary" onclick="downloadCurrentImage('${imageUrl}')">
+                            <i class="fas fa-download"></i> دانلود
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('testModalContainer').style.display = 'flex';
+            
+            // ذخیره داده‌های موقت
+            window.tempWoundBackup = woundImageBackup;
+        }
+
+        function downloadCurrentImage(imageUrl) {
+            const a = document.createElement('a');
+            a.href = imageUrl;
+            a.download = `wound_image_${new Date().getTime()}.jpg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function closeTestModal() {
+            // بازیابی فقط داده‌های مربوط به تصاویر
+            if (window.tempWoundBackup) {
+                if (!woundDetails[currentVisit]) {
+                    woundDetails[currentVisit] = {};
+                }
+                woundDetails[currentVisit].woundImages = window.tempWoundBackup.woundImages;
+                woundDetails[currentVisit].woundChanges = window.tempWoundBackup.woundChanges;
+                document.getElementById('woundNotes').value = window.tempWoundBackup.woundNotes;
+            }
+
+            disableForm(false);
+            hideTestModal();
+            delete window.tempWoundBackup; // پاک کردن داده‌های موقت
+        }
+
+        function disableForm(disabled) {
+            const form = document.getElementById('patientForm');
+            if (disabled) {
+                form.classList.add('form-disabled');
+                document.getElementById('testModalBackdrop').style.display = 'block';
+            } else {
+                form.classList.remove('form-disabled');
+                document.getElementById('testModalBackdrop').style.display = 'none';
+            }
+        }
+
+        function hideTestModal() {
+            document.getElementById('testModalContainer').style.display = 'none';
+        }
+
+        function saveWoundDetails() {
+            const woundNotes = document.getElementById('woundNotes').value;
+            
+            woundDetails[currentVisit] = {
+                ...woundDetails[currentVisit],
+                woundNotes
+            };
+            
+            if (currentVisit > 1) {
+                woundDetails[currentVisit].woundChanges = {
+                    area: document.getElementById('woundAreaChange').value,
+                    depth: document.getElementById('woundDepthChange').value,
+                    notes: document.getElementById('woundChangeNotes').value
+                };
+            }
+            
+            const groups = ['woundTissue', 'surroundingSkin', 'woundEdge'];
+            groups.forEach(group => {
+                const selectedOptions = [];
+                document.querySelectorAll(`#${group} .option.selected`).forEach(opt => {
+                    selectedOptions.push(opt.textContent);
+                });
+                woundDetails[currentVisit][group] = selectedOptions;
+            });
+            
+            showSuccessMessage('جزئیات زخم با موفقیت ذخیره شد');
+            closeModal();
+        }
+
+        function submitPatientForm() {
+            const requiredFields = ['nationalId', 'firstName', 'lastName', 'gender', 'phone'];
+            for (const fieldId of requiredFields) {
+                const field = document.getElementById(fieldId);
+                if (!field.value) {
+                    alert(`لطفا فیلد ${field.placeholder} را پر کنید`);
+                    field.focus();
+                    return;
+                }
+            }
+            
+            const patient = collectPatientData();
+            
+            if (currentEditingPatientId) {
+                updatePatient(patient);
+            } else {
+                addNewPatient(patient);
+            }
+        }
+
+        function collectPatientData() {
+            const woundMeasurements = [];
+            const measurementRows = document.querySelectorAll('.wound-measurement-table tbody tr');
+            
+            measurementRows.forEach((row, index) => {
+                const visit = `ویزیت ${index + 1}`;
+                const date = row.querySelector('.form-control[type="date"]').value;
+                const length = row.querySelectorAll('.form-control[type="number"]')[0].value;
+                const width = row.querySelectorAll('.form-control[type="number"]')[1].value;
+                const depth = row.querySelectorAll('.form-control[type="number"]')[2].value;
+                const details = woundDetails[index + 1] || null;
+                
+                if (date || length || width || depth || details) {
+                    woundMeasurements.push({
+                        visit,
+                        date,
+                        length,
+                        width,
+                        depth,
+                        details
+                    });
+                }
+            });
+            
+            const woundCultures = [];
+            const cultureRows = document.querySelectorAll('.wound-culture-table tbody tr');
+            
+            cultureRows.forEach((row, index) => {
+                const visit = `کشت ${index + 1}`;
+                const date = row.querySelector('.form-control[type="date"]').value;
+                const culture = row.querySelector('.form-control[type="text"]').value;
+                const description = row.querySelector('textarea').value;
+                
+                if (date || culture || description) {
+                    woundCultures.push({
+                        visit,
+                        date,
+                        culture,
+                        description
+                    });
+                }
+            });
+            
+            return {
+                id: currentEditingPatientId || Date.now().toString(),
+                nationalId: document.getElementById('nationalId').value,
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                age: document.getElementById('age').value,
+                fatherName: document.getElementById('fatherName').value,
+                gender: document.getElementById('gender').value,
+                maritalStatus: document.getElementById('maritalStatus').value,
+                job: document.getElementById('job').value,
+                education: document.getElementById('education').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                medicalTests: uploadedTests,
+                patientSummary: uploadedSummaries,
+                medicalInfo: {
+                    bloodPressure: document.getElementById('bloodPressure').value,
+                    bloodSugar: document.getElementById('bloodSugar').value,
+                    heartRate: document.getElementById('heartRate').value,
+                    spo2: document.getElementById('spo2').value,
+                    temperature: document.getElementById('temperature').value,
+                    hemoglobin: document.getElementById('hemoglobin').value,
+                    height: document.getElementById('height').value,
+                    weight: document.getElementById('weight').value,
+                    bmi: document.getElementById('bmiResult').textContent,
+                    hasDiabetes: document.querySelector('#diabetesSection .option.selected').textContent.includes('بله'),
+                    woundMeasurements,
+                    woundCultures,
+                    medicalHistory: {
+                        diseases: document.getElementById('medicalHistory').value,
+                        familyHistory: document.getElementById('familyMedicalHistory').value,
+                        substanceUse: {
+                            smoking: document.querySelector('#medicalHistorySection .option[onclick*="smoking"].selected') !== null,
+                            alcohol: document.querySelector('#medicalHistorySection .option[onclick*="alcohol"].selected') !== null,
+                            opium: document.querySelector('#medicalHistorySection .option[onclick*="opium"].selected') !== null,
+                            hookah: document.querySelector('#medicalHistorySection .option[onclick*="hookah"].selected') !== null
+                        },
+                        hospitalization: {
+                            hasHospitalization: document.querySelector('#hospitalizationSection .option[onclick*="Hospitalization"].selected')?.textContent.includes('بله'),
+                            description: document.getElementById('hospitalizationDescription').value,
+                            duration: document.getElementById('hospitalizationDuration').value
+                        },
+                        surgicalInfection: {
+                            hasInfection: document.querySelector('#hospitalizationSection .option[onclick*="SurgicalInfection"].selected')?.textContent.includes('بله'),
+                            description: document.getElementById('surgicalInfectionDescription').value,
+                            duration: document.getElementById('surgicalInfectionDuration').value
+                        },
+                        dialysis: {
+                            hasDialysis: document.querySelector('#hospitalizationSection .option[onclick*="Dialysis"].selected')?.textContent.includes('بله'),
+                            description: document.getElementById('dialysisDescription').value
+                        },
+                        drugHistory: document.getElementById('drugHistory').value,
+                        allergy: {
+                            hasAllergy: document.querySelector('#hospitalizationSection .option[onclick*="Allergy"].selected')?.textContent.includes('بله'),
+                            description: document.getElementById('allergyDescription').value
+                        },
+                        diabetesInfo: document.querySelector('#diabetesSection .option.selected').textContent.includes('بله') ? {
+                            fbs: document.getElementById('fbs').value,
+                            hba1c: document.getElementById('hba1c').value,
+                            diabetesType: document.getElementById('diabetesType').value,
+                            diabetesDuration: document.getElementById('diabetesDuration').value,
+                            treatments: {
+                                pills: document.querySelector('#diabetesSection .option[onclick*="treatmentPills"].selected') !== null,
+                                insulin: document.querySelector('#diabetesSection .option[onclick*="treatmentInsulin"].selected') !== null,
+                                diet: document.querySelector('#diabetesSection .option[onclick*="treatmentDiet"].selected') !== null
+                            },
+                            hasDiabeticWound: document.querySelector('#diabetesSection .option[onclick*="hasDiabeticWound"].selected')?.textContent.includes('بله'),
+                            hasDiabeticComplications: document.querySelector('#diabetesSection .option[onclick*="hasDiabeticComplications"].selected')?.textContent.includes('بله'),
+                            diabeticComplicationsDescription: document.getElementById('diabeticComplicationsDescription').value
+                        } : null
+                    }
+                },
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+        }
+
+        function addNewPatient(patient) {
+            try {
+                const exists = patients.some(p => p.nationalId === patient.nationalId);
+                if (exists) {
+                    alert("بیماری با این کد ملی قبلاً ثبت شده است!");
+                    return;
+                }
+                
+                patients.push(patient);
+                localStorage.setItem('woundPatients', JSON.stringify(patients));
+                showSuccessMessage("پرونده جدید با موفقیت ثبت شد!");
+                resetForm();
+                displayPatients();
+            } catch (err) {
+                console.error("خطا در ثبت بیمار:", err);
+                alert("خطا در ثبت بیمار. لطفاً دوباره تلاش کنید.");
+            }
+        }
+
+        function updatePatient(updatedPatient) {
+            try {
+                const index = patients.findIndex(p => p.id === currentEditingPatientId);
+                if (index !== -1) {
+                    patients[index] = updatedPatient;
+                    localStorage.setItem('woundPatients', JSON.stringify(patients));
+                    showSuccessMessage("پرونده با موفقیت ویرایش شد!");
+                    resetForm();
+                    currentEditingPatientId = null;
+                    displayPatients();
+                    
+                    const submitBtn = document.querySelector('button[type="submit"]');
+                    submitBtn.innerHTML = '<i class="fas fa-file-signature"></i> ثبت پرونده';
+                }
+            } catch (err) {
+                console.error("خطا در ویرایش بیمار:", err);
+                alert("خطا در ویرایش بیمار. لطفاً دوباره تلاش کنید.");
+            }
+        }
+
+        function deletePatient(patientId) {
+            if (confirm('آیا مطمئن هستید؟ این عمل برگشت‌ناپذیر است!')) {
+                try {
+                    patients = patients.filter(p => p.id !== patientId);
+                    localStorage.setItem('woundPatients', JSON.stringify(patients));
+                    showSuccessMessage("پرونده با موفقیت حذف شد!");
+                    displayPatients();
+                } catch (err) {
+                    console.error("خطا در حذف بیمار:", err);
+                    alert("خطا در حذف بیمار. لطفاً دوباره تلاش کنید.");
+                }
+            }
+        }
+
+        function editPatient(patient) {
+            currentEditingPatientId = patient.id;
+            
+            document.getElementById('nationalId').value = patient.nationalId;
+            document.getElementById('firstName').value = patient.firstName;
+            document.getElementById('lastName').value = patient.lastName;
+            document.getElementById('age').value = patient.age;
+            document.getElementById('fatherName').value = patient.fatherName;
+            document.getElementById('gender').value = patient.gender;
+            document.getElementById('maritalStatus').value = patient.maritalStatus;
+            document.getElementById('job').value = patient.job;
+            document.getElementById('education').value = patient.education;
+            document.getElementById('phone').value = patient.phone;
+            document.getElementById('address').value = patient.address;
+            
+            if (patient.medicalTests) {
+                uploadedTests = patient.medicalTests;
+                updateUploadedTestsList();
+            }
+            
+            if (patient.patientSummary) {
+                uploadedSummaries = patient.patientSummary;
+                updateUploadedSummariesList();
+            }
+            
+            if (patient.medicalInfo) {
+                const med = patient.medicalInfo;
+                document.getElementById('bloodPressure').value = med.bloodPressure;
+                document.getElementById('bloodSugar').value = med.bloodSugar;
+                document.getElementById('heartRate').value = med.heartRate;
+                document.getElementById('spo2').value = med.spo2;
+                document.getElementById('temperature').value = med.temperature;
+                document.getElementById('hemoglobin').value = med.hemoglobin;
+                document.getElementById('height').value = med.height;
+                document.getElementById('weight').value = med.weight;
+                document.getElementById('bmiResult').textContent = med.bmi || '--';
+                
+                if (med.hasDiabetes) {
+                    document.querySelector('#diabetesSection .option:first-child').classList.add('selected', 'yes');
+                    document.querySelector('#diabetesSection .option:last-child').classList.remove('selected', 'no');
+                    document.getElementById('diabetesInfoSection').classList.add('open');
+                    
+                    if (med.medicalHistory.diabetesInfo) {
+                        document.getElementById('fbs').value = med.medicalHistory.diabetesInfo.fbs || '';
+                        document.getElementById('hba1c').value = med.medicalHistory.diabetesInfo.hba1c || '';
+                        document.getElementById('diabetesType').value = med.medicalHistory.diabetesInfo.diabetesType || '';
+                        document.getElementById('diabetesDuration').value = med.medicalHistory.diabetesInfo.diabetesDuration || '';
+                        
+                        if (med.medicalHistory.diabetesInfo.treatments.pills) {
+                            document.querySelector('#diabetesSection .option[onclick*="treatmentPills"]').classList.add('selected');
+                        }
+                        if (med.medicalHistory.diabetesInfo.treatments.insulin) {
+                            document.querySelector('#diabetesSection .option[onclick*="treatmentInsulin"]').classList.add('selected');
+                        }
+                        if (med.medicalHistory.diabetesInfo.treatments.diet) {
+                            document.querySelector('#diabetesSection .option[onclick*="treatmentDiet"]').classList.add('selected');
+                        }
+                        
+                        if (med.medicalHistory.diabetesInfo.hasDiabeticWound) {
+                            document.querySelector('#diabetesSection .option[onclick*="hasDiabeticWound"]:first-child').classList.add('selected');
+                            document.querySelector('#diabetesSection .option[onclick*="hasDiabeticWound"]:last-child').classList.remove('selected');
+                        } else {
+                            document.querySelector('#diabetesSection .option[onclick*="hasDiabeticWound"]:last-child').classList.add('selected');
+                            document.querySelector('#diabetesSection .option[onclick*="hasDiabeticWound"]:first-child').classList.remove('selected');
+                        }
+                        
+                        if (med.medicalHistory.diabetesInfo.hasDiabeticComplications) {
+                            document.querySelector('#diabetesSection .option[onclick*="hasDiabeticComplications"]:first-child').classList.add('selected');
+                            document.querySelector('#diabetesSection .option[onclick*="hasDiabeticComplications"]:last-child').classList.remove('selected');
+                            document.getElementById('diabeticComplicationsDescription').value = med.medicalHistory.diabetesInfo.diabeticComplicationsDescription || '';
+                            document.getElementById('diabeticComplicationsDetails').style.display = 'block';
+                        } else {
+                            document.querySelector('#diabetesSection .option[onclick*="hasDiabeticComplications"]:last-child').classList.add('selected');
+                            document.querySelector('#diabetesSection .option[onclick*="hasDiabeticComplications"]:first-child').classList.remove('selected');
+                            document.getElementById('diabeticComplicationsDetails').style.display = 'none';
+                        }
+                    }
+                } else {
+                    document.querySelector('#diabetesSection .option:last-child').classList.add('selected', 'no');
+                    document.querySelector('#diabetesSection .option:first-child').classList.remove('selected', 'yes');
+                    document.getElementById('diabetesInfoSection').classList.remove('open');
+                }
+                
+                if (med.woundMeasurements) {
+                    med.woundMeasurements.forEach((measurement, index) => {
+                        if (index < 7) {
+                            const row = document.querySelectorAll('.wound-measurement-table tbody tr')[index];
+                            if (row) {
+                                row.querySelector('.form-control[type="date"]').value = measurement.date || '';
+                                row.querySelectorAll('.form-control[type="number"]')[0].value = measurement.length || '';
+                                row.querySelectorAll('.form-control[type="number"]')[1].value = measurement.width || '';
+                                row.querySelectorAll('.form-control[type="number"]')[2].value = measurement.depth || '';
+                                
+                                if (measurement.details) {
+                                    woundDetails[index + 1] = measurement.details;
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                if (med.woundCultures) {
+                    med.woundCultures.forEach((culture, index) => {
+                        if (index < 3) {
+                            const row = document.querySelectorAll('.wound-culture-table tbody tr')[index];
+                            if (row) {
+                                row.querySelector('.form-control[type="date"]').value = culture.date || '';
+                                row.querySelector('.form-control[type="text"]').value = culture.culture || '';
+                                row.querySelector('textarea').value = culture.description || '';
+                            }
+                        }
+                    });
+                }
+                
+                if (med.medicalHistory) {
+                    const history = med.medicalHistory;
+                    document.getElementById('medicalHistory').value = history.diseases || '';
+                    document.getElementById('familyMedicalHistory').value = history.familyHistory || '';
+                    
+                    if (history.substanceUse.smoking) {
+                        document.querySelector('#medicalHistorySection .option[onclick*="smoking"]').classList.add('selected');
+                    }
+                    if (history.substanceUse.alcohol) {
+                        document.querySelector('#medicalHistorySection .option[onclick*="alcohol"]').classList.add('selected');
+                    }
+                    if (history.substanceUse.opium) {
+                        document.querySelector('#medicalHistorySection .option[onclick*="opium"]').classList.add('selected');
+                    }
+                    if (history.substanceUse.hookah) {
+                        document.querySelector('#medicalHistorySection .option[onclick*="hookah"]').classList.add('selected');
+                    }
+                    
+                    if (history.hospitalization.hasHospitalization) {
+                        document.querySelector('#hospitalizationSection .option[onclick*="Hospitalization"]:first-child').classList.add('selected', 'yes');
+                        document.querySelector('#hospitalizationSection .option[onclick*="Hospitalization"]:last-child').classList.remove('selected', 'no');
+                        document.getElementById('hospitalizationDescription').value = history.hospitalization.description || '';
+                        document.getElementById('hospitalizationDuration').value = history.hospitalization.duration || '';
+                        document.getElementById('hospitalizationDetails').classList.add('open');
+                    } else {
+                        document.querySelector('#hospitalizationSection .option[onclick*="Hospitalization"]:last-child').classList.add('selected', 'no');
+                        document.querySelector('#hospitalizationSection .option[onclick*="Hospitalization"]:first-child').classList.remove('selected', 'yes');
+                        document.getElementById('hospitalizationDetails').classList.remove('open');
+                    }
+                    
+                    if (history.surgicalInfection.hasInfection) {
+                        document.querySelector('#hospitalizationSection .option[onclick*="SurgicalInfection"]:first-child').classList.add('selected', 'yes');
+                        document.querySelector('#hospitalizationSection .option[onclick*="SurgicalInfection"]:last-child').classList.remove('selected', 'no');
+                        document.getElementById('surgicalInfectionDescription').value = history.surgicalInfection.description || '';
+                        document.getElementById('surgicalInfectionDuration').value = history.surgicalInfection.duration || '';
+                        document.getElementById('surgicalInfectionDetails').classList.add('open');
+                    } else {
+                        document.querySelector('#hospitalizationSection .option[onclick*="SurgicalInfection"]:last-child').classList.add('selected', 'no');
+                        document.querySelector('#hospitalizationSection .option[onclick*="SurgicalInfection"]:first-child').classList.remove('selected', 'yes');
+                        document.getElementById('surgicalInfectionDetails').classList.remove('open');
+                    }
+                    
+                    if (history.dialysis.hasDialysis) {
+                        document.querySelector('#hospitalizationSection .option[onclick*="Dialysis"]:first-child').classList.add('selected', 'yes');
+                        document.querySelector('#hospitalizationSection .option[onclick*="Dialysis"]:last-child').classList.remove('selected', 'no');
+                        document.getElementById('dialysisDescription').value = history.dialysis.description || '';
+                        document.getElementById('dialysisDetails').classList.add('open');
+                    } else {
+                        document.querySelector('#hospitalizationSection .option[onclick*="Dialysis"]:last-child').classList.add('selected', 'no');
+                        document.querySelector('#hospitalizationSection .option[onclick*="Dialysis"]:first-child').classList.remove('selected', 'yes');
+                        document.getElementById('dialysisDetails').classList.remove('open');
+                    }
+                    
+                    if (history.allergy.hasAllergy) {
+                        document.querySelector('#hospitalizationSection .option[onclick*="Allergy"]:first-child').classList.add('selected', 'yes');
+                        document.querySelector('#hospitalizationSection .option[onclick*="Allergy"]:last-child').classList.remove('selected', 'no');
+                        document.getElementById('allergyDescription').value = history.allergy.description || '';
+                        document.getElementById('allergyDetails').classList.add('open');
+                    } else {
+                        document.querySelector('#hospitalizationSection .option[onclick*="Allergy"]:last-child').classList.add('selected', 'no');
+                        document.querySelector('#hospitalizationSection .option[onclick*="Allergy"]:first-child').classList.remove('selected', 'yes');
+                        document.getElementById('allergyDetails').classList.remove('open');
+                    }
+                    
+                    document.getElementById('drugHistory').value = history.drugHistory || '';
+                }
+            }
+            
+            const submitBtn = document.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-edit"></i> ویرایش پرونده';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('patientForm').reset();
+            document.getElementById('bmiResult').textContent = '--';
+            document.getElementById('bmiResult').className = 'bmi-result';
+            
+            const woundInputs = document.querySelectorAll('.wound-measurement-table input');
+            woundInputs.forEach(input => {
+                input.value = '';
+            });
+            
+            const cultureInputs = document.querySelectorAll('.wound-culture-table input, .wound-culture-table textarea');
+            cultureInputs.forEach(input => {
+                input.value = '';
+            });
+            
+            woundDetails = {};
+            uploadedTests = [];
+            uploadedSummaries = [];
+            updateUploadedTestsList();
+            updateUploadedSummariesList();
+            
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'yes', 'no');
+            });
+            
+            document.querySelectorAll('.option-group:not([data-multiple])').forEach(group => {
+                group.querySelector('.option:first-child').classList.add('selected');
+            });
+            
+            // Reset accordions to "No" by default
+            toggleDiabetesSection(document.querySelector('#diabetesSection .option:last-child'), false);
+            toggleHospitalizationSection(document.querySelector('#hospitalizationSection .option:last-child'), false);
+            toggleSurgicalInfectionSection(document.querySelector('#hospitalizationSection .option[onclick*="SurgicalInfection"]:last-child'), false);
+            toggleDialysisSection(document.querySelector('#hospitalizationSection .option[onclick*="Dialysis"]:last-child'), false);
+            toggleAllergySection(document.querySelector('#hospitalizationSection .option[onclick*="Allergy"]:last-child'), false);
+            
+            document.getElementById('diabeticComplicationsDetails').style.display = 'none';
+        }
+
+        function displayPatients() {
+            const tbody = document.getElementById('patientsList');
+            tbody.innerHTML = '';
+
+            const storedPatients = localStorage.getItem('woundPatients');
+            patients = storedPatients ? JSON.parse(storedPatients) : [];
+
+            if (patients.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--gray);">هیچ بیمار ثبت‌شده‌ای وجود ندارد</td></tr>';
+                return;
+            }
+
+            patients.forEach(patient => {
+                const tr = document.createElement('tr');
+                
+                tr.innerHTML = `
+                    <td>${patient.nationalId}</td>
+                    <td>${patient.firstName}</td>
+                    <td>${patient.lastName}</td>
+                    <td>${patient.age || '-'}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-outline" onclick="event.stopPropagation(); editPatient(${JSON.stringify(patient).replace(/"/g, '&quot;')})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-outline" style="background-color: var(--danger); color: white;" onclick="event.stopPropagation(); deletePatient('${patient.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="btn btn-outline" style="background-color: var(--success); color: white;" onclick="event.stopPropagation(); exportPatientToFile(${JSON.stringify(patient).replace(/"/g, '&quot;')})">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateUploadedTestsList() {
+            const container = document.getElementById('uploadedTestsList');
+            
+            if (uploadedTests.length === 0) {
+                container.innerHTML = '<p style="color: var(--gray); text-align: center;">هیچ آزمایشی آپلود نشده است</p>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            uploadedTests.forEach((test, index) => {
+                const testDiv = document.createElement('div');
+                testDiv.className = 'uploaded-test-item';
+                testDiv.style.display = 'flex';
+                testDiv.style.justifyContent = 'space-between';
+                testDiv.style.alignItems = 'center';
+                testDiv.style.padding = '8px';
+                testDiv.style.borderBottom = '1px solid var(--light-gray)';
+                
+                testDiv.innerHTML = `
+                    <div style="flex: 1;">
+                        <i class="${getFileIcon(test.type)}" style="color: ${getFileIconColor(test.type)};"></i>
+                        <span>${test.name}</span>
+                        <small style="color: var(--gray); margin-right: 10px;">(${(test.size / 1024).toFixed(1)} KB)</small>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline" onclick="event.stopPropagation(); viewTest(${index})" style="padding: 3px 8px; font-size: 12px;">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-outline" onclick="event.stopPropagation(); removeTest(${index})" style="padding: 3px 8px; font-size: 12px; background-color: var(--danger); color: white;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(testDiv);
+            });
+        }
+
+        function updateUploadedSummariesList() {
+            const container = document.getElementById('uploadedSummariesList');
+            
+            if (uploadedSummaries.length === 0) {
+                container.innerHTML = '<p style="color: var(--gray); text-align: center;">هیچ خلاصه‌ای آپلود نشده است</p>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            uploadedSummaries.forEach((summary, index) => {
+                const summaryDiv = document.createElement('div');
+                summaryDiv.className = 'uploaded-summary-item';
+                summaryDiv.style.display = 'flex';
+                summaryDiv.style.justifyContent = 'space-between';
+                summaryDiv.style.alignItems = 'center';
+                summaryDiv.style.padding = '8px';
+                summaryDiv.style.borderBottom = '1px solid var(--light-gray)';
+                
+                summaryDiv.innerHTML = `
+                    <div style="flex: 1;">
+                        <i class="${getFileIcon(summary.type)}" style="color: ${getFileIconColor(summary.type)};"></i>
+                        <span>${summary.name}</span>
+                        <small style="color: var(--gray); margin-right: 10px;">(${(summary.size / 1024).toFixed(1)} KB)</small>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline" onclick="event.stopPropagation(); viewSummary(${index})" style="padding: 3px 8px; font-size: 12px;">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-outline" onclick="event.stopPropagation(); removeSummary(${index})" style="padding: 3px 8px; font-size: 12px; background-color: var(--danger); color: white;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(summaryDiv);
+            });
+        }
+
+        function handleTestFileUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+            
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedTests.push({
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: e.target.result
+                    });
+                    updateUploadedTestsList();
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            showSuccessMessage('آزمایش‌ها با موفقیت آپلود شدند');
+        }
+
+        function handleSummaryFileUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+            
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedSummaries.push({
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: e.target.result
+                    });
+                    updateUploadedSummariesList();
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            showSuccessMessage('خلاصه پرونده با موفقیت آپلود شد');
+        }
+
+        function viewTest(index) {
+            if (index < 0 || index >= uploadedTests.length) return;
+            
+            const test = uploadedTests[index];
+            isViewingTests = true;
+            testsViewingData = test;
+            
+            disableForm(true);
+            
+            if (test.type.startsWith('image/')) {
+                document.getElementById('testImageContainer').innerHTML = `
+                    <div class="test-image-item">
+                        <img src="${test.data}" style="max-width: 100%; max-height: 70vh;">
+                        <div style="margin-top: 15px;">
+                            <button class="btn btn-primary" onclick="closeTestModal()">
+                                <i class="fas fa-times"></i> بستن
+                            </button>
+                            <button class="btn btn-secondary" onclick="downloadCurrentTest()">
+                                <i class="fas fa-download"></i> دانلود
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('testModalContainer').style.display = 'flex';
+            } else {
+                // For non-image files, open in new tab
+                const newWindow = window.open();
+                newWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>${test.name}</title>
+                        <style>
+                            body { font-family: Vazirmatn, sans-serif; padding: 20px; text-align: center; }
+                            iframe { width: 100%; height: 80vh; border: none; }
+                            .actions { margin-top: 20px; }
+                            button { padding: 10px 20px; margin: 0 10px; cursor: pointer; }
+                        </style>
+                    </head>
+                    <body>
+                        <h2>${test.name}</h2>
+                        ${test.type === 'application/pdf' ? 
+                            `<iframe src="${test.data}"></iframe>` : 
+                            `<p>این نوع فایل قابل نمایش نیست. لطفاً دانلود کنید.</p>`}
+                        <div class="actions">
+                            <button onclick="window.close()">بستن</button>
+                            <button onclick="window.location.href='${test.data}'" download="${test.name}">دانلود</button>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                isViewingTests = false;
+                testsViewingData = null;
+                disableForm(false);
+            }
+        }
+
+        function viewSummary(index) {
+            if (index < 0 || index >= uploadedSummaries.length) return;
+            
+            const summary = uploadedSummaries[index];
+            isViewingTests = true;
+            testsViewingData = summary;
+            
+            disableForm(true);
+            
+            if (summary.type.startsWith('image/')) {
+                document.getElementById('testImageContainer').innerHTML = `
+                    <div class="test-image-item">
+                        <img src="${summary.data}" style="max-width: 100%; max-height: 70vh;">
+                        <div style="margin-top: 15px;">
+                            <button class="btn btn-primary" onclick="closeTestModal()">
+                                <i class="fas fa-times"></i> بستن
+                            </button>
+                            <button class="btn btn-secondary" onclick="downloadCurrentTest()">
+                                <i class="fas fa-download"></i> دانلود
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('testModalContainer').style.display = 'flex';
+            } else {
+                // For non-image files, open in new tab
+                const newWindow = window.open();
+                newWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>${summary.name}</title>
+                        <style>
+                            body { font-family: Vazirmatn, sans-serif; padding: 20px; text-align: center; }
+                            iframe { width: 100%; height: 80vh; border: none; }
+                            .actions { margin-top: 20px; }
+                            button { padding: 10px 20px; margin: 0 10px; cursor: pointer; }
+                        </style>
+                    </head>
+                    <body>
+                        <h2>${summary.name}</h2>
+                        ${summary.type === 'application/pdf' ? 
+                            `<iframe src="${summary.data}"></iframe>` : 
+                            `<p>این نوع فایل قابل نمایش نیست. لطفاً دانلود کنید.</p>`}
+                        <div class="actions">
+                            <button onclick="window.close()">بستن</button>
+                            <button onclick="window.location.href='${summary.data}'" download="${summary.name}">دانلود</button>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                isViewingTests = false;
+                testsViewingData = null;
+                disableForm(false);
+            }
+        }
+
+        function downloadCurrentTest() {
+            if (!testsViewingData) return;
+            
+            const a = document.createElement('a');
+            a.href = testsViewingData.data;
+            a.download = testsViewingData.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function removeTest(index) {
+            if (confirm('آیا مطمئن هستید می‌خواهید این آزمایش را حذف کنید؟')) {
+                uploadedTests.splice(index, 1);
+                updateUploadedTestsList();
+                showSuccessMessage('آزمایش با موفقیت حذف شد');
+            }
+        }
+
+        function removeSummary(index) {
+            if (confirm('آیا مطمئن هستید می‌خواهید این خلاصه را حذف کنید؟')) {
+                uploadedSummaries.splice(index, 1);
+                updateUploadedSummariesList();
+                showSuccessMessage('خلاصه پرونده با موفقیت حذف شد');
+            }
+        }
+
+        function selectOption(element, group) {
+            element.classList.toggle('selected');
+            
+            if (!woundDetails[currentVisit]) {
+                woundDetails[currentVisit] = {};
+            }
+            if (!woundDetails[currentVisit][group]) {
+                woundDetails[currentVisit][group] = [];
+            }
+            
+            const optionText = element.textContent;
+            const index = woundDetails[currentVisit][group].indexOf(optionText);
+            
+            if (index === -1) {
+                woundDetails[currentVisit][group].push(optionText);
+            } else {
+                woundDetails[currentVisit][group].splice(index, 1);
+            }
+        }
+
+        function toggleOption(element, groupName) {
+            const group = element.parentElement;
+            
+            if (!group.hasAttribute('data-multiple')) {
+                group.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+            }
+            
+            element.classList.toggle('selected');
+            
+            if (groupName === 'hasDiabeticComplications') {
+                document.getElementById('diabeticComplicationsDetails').style.display = element.textContent === 'بله' ? 'block' : 'none';
+            }
+        }
+
+        function toggleDiabetesSection(element, show) {
+            document.querySelectorAll('#diabetesSection .option').forEach(opt => {
+                opt.classList.remove('selected', 'yes', 'no');
+            });
+            
+            element.classList.add('selected');
+            if (show) {
+                element.classList.add('yes');
+                document.getElementById('diabetesInfoSection').classList.add('open');
+            } else {
+                element.classList.add('no');
+                document.getElementById('diabetesInfoSection').classList.remove('open');
+            }
+        }
+
+        function toggleHospitalizationSection(element, show) {
+            document.querySelectorAll('#hospitalizationSection .option[onclick*="Hospitalization"]').forEach(opt => {
+                opt.classList.remove('selected', 'yes', 'no');
+            });
+            
+            element.classList.add('selected');
+            if (show) {
+                element.classList.add('yes');
+                document.getElementById('hospitalizationDetails').classList.add('open');
+            } else {
+                element.classList.add('no');
+                document.getElementById('hospitalizationDetails').classList.remove('open');
+            }
+        }
+
+        function toggleSurgicalInfectionSection(element, show) {
+            document.querySelectorAll('#hospitalizationSection .option[onclick*="SurgicalInfection"]').forEach(opt => {
+                opt.classList.remove('selected', 'yes', 'no');
+            });
+            
+            element.classList.add('selected');
+            if (show) {
+                element.classList.add('yes');
+                document.getElementById('surgicalInfectionDetails').classList.add('open');
+            } else {
+                element.classList.add('no');
+                document.getElementById('surgicalInfectionDetails').classList.remove('open');
+            }
+        }
+
+        function toggleDialysisSection(element, show) {
+            document.querySelectorAll('#hospitalizationSection .option[onclick*="Dialysis"]').forEach(opt => {
+                opt.classList.remove('selected', 'yes', 'no');
+            });
+            
+            element.classList.add('selected');
+            if (show) {
+                element.classList.add('yes');
+                document.getElementById('dialysisDetails').classList.add('open');
+            } else {
+                element.classList.add('no');
+                document.getElementById('dialysisDetails').classList.remove('open');
+            }
+        }
+
+        function toggleAllergySection(element, show) {
+            document.querySelectorAll('#hospitalizationSection .option[onclick*="Allergy"]').forEach(opt => {
+                opt.classList.remove('selected', 'yes', 'no');
+            });
+            
+            element.classList.add('selected');
+            if (show) {
+                element.classList.add('yes');
+                document.getElementById('allergyDetails').classList.add('open');
+            } else {
+                element.classList.add('no');
+                document.getElementById('allergyDetails').classList.remove('open');
+            }
+        }
+
+        function formatBloodPressure(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            input.value = value;
+        }
+        
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById('height').value) / 100;
+            const weight = parseFloat(document.getElementById('weight').value);
+            const bmiResult = document.getElementById('bmiResult');
+            
+            if (height && weight) {
+                const bmi = (weight / (height * height)).toFixed(1);
+                bmiResult.textContent = bmi;
+                bmiResult.className = 'bmi-result ';
+                
+                if (bmi < 18.5) {
+                    bmiResult.classList.add('bmi-underweight');
+                    bmiResult.textContent += ' (کمبود وزن)';
+                } else if (bmi < 25) {
+                    bmiResult.classList.add('bmi-normal');
+                    bmiResult.textContent += ' (نرمال)';
+                } else if (bmi < 30) {
+                    bmiResult.classList.add('bmi-overweight');
+                    bmiResult.textContent += ' (اضافه وزن)';
+                } else {
+                    bmiResult.classList.add('bmi-obese');
+                    bmiResult.textContent += ' (چاقی)';
+                }
+            } else {
+                bmiResult.textContent = '--';
+                bmiResult.className = 'bmi-result';
+            }
+        }
+
+        function getFileIcon(fileType) {
+            if (fileType.startsWith('image/')) return 'fas fa-file-image';
+            if (fileType === 'application/pdf') return 'fas fa-file-pdf';
+            if (fileType.includes('word') || fileType.includes('document')) return 'fas fa-file-word';
+            if (fileType.includes('excel') || fileType.includes('spreadsheet')) return 'fas fa-file-excel';
+            return 'fas fa-file-alt';
+        }
+
+        function getFileIconColor(fileType) {
+            if (fileType.startsWith('image/')) return '#4CAF50';
+            if (fileType === 'application/pdf') return '#F44336';
+            if (fileType.includes('word') || fileType.includes('document')) return '#2196F3';
+            if (fileType.includes('excel') || fileType.includes('spreadsheet')) return '#4CAF50';
+            return '#607D8B';
+        }
+
+        function dataURLtoBlob(dataURL) {
+            const parts = dataURL.split(',');
+            const mime = parts[0].match(/:(.*?);/)[1];
+            const bstr = atob(parts[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            
+            return new Blob([u8arr], { type: mime });
+        }
+
+        function exportPatientToFile(patient) {
+            try {
+                const data = JSON.stringify(patient, null, 2);
+                const blob = new Blob([data], { type: 'application/octet-stream' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${patient.firstName}_${patient.lastName}_${patient.nationalId}.wmd`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                setTimeout(() => URL.revokeObjectURL(url), 100);
+            } catch (err) {
+                console.error("خطا در ایجاد فایل خروجی:", err);
+                alert("خطا در ایجاد فایل خروجی. لطفاً دوباره تلاش کنید.");
+            }
+        }
+
+        function exportAllPatients() {
+            try {
+                const data = JSON.stringify(patients, null, 2);
+                const blob = new Blob([data], { type: 'application/octet-stream' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `all_patients_${new Date().toLocaleDateString('fa-IR')}.wmd`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                setTimeout(() => URL.revokeObjectURL(url), 100);
+            } catch (err) {
+                console.error("خطا در ایجاد فایل خروجی:", err);
+                alert("خطا در ایجاد فایل خروجی. لطفاً دوباره تلاش کنید.");
+            }
+        }
+
+        function importPatientFromFile(event) {
+            const file = event.target.files[0];
+            if (!file || !file.name.endsWith('.wmd')) {
+                alert("لطفاً یک فایل با پسوند .wmd انتخاب کنید!");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const patientData = JSON.parse(e.target.result);
+                    
+                    if (!patientData.nationalId || !patientData.firstName || !patientData.lastName) {
+                        throw new Error("فرمت فایل نامعتبر است - فایل باید شامل اطلاعات پایه بیمار باشد");
+                    }
+                    
+                    const exists = patients.some(p => p.nationalId === patientData.nationalId);
+                    if (exists) {
+                        alert("بیماری با این کد ملی قبلاً ثبت شده است!");
+                        return;
+                    }
+                    
+                    patients.push(patientData);
+                    localStorage.setItem('woundPatients', JSON.stringify(patients));
+                    showSuccessMessage(`پرونده ${patientData.firstName} ${patientData.lastName} با موفقیت وارد شد!`);
+                    displayPatients();
+                } catch (err) {
+                    console.error("خطا در خواندن فایل:", err);
+                    alert(`خطا در خواندن فایل! ${err.message}`);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function showSuccessMessage(message) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'success-message';
+            msgDiv.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            document.body.appendChild(msgDiv);
+            setTimeout(() => msgDiv.remove(), 3000);
+        }
+
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = now.toLocaleDateString('fa-IR', options);
+            document.getElementById('currentDate').textContent = dateString;
+        }
+
+        function toggleMobileMenu() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        function checkMobileView() {
+            if (window.innerWidth <= 992) {
+                document.querySelector('.mobile-menu-toggle').style.display = 'block';
+            } else {
+                document.querySelector('.mobile-menu-toggle').style.display = 'none';
+                document.querySelector('.sidebar').classList.remove('active');
+            }
+        }
+
+        // ==================== Event Listeners ====================
+        document.getElementById('fileImportInput').addEventListener('change', importPatientFromFile);
+        window.addEventListener('resize', checkMobileView);
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').then(reg => {
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'activated') {
+                            if (confirm('نسخه جدید آماده است! می‌خواهید صفحه رفرش شود؟')) {
+                                window.location.reload();
+                            }
+                        }
+                    });
+                });
+            });
+        }
+    </script>
+</body>
+</html>
