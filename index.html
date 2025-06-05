@@ -1638,36 +1638,44 @@
 
 
         // ==================== Navigation ====================
-        function navigateToSection(sectionId, event) {
-            if (event) event.preventDefault();
-            
-            activeMainSectionId = sectionId; // ذخیره بخش فعال فعلی
+         function navigateToSection(sectionId, event) {
+          if (event) event.preventDefault();
 
-            document.querySelectorAll('main > div').forEach(sec => sec.style.display = 'none');
-            const targetSection = document.getElementById(sectionId);
-            if(targetSection) targetSection.style.display = 'block';
+          // --- شروع کد حفاظتی جدید ---
+          // بررسی می‌کند آیا پنجره‌ای (مودال) باز است یا نه.
+          // اگر باز باشد، از جابجایی به صفحه دیگر جلوگیری می‌کند.
+          const isModalActive = document.getElementById('testModalContainer').style.display === 'flex' || 
+                                 document.getElementById('woundDetailsModal').classList.contains('active');
+                                 
+          if (isModalActive) {
+              // این شرط جلوی پرش ناخواسته به صفحه لیست بیماران را می‌گیرد.
+              console.warn(`جابجایی به '${sectionId}' متوقف شد چون یک پنجره باز است.`);
+              return; 
+          }
+          // --- پایان کد حفاظتی جدید ---
+          
+          activeMainSectionId = sectionId; 
 
-
-            document.querySelectorAll('.sidebar-menu .menu-link').forEach(link => link.classList.remove('active'));
-            
-            // فعال کردن لینک منوی مربوطه
-            const activeLink = document.querySelector(`.sidebar-menu a[onclick*="'${sectionId}'"]`);
-            if (activeLink) {
-                activeLink.classList.add('active');
-            } else if (sectionId === 'dashboardSection') { 
-                 // اگر بخش داشبورد به صورت پیش‌فرض فعال است و لینکی با onclick آن پیدا نشد (ممکن است نام تابع متفاوت باشد)
-                 const dashboardLink = document.querySelector('.sidebar-menu a[onclick*="dashboard"]'); // یک جستجوی کلی‌تر
-                 if(dashboardLink) dashboardLink.classList.add('active');
-            }
-
-
-            // بستن منوی موبایل پس از انتخاب
-            if (window.innerWidth <= 992 && document.querySelector('.sidebar').classList.contains('active')) {
-                toggleMobileMenu();
-            }
-        }
+          document.querySelectorAll('main > div').forEach(sec => sec.style.display = 'none');
+          const targetSection = document.getElementById(sectionId);
+          if(targetSection) targetSection.style.display = 'block';
 
 
+          document.querySelectorAll('.sidebar-menu .menu-link').forEach(link => link.classList.remove('active'));
+          
+          const activeLink = document.querySelector(`.sidebar-menu a[onclick*="'${sectionId}'"]`);
+          if (activeLink) {
+              activeLink.classList.add('active');
+          } else if (sectionId === 'dashboardSection') { 
+               const dashboardLink = document.querySelector('.sidebar-menu a[onclick*="dashboard"]');
+               if(dashboardLink) dashboardLink.classList.add('active');
+          }
+
+
+          if (window.innerWidth <= 992 && document.querySelector('.sidebar').classList.contains('active')) {
+              toggleMobileMenu();
+          }
+      }
         // ==================== UI Helper Functions ====================
         function showAppMessage(message, type = 'info') { // types: success, error, info
             const msgDiv = document.createElement('div');
@@ -1904,17 +1912,12 @@
         function viewTestFile(index) { if (index >= 0 && index < uploadedTests.length) viewFileInModal(uploadedTests[index]); }
         function viewSummaryFile(index) { if (index >= 0 && index < uploadedSummaries.length) viewFileInModal(uploadedSummaries[index]); }
 
-       function closeTestViewModal() {
-          // برای اشکال‌زدایی: مقدار بخش فعال فعلی را در کنسول مرورگر نمایش می‌دهیم
-          console.log('Modal در حال بسته شدن است. بخش فعال فعلی:', activeMainSectionId);
-
+        function closeTestViewModal() {
           document.getElementById('testModalContainer').style.display = 'none';
           document.getElementById('testModalBackdrop').style.display = 'none';
           currentlyViewedTestFile = null;
-          
-          // خطی که باعث پرش به صفحه دیگر میشد، همچنان حذف شده است.
-          // navigateToSection(activeMainSectionId);
       }
+        
         function downloadCurrentViewedTestFile() {
             if (!currentlyViewedTestFile) return;
             const a = document.createElement('a');
