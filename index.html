@@ -6,7 +6,6 @@
     <title>سیستم پیشرفته مدیریت زخم</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts.css" rel="stylesheet">
-    <!-- manifest1.json should be in the root of your project for PWA functionality -->
     <link rel="manifest" href="manifest1.json">
     <style>
         :root {
@@ -1991,66 +1990,74 @@
         // ==================== Initialize App ====================
         document.addEventListener('DOMContentLoaded', () => {
             console.log("DOM fully loaded and parsed.");
-            loadPatientsFromDB(); 
-            updateCurrentDate();
-            setupEventListeners();
-            checkMobileView(); 
-            // Initial navigation might depend on URL hash or other state, defaulting to dashboard for now.
-            navigateToSection('dashboardSection', document.querySelector('.sidebar-menu .menu-link[onclick*="dashboardSection"]'), true);
-            initializeCollapsibleSections(); 
+            try {
+                loadPatientsFromDB(); 
+                updateCurrentDate();
+                setupEventListeners();
+                checkMobileView(); 
+                navigateToSection('dashboardSection', document.querySelector('.sidebar-menu .menu-link[onclick*="dashboardSection"]'), true);
+                initializeCollapsibleSections(); 
+            } catch (error) {
+                console.error("Error during DOMContentLoaded initialization:", error);
+                showCustomMessage("خطا در بارگذاری اولیه برنامه. لطفاً صفحه را رفرش کنید.", "danger");
+            }
         });
 
         function setupEventListeners() {
             console.log("Setting up event listeners.");
-            document.getElementById('patientForm').addEventListener('submit', handleFormSubmit);
+            const patientForm = document.getElementById('patientForm');
+            if (patientForm) {
+                patientForm.addEventListener('submit', handleFormSubmit);
+            } else {
+                console.error("Patient form not found!");
+            }
+
             document.getElementById('testFileUpload').addEventListener('change', (e) => handleFileUpload(e, 'test'));
             document.getElementById('summaryFileUpload').addEventListener('change', (e) => handleFileUpload(e, 'summary'));
             document.getElementById('woundImageUpload').addEventListener('change', handleWoundImageUploadInModal);
             document.getElementById('fileImportInput').addEventListener('change', importPatientsFromFile); 
             window.addEventListener('resize', checkMobileView);
-            
-            // Sidebar navigation links
-            document.querySelectorAll('.sidebar-menu .menu-link').forEach(link => {
-                if(link.getAttribute('onclick') && link.getAttribute('onclick').includes('navigateToSection')) {
-                    // The navigateToSection call is already in the onclick, no need to add another listener
-                    // Just ensure closeMobileMenu is also called if necessary, or handle it within navigateToSection
-                } else if (link.getAttribute('onclick') && link.getAttribute('onclick').includes('fileImportInput')) {
-                    // This is for file import, already handled
-                }
-            });
         }
         
         function initializeCollapsibleSections() {
             console.log("Initializing collapsible sections to default states.");
-            // Diabetes Section
-            const diabetesNoOption = document.querySelector('#diabetesSection .option-toggle.no');
-            if (diabetesNoOption) toggleDiabetesSection(diabetesNoOption, false);
+            // Helper to set default state for toggle groups
+            const setDefaultToggleState = (groupSelector, defaultToShow) => {
+                const group = document.querySelector(groupSelector);
+                if (group) {
+                    const yesOption = group.querySelector('.option-toggle.yes');
+                    const noOption = group.querySelector('.option-toggle.no');
+                    const sectionId = group.closest('[id$="Section"]')?.querySelector('.collapsible-section')?.id || group.dataset.controlsSection;
 
-            // Hospitalization Section
-            const hospNoOption = document.querySelector('#hospitalizationSection .option-toggle[onclick*="Hospitalization"].no');
-            if (hospNoOption) toggleHospitalizationSection(hospNoOption, false);
 
-            // Surgical Infection Section
-            const surgicalNoOption = document.querySelector('#hospitalizationSection .option-toggle[onclick*="SurgicalInfection"].no');
-            if (surgicalNoOption) toggleSurgicalInfectionSection(surgicalNoOption, false);
+                    if (yesOption && noOption && sectionId) {
+                        if (defaultToShow) {
+                            toggleSection(yesOption, true, sectionId);
+                        } else {
+                            toggleSection(noOption, false, sectionId);
+                        }
+                    } else if (group.dataset.controlsSection) { // For the "سابقه عوارض دیابت" case
+                         const optionsInGroup = group.querySelectorAll('.option');
+                         if (optionsInGroup.length === 2) { // Assuming Yes/No structure
+                            toggleOption(optionsInGroup[1], 'hasDiabeticComplications'); // Select "No" by default
+                         }
+                    }
+                }
+            };
+
+            setDefaultToggleState('#diabetesSection .option-group', false); 
+            setDefaultToggleState('#hospitalizationSection .option-group[data-multiple="false"]:first-of-type', false); // Hospitalization
+            setDefaultToggleState(Array.from(document.querySelectorAll('#hospitalizationSection .option-group[data-multiple="false"]')).find(el => el.innerHTML.includes("عفونت محل جراحی")), false); // Surgical Infection
+            setDefaultToggleState(Array.from(document.querySelectorAll('#hospitalizationSection .option-group[data-multiple="false"]')).find(el => el.innerHTML.includes("دیالیز")), false); // Dialysis
+            setDefaultToggleState(Array.from(document.querySelectorAll('#hospitalizationSection .option-group[data-multiple="false"]')).find(el => el.innerHTML.includes("حساسیت")), false); // Allergy
             
-            // Dialysis Section
-            const dialysisNoOption = document.querySelector('#hospitalizationSection .option-toggle[onclick*="Dialysis"].no');
-            if (dialysisNoOption) toggleDialysisSection(dialysisNoOption, false);
-
-            // Allergy Section
-            const allergyNoOption = document.querySelector('#hospitalizationSection .option-toggle[onclick*="Allergy"].no');
-            if (allergyNoOption) toggleAllergySection(allergyNoOption, false);
-
-            // Diabetic Complications section (within diabetesInfoSection)
-            // This section's visibility is dependent on its parent (diabetesInfoSection) AND its own toggle.
-            // Ensure its controlling "No" option is selected by default.
-            const complicationsNoOption = document.querySelector('#diabetesInfoSection .option-group[data-controls-section="diabeticComplicationsDetails"] .option:last-child');
-            if (complicationsNoOption) { // This is the "خیر" option
-                 const complicationsYesOption = document.querySelector('#diabetesInfoSection .option-group[data-controls-section="diabeticComplicationsDetails"] .option:first-child');
-                 if(complicationsYesOption) complicationsYesOption.classList.remove('selected');
-                 complicationsNoOption.classList.add('selected'); // Explicitly select "No"
-                 document.getElementById('diabeticComplicationsDetails').classList.remove('open'); // And close the section
+            // Specifically for diabeticComplicationsDetails
+             const complicationsGroup = document.querySelector('#diabetesInfoSection .option-group[data-controls-section="diabeticComplicationsDetails"]');
+            if (complicationsGroup) {
+                const noOption = complicationsGroup.querySelector('.option:last-child'); // "خیر"
+                if (noOption) {
+                    toggleOption(noOption, 'hasDiabeticComplications'); // This should select "No" and hide the section
+                }
             }
         }
 
@@ -2060,23 +2067,18 @@
             if (storedData) {
                 try {
                     const parsedData = JSON.parse(storedData);
-                    // Check if it's the new format with patients and woundDetailsStore
-                    if (parsedData.patients && parsedData.woundDetailsStore) {
-                        patients = parsedData.patients;
-                        woundDetailsData = parsedData.woundDetailsStore;
-                    } else if (Array.isArray(parsedData)) { // Old format (just array of patients)
-                        patients = parsedData;
-                        // Potentially migrate old woundDetails if they were stored differently
-                    } else {
-                        patients = []; // Unrecognized format
-                        woundDetailsData = {};
+                    if (parsedData && typeof parsedData === 'object') { // Basic check for object structure
+                        patients = Array.isArray(parsedData.patients) ? parsedData.patients : [];
+                        woundDetailsData = (parsedData.woundDetailsStore && typeof parsedData.woundDetailsStore === 'object') ? parsedData.woundDetailsStore : {};
+                    } else { // Handle case where data might be just an array (old format) or corrupted
+                        patients = Array.isArray(parsedData) ? parsedData : [];
+                        woundDetailsData = {}; // Reset if structure is unexpected
                     }
                     console.log("Patients loaded from DB:", patients.length);
                 } catch (error) {
                     console.error("Error parsing data from localStorage:", error);
                     patients = []; 
                     woundDetailsData = {};
-                    // Consider clearing corrupted data: localStorage.removeItem(DB_KEY);
                 }
             } else {
                 patients = [];
@@ -2092,7 +2094,7 @@
             try {
                 const dataToStore = {
                     patients: patients,
-                    woundDetailsStore: woundDetailsData // Store wound details alongside patients
+                    woundDetailsStore: woundDetailsData 
                 };
                 localStorage.setItem(DB_KEY, JSON.stringify(dataToStore));
                 console.log("Patients and wound details saved to DB.");
@@ -2106,36 +2108,35 @@
         function navigateToSection(sectionId, clickedLinkElement, isInitialLoad = false) {
             console.log(`Navigating to section: ${sectionId}`);
             document.querySelectorAll('.content-section').forEach(section => {
-                section.style.display = 'none'; // Hide all first
+                section.style.display = 'none'; 
                 section.classList.remove('active');
             });
             
             const targetSection = document.getElementById(sectionId);
             if (targetSection) {
                 targetSection.style.display = 'block';
-                // Timeout to allow display:block to take effect for CSS transitions on 'active' class
                 setTimeout(() => {
                      targetSection.classList.add('active');
                 }, 10); 
             } else {
-                console.error(`Section with ID "${sectionId}" not found.`);
-                // Fallback to dashboard if section not found
-                 document.getElementById('dashboardSection').style.display = 'block';
-                 setTimeout(() => { document.getElementById('dashboardSection').classList.add('active'); }, 10);
+                console.error(`Section with ID "${sectionId}" not found. Defaulting to dashboard.`);
+                 const dashboardSection = document.getElementById('dashboardSection');
+                 if(dashboardSection) {
+                    dashboardSection.style.display = 'block';
+                    setTimeout(() => { dashboardSection.classList.add('active'); }, 10);
+                 }
             }
-
 
             document.querySelectorAll('.sidebar-menu .menu-link').forEach(link => {
                 link.classList.remove('active');
             });
-            if (clickedLinkElement) { // Make sure clickedLinkElement is valid
+            if (clickedLinkElement && clickedLinkElement.classList) { 
                 clickedLinkElement.classList.add('active');
             }
             
             if (sectionId === 'patientsListSection') {
                 displayPatientsList(); 
             } else if (sectionId === 'dashboardSection' && !isInitialLoad && !currentEditingPatientId) { 
-                 // Only reset if navigating to dashboard for a NEW entry, not if already editing
                  resetFormAndState(); 
             }
             closeMobileMenu();
@@ -2144,11 +2145,13 @@
 
         function toggleMobileMenu() {
             const sidebar = document.getElementById('sidebar');
+            if (!sidebar) return;
             const isActive = sidebar.classList.toggle('active');
             document.body.classList.toggle('sidebar-active', isActive); 
         }
         function closeMobileMenu() {
             const sidebar = document.getElementById('sidebar');
+            if (!sidebar) return;
             if (window.innerWidth <= 992 && sidebar.classList.contains('active')) {
                 sidebar.classList.remove('active');
                 document.body.classList.remove('sidebar-active');
@@ -2158,6 +2161,7 @@
 
         function checkMobileView() {
             const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            if (!mobileToggle) return;
             if (window.innerWidth <= 992) {
                 mobileToggle.style.display = 'block';
             } else {
@@ -2179,10 +2183,10 @@
             const file = event.target.files[0];
             if (!file || !file.type.match('image.*')) {
                 showCustomMessage('لطفا فقط فایل تصویر انتخاب کنید.', 'warning');
-                event.target.value = null; // Reset file input
+                event.target.value = null; 
                 return;
             }
-             if (file.size > 2 * 1024 * 1024) { // Limit image size to 2MB
+             if (file.size > 2 * 1024 * 1024) { 
                 showCustomMessage(`تصویر "${file.name}" بزرگتر از ۲ مگابایت است. لطفاً تصویر کوچکتری انتخاب کنید.`, 'warning');
                 event.target.value = null;
                 return;
@@ -2217,7 +2221,7 @@
         // ==================== Wound Details Modal Functions ====================
         function openWoundDetailsModal(visitNumber) {
             currentVisitForModal = visitNumber;
-            const patientId = currentEditingPatientId || 'draft'; // Use 'draft' if new patient not yet saved
+            const patientId = currentEditingPatientId || 'draft'; 
             const detailKey = `${patientId}_visit${currentVisitForModal}`;
             const currentDetails = woundDetailsData[detailKey] || {};
 
@@ -2259,7 +2263,7 @@
                 document.getElementById('woundChangeNotes').value = currentDetails.woundChanges?.notes || '';
             } else {
                 changesSection.classList.remove('open');
-                document.getElementById('woundAreaChange').value = ''; // Clear for visit 1
+                document.getElementById('woundAreaChange').value = ''; 
                 document.getElementById('woundDepthChange').value = '';
                 document.getElementById('woundChangeNotes').value = '';
             }
@@ -2268,7 +2272,8 @@
         }
 
         function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
+            const modal = document.getElementById(modalId);
+            if(modal) modal.classList.remove('active');
         }
 
         function saveWoundDetails() {
@@ -2300,32 +2305,40 @@
 
         // ==================== Patient Form Submission & Data Handling ====================
         function handleFormSubmit(event) {
-            console.log("handleFormSubmit called");
-            event.preventDefault();
+            console.log("Form submission initiated by user.");
+            event.preventDefault(); // Prevent default form submission
             
+            // Basic client-side validation
             const requiredFields = ['nationalId', 'firstName', 'lastName', 'gender', 'phone'];
+            let firstErrorField = null;
             for (const fieldId of requiredFields) {
                 const field = document.getElementById(fieldId);
                 if (!field.value.trim()) {
                     showCustomMessage(`لطفا فیلد ضروری "${field.labels[0].textContent}" را پر کنید.`, 'danger');
-                    field.focus();
-                    return;
+                    if (!firstErrorField) firstErrorField = field;
                 }
             }
-            if (document.getElementById('phone').value && !/^09[0-9]{9}$/.test(document.getElementById('phone').value)) {
+
+            const phoneField = document.getElementById('phone');
+            if (phoneField.value.trim() && !/^09[0-9]{9}$/.test(phoneField.value.trim())) {
                  showCustomMessage("فرمت شماره موبایل صحیح نیست. مثال: 09123456789", "danger");
-                 document.getElementById('phone').focus();
-                 return;
+                 if (!firstErrorField) firstErrorField = phoneField;
             }
 
+            if (firstErrorField) {
+                firstErrorField.focus();
+                return; // Stop submission if validation fails
+            }
+
+
             const patientData = collectPatientDataFromForm();
-            console.log("Patient data collected:", patientData);
+            console.log("Patient data collected for submission:", patientData);
             
             if (currentEditingPatientId) {
-                console.log("Updating existing patient:", currentEditingPatientId);
+                console.log("Attempting to update existing patient:", currentEditingPatientId);
                 updatePatientInStorage(patientData);
             } else {
-                console.log("Adding new patient.");
+                console.log("Attempting to add new patient.");
                 addNewPatientToStorage(patientData);
             }
         }
@@ -2337,10 +2350,9 @@
             document.querySelectorAll('.wound-measurement-table tbody tr').forEach((row, index) => {
                 const visitNum = index + 1;
                 const date = row.querySelector('input[type="date"]').value;
-                const length = row.querySelector('input[type="number"]:nth-of-type(1)').value;
+                const length = row.querySelector('input[type="number"]:nth-of-type(1)').value; 
                 const width = row.querySelector('input[type="number"]:nth-of-type(2)').value;
                 const depth = row.querySelector('input[type="number"]:nth-of-type(3)').value;
-                // Get details from woundDetailsData using the correct patientId (or 'draft' if new)
                 const currentPatientIdForDetails = currentEditingPatientId || 'draft';
                 const details = woundDetailsData[`${currentPatientIdForDetails}_visit${visitNum}`] || null;
 
@@ -2439,16 +2451,15 @@
 
         function addNewPatientToStorage(patientData) {
             console.log("Attempting to add new patient:", patientData.nationalId);
-            const exists = patients.some(p => p.nationalId === patientData.nationalId);
+            const exists = patients.some(p => p.nationalId === patientData.nationalId && p.id !== patientData.id); // Check nationalId uniqueness, allow if own ID
             if (exists) {
                  showCustomMessage("بیماری با این کد ملی قبلاً ثبت شده است!", 'warning');
                 return;
             }
             
-            // Transfer draft wound details to the new patient ID
-            for (let i=1; i <= 7; i++) { // Assuming max 7 visits shown in table
+            for (let i=1; i <= 7; i++) { 
                 if (woundDetailsData[`draft_visit${i}`]) {
-                    woundDetailsData[`${patientData.id}_visit${i}`] = { ...woundDetailsData[`draft_visit${i}`] }; // Deep copy
+                    woundDetailsData[`${patientData.id}_visit${i}`] = { ...woundDetailsData[`draft_visit${i}`] }; 
                     delete woundDetailsData[`draft_visit${i}`];
                 }
             }
@@ -2456,7 +2467,7 @@
             patients.push(patientData);
             savePatientsToDB();
             showCustomMessage("پرونده جدید با موفقیت ثبت شد!", 'success');
-            resetFormAndState(); // Reset form for next entry
+            resetFormAndState(); 
             displayPatientsList(); 
             console.log("New patient added and list updated.");
         }
@@ -2465,11 +2476,17 @@
             console.log("Attempting to update patient:", updatedPatientData.id);
             const index = patients.findIndex(p => p.id === currentEditingPatientId);
             if (index !== -1) {
+                 // Check if nationalId is being changed to one that already exists for another patient
+                const nationalIdConflict = patients.some(p => p.nationalId === updatedPatientData.nationalId && p.id !== currentEditingPatientId);
+                if (nationalIdConflict) {
+                    showCustomMessage("کد ملی وارد شده برای بیمار دیگری ثبت شده است.", "danger");
+                    document.getElementById('nationalId').focus();
+                    return;
+                }
                 patients[index] = updatedPatientData;
-                // Wound details are already updated in woundDetailsData under the patient's ID
                 savePatientsToDB();
                 showCustomMessage("پرونده با موفقیت ویرایش شد!", 'success');
-                resetFormAndState(); // Reset form and editing state
+                resetFormAndState(); 
                 displayPatientsList(); 
                  console.log("Patient updated and list refreshed.");
             } else {
@@ -2559,28 +2576,24 @@
                         if (diabInfo.treatments.none) treatmentsContainer.querySelector('.option[onclick*="treatmentNone"]').classList.add('selected');
                     }
                     
-                    const prevWoundContainer = document.querySelector('#diabetesInfoSection .option-group[data-multiple="false"]'); // This selector is too generic
-                    const prevWoundOptions = Array.from(prevWoundContainer.querySelectorAll('.option[onclick*="hasPreviousDiabeticWound"]'));
-                     if (prevWoundOptions.length === 2) {
-                        prevWoundOptions.forEach(o => o.classList.remove('selected'));
-                        (diabInfo.hasPreviousDiabeticWound ? prevWoundOptions[0] : prevWoundOptions[1]).classList.add('selected');
+                    // Correctly select Yes/No for "سابقه زخم دیابتی قبلی"
+                    const prevWoundOptionsGroup = Array.from(document.querySelectorAll('#diabetesInfoSection .option[onclick*="hasPreviousDiabeticWound"]')).map(el => el.parentElement)[0];
+                    if (prevWoundOptionsGroup) {
+                        prevWoundOptionsGroup.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+                        const targetPrevWoundOpt = diabInfo.hasPreviousDiabeticWound ? prevWoundOptionsGroup.querySelector('.option:first-child') : prevWoundOptionsGroup.querySelector('.option:last-child');
+                        if(targetPrevWoundOpt) targetPrevWoundOpt.classList.add('selected');
                     }
 
-
-                    const complicationsContainer = document.querySelector('#diabetesInfoSection .option-group[data-controls-section="diabeticComplicationsDetails"]');
-                    if(complicationsContainer){
-                        complicationsContainer.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-                        const targetOpt = diabInfo.hasDiabeticComplications ? complicationsContainer.querySelector('.option:first-child') : complicationsContainer.querySelector('.option:last-child');
+                    // Correctly select Yes/No and toggle section for "سابقه عوارض دیابت"
+                    const complicationsGroup = document.querySelector('#diabetesInfoSection .option-group[data-controls-section="diabeticComplicationsDetails"]');
+                    if(complicationsGroup){
+                        complicationsGroup.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                        const targetOpt = diabInfo.hasDiabeticComplications ? complicationsGroup.querySelector('.option:first-child') : complicationsGroup.querySelector('.option:last-child');
                          if(targetOpt) {
                             targetOpt.classList.add('selected');
-                            // Manually trigger the section visibility based on this state
                             const detailsDiv = document.getElementById('diabeticComplicationsDetails');
-                            detailsDiv.classList.toggle('open', diabInfo.hasDiabeticComplications);
-                            if (diabInfo.hasDiabeticComplications) {
-                                document.getElementById('diabeticComplicationsDescription').value = diabInfo.diabeticComplicationsDescription || '';
-                            } else {
-                                 document.getElementById('diabeticComplicationsDescription').value = '';
-                            }
+                            detailsDiv.classList.toggle('open', diabInfo.hasDiabeticComplications); // Toggle visibility
+                            document.getElementById('diabeticComplicationsDescription').value = diabInfo.hasDiabeticComplications ? (diabInfo.diabeticComplicationsDescription || '') : '';
                         }
                     }
                 }
@@ -2620,18 +2633,26 @@
                         if (history.substanceUse.hookah) document.querySelector('#medicalHistorySectionFull .option[onclick*="hookah"]').classList.add('selected');
                     }
 
-                    toggleHospitalizationSection(document.querySelector(`#hospitalizationSection .option-toggle[onclick*="Hospitalization"].${history.hospitalization?.hasHospitalization ? 'yes' : 'no'}`), history.hospitalization?.hasHospitalization);
+                    const hospYes = document.querySelector('#hospitalizationSection .option-toggle[onclick*="Hospitalization"].yes');
+                    const hospNo = document.querySelector('#hospitalizationSection .option-toggle[onclick*="Hospitalization"].no');
+                    toggleHospitalizationSection(history.hospitalization?.hasHospitalization ? hospYes : hospNo, history.hospitalization?.hasHospitalization);
                     document.getElementById('hospitalizationDescription').value = history.hospitalization?.description || '';
                     document.getElementById('hospitalizationDuration').value = history.hospitalization?.duration || '';
 
-                    toggleSurgicalInfectionSection(document.querySelector(`#hospitalizationSection .option-toggle[onclick*="SurgicalInfection"].${history.surgicalInfection?.hasInfection ? 'yes' : 'no'}`), history.surgicalInfection?.hasInfection);
+                    const surgicalYes = document.querySelector('#hospitalizationSection .option-toggle[onclick*="SurgicalInfection"].yes');
+                    const surgicalNo = document.querySelector('#hospitalizationSection .option-toggle[onclick*="SurgicalInfection"].no');
+                    toggleSurgicalInfectionSection(history.surgicalInfection?.hasInfection ? surgicalYes : surgicalNo, history.surgicalInfection?.hasInfection);
                     document.getElementById('surgicalInfectionDescription').value = history.surgicalInfection?.description || '';
                     document.getElementById('surgicalInfectionDuration').value = history.surgicalInfection?.duration || '';
                     
-                    toggleDialysisSection(document.querySelector(`#hospitalizationSection .option-toggle[onclick*="Dialysis"].${history.dialysis?.hasDialysis ? 'yes' : 'no'}`), history.dialysis?.hasDialysis);
+                    const dialysisYes = document.querySelector('#hospitalizationSection .option-toggle[onclick*="Dialysis"].yes');
+                    const dialysisNo = document.querySelector('#hospitalizationSection .option-toggle[onclick*="Dialysis"].no');
+                    toggleDialysisSection(history.dialysis?.hasDialysis ? dialysisYes : dialysisNo, history.dialysis?.hasDialysis);
                     document.getElementById('dialysisDescription').value = history.dialysis?.description || '';
 
-                    toggleAllergySection(document.querySelector(`#hospitalizationSection .option-toggle[onclick*="Allergy"].${history.allergy?.hasAllergy ? 'yes' : 'no'}`), history.allergy?.hasAllergy);
+                    const allergyYes = document.querySelector('#hospitalizationSection .option-toggle[onclick*="Allergy"].yes');
+                    const allergyNo = document.querySelector('#hospitalizationSection .option-toggle[onclick*="Allergy"].no');
+                    toggleAllergySection(history.allergy?.hasAllergy ? allergyYes : allergyNo, history.allergy?.hasAllergy);
                     document.getElementById('allergyDescription').value = history.allergy?.description || '';
                     
                     document.getElementById('drugHistory').value = history.drugHistory || '';
@@ -2648,7 +2669,6 @@
             console.log("Resetting form and state.");
             document.getElementById('patientForm').reset();
             currentEditingPatientId = null;
-            // Clear woundDetailsData related to 'draft' only, not all of it.
              Object.keys(woundDetailsData).forEach(key => {
                 if (key.startsWith(`draft_visit`)) {
                     delete woundDetailsData[key];
@@ -2672,7 +2692,7 @@
              for (let i = 1; i <= 3; i++) {
                 document.getElementById(`woundImagePreview${i}`).innerHTML = `<i class="fas fa-camera"></i><span>عکس ${i}</span>`;
             }
-            // showCustomMessage("فرم پاکسازی شد.", "success"); // This might be too intrusive on every reset.
+            // showCustomMessage("فرم پاکسازی شد.", "success"); 
         }
 
         // ==================== Display and UI Update Functions ====================
@@ -2707,7 +2727,6 @@
                     tr.classList.add('diabetic-row');
                 }
                 
-                // Sanitize patient data for JSON.stringify within HTML attributes
                 const escapedPatientJson = JSON.stringify(patient)
                                              .replace(/'/g, "&apos;")
                                              .replace(/"/g, "&quot;");
@@ -2867,6 +2886,10 @@
         }
 
         function toggleOption(element, dataKey) { 
+            if (!element || !element.parentElement) {
+                console.warn("toggleOption called with invalid element or parent.");
+                return;
+            }
             const group = element.parentElement;
             const isMultiSelect = group.getAttribute('data-multiple') === 'true';
 
@@ -2874,21 +2897,23 @@
                 group.querySelectorAll('.option').forEach(opt => {
                     if (opt !== element) opt.classList.remove('selected');
                 });
-                 element.classList.add('selected'); // Ensure the clicked one is selected
+                 element.classList.add('selected'); 
             } else {
                 element.classList.toggle('selected'); 
             }
 
-            // Specific logic for sections controlled by these options
             const controlledSectionId = group.getAttribute('data-controls-section');
             if (controlledSectionId) {
                 const detailsDiv = document.getElementById(controlledSectionId);
-                const isYesSelected = element.textContent.includes('بله') && element.classList.contains('selected');
-                detailsDiv.classList.toggle('open', isYesSelected);
-                if (!isYesSelected && detailsDiv.querySelector('textarea')) { // If "No" is selected, clear related textareas
-                    detailsDiv.querySelectorAll('textarea, input[type="number"], input[type="text"]').forEach(input => input.value = '');
-                     // Also reset any selects within this controlled section if needed
-                    detailsDiv.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+                if (detailsDiv) {
+                    const isYesSelected = element.textContent.includes('بله') && element.classList.contains('selected');
+                    detailsDiv.classList.toggle('open', isYesSelected);
+                    if (!isYesSelected) { 
+                        detailsDiv.querySelectorAll('textarea, input[type="number"], input[type="text"]').forEach(input => input.value = '');
+                        detailsDiv.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+                    }
+                } else {
+                    console.warn(`Controlled section with ID "${controlledSectionId}" not found for option group.`);
                 }
             }
         }
@@ -2896,6 +2921,10 @@
 
         // Specific toggle functions for Yes/No sections that control collapsible areas
         function toggleSection(element, show, sectionId) {
+            if (!element || !element.parentElement) {
+                console.warn(`toggleSection called with invalid element for section ${sectionId}`);
+                return;
+            }
             const options = element.parentElement.querySelectorAll('.option-toggle');
             options.forEach(opt => {
                 opt.classList.remove('selected', 'yes', 'no');
@@ -2904,15 +2933,18 @@
             element.classList.add('selected');
             element.classList.add(show ? 'yes' : 'no');
             const sectionToToggle = document.getElementById(sectionId);
-            sectionToToggle.classList.toggle('open', show);
-            if (!show) { // If hiding, clear inputs within the section
-                sectionToToggle.querySelectorAll('input, textarea, select').forEach(input => {
-                    if (input.type === 'checkbox' || input.type === 'radio') input.checked = false;
-                    else if (input.tagName === 'SELECT') input.selectedIndex = 0;
-                    else input.value = '';
-                });
-                 // Also reset any multi-option groups within the hidden section
-                sectionToToggle.querySelectorAll('.option.selected').forEach(opt => opt.classList.remove('selected'));
+            if (sectionToToggle) {
+                sectionToToggle.classList.toggle('open', show);
+                if (!show) { 
+                    sectionToToggle.querySelectorAll('input, textarea, select').forEach(input => {
+                        if (input.type === 'checkbox' || input.type === 'radio') input.checked = false;
+                        else if (input.tagName === 'SELECT') input.selectedIndex = 0;
+                        else input.value = '';
+                    });
+                    sectionToToggle.querySelectorAll('.option.selected').forEach(opt => opt.classList.remove('selected'));
+                }
+            } else {
+                 console.warn(`Section with ID "${sectionId}" not found for toggling.`);
             }
         }
 
@@ -3032,7 +3064,7 @@
             }
         }
 
-        function importPatientsFromFile(event) { // Renamed from importPatientFromFile
+        function importPatientsFromFile(event) { 
             const file = event.target.files[0];
             if (!file || !file.name.endsWith('.wmdj')) { 
                 showCustomMessage("لطفاً یک فایل با پسوند .wmdj انتخاب کنید!", 'warning');
@@ -3047,17 +3079,14 @@
                     let importedPatientsArray = [];
                     let importedWoundDetails = {};
 
-                    // Determine the structure of the imported file
                     if (Array.isArray(importedDataContainer)) { 
                         importedPatientsArray = importedDataContainer;
-                        // Old format might not have separate woundDetailsStore, details might be nested
-                        // This part needs careful migration if old format had wound details differently
-                    } else if (importedDataContainer.patients && importedDataContainer.woundDetailsStore) { // New format
+                    } else if (importedDataContainer.patients && importedDataContainer.woundDetailsStore) { 
                         importedPatientsArray = importedDataContainer.patients;
                         importedWoundDetails = importedDataContainer.woundDetailsStore || {};
-                    } else if (importedDataContainer.nationalId) { // Single patient object (potentially old format)
+                    } else if (importedDataContainer.nationalId) { 
                          importedPatientsArray = [importedDataContainer];
-                         if (importedDataContainer.woundDetailsStore) { // If single patient export included its details
+                         if (importedDataContainer.woundDetailsStore) { 
                             Object.assign(importedWoundDetails, importedDataContainer.woundDetailsStore);
                          }
                     } else {
@@ -3080,24 +3109,20 @@
                             skippedCount++;
                         } else {
                             patients.push(newPatient);
-                            // If the imported patient had its own woundDetailsStore, merge it.
-                            // This is primarily for single patient exports that included their details.
                             if (newPatient.woundDetailsStore) {
                                 Object.keys(newPatient.woundDetailsStore).forEach(key => {
-                                    if (key.startsWith(`${newPatient.id}_visit`)) { // Ensure keys match the patient ID
+                                    if (key.startsWith(`${newPatient.id}_visit`)) { 
                                         woundDetailsData[key] = newPatient.woundDetailsStore[key];
                                     }
                                 });
-                                delete newPatient.woundDetailsStore; // Clean up after merging
+                                delete newPatient.woundDetailsStore; 
                             }
                             newPatientsAddedCount++;
                         }
                     });
                     
-                    // Merge the main woundDetailsStore from the imported file (if present at root)
                     if (importedDataContainer.woundDetailsStore && !Array.isArray(importedDataContainer)) {
                         Object.keys(importedWoundDetails).forEach(key => {
-                            // Only add if it doesn't already exist or if we want to overwrite (be careful with overwriting)
                             if (!woundDetailsData[key]) {
                                 woundDetailsData[key] = importedWoundDetails[key];
                             }
@@ -3128,7 +3153,7 @@
         // ==================== UI Feedback & Helpers ====================
         function showCustomMessage(message, type = 'success') { 
             const existingMsgBox = document.querySelector('.custom-message-box');
-            if(existingMsgBox) existingMsgBox.remove(); // Remove previous message if any
+            if(existingMsgBox) existingMsgBox.remove(); 
 
             const msgBox = document.createElement('div');
             msgBox.className = `custom-message-box ${type}`;
@@ -3150,11 +3175,10 @@
             document.getElementById('confirmationModalMessage').textContent = message;
             
             const confirmButton = document.getElementById('confirmActionButton');
-            // Clone and replace to remove previous event listeners
             const newConfirmButton = confirmButton.cloneNode(true); 
             confirmButton.parentNode.replaceChild(newConfirmButton, confirmButton);
             
-            newConfirmButton.onclick = () => { // Assign new listener
+            newConfirmButton.onclick = () => { 
                 onConfirm();
                 closeModal('confirmationModal');
             };
@@ -3173,14 +3197,10 @@
         function saveDraft() {
             try {
                 const draftData = collectPatientDataFromForm(); 
-                // Mark it as a draft, so it doesn't get a real patient ID yet if it's a new form
                 draftData.isDraft = true; 
-                // If currentEditingPatientId is null, it's a new form draft.
-                // If currentEditingPatientId exists, it's a draft of an edit.
                 const draftKey = currentEditingPatientId ? `woundCareDraft_edit_${currentEditingPatientId}` : 'woundCareDraft_new';
                 localStorage.setItem(draftKey, JSON.stringify(draftData));
 
-                 // Save draft wound details separately
                 const draftWoundDetails = {};
                 const tempPatientIdForDraft = currentEditingPatientId || 'draft';
                 for (let i = 1; i <= 7; i++) {
@@ -3199,7 +3219,9 @@
         }
 
         function loadDraft() {
-            const draftKey = currentEditingPatientId ? `woundCareDraft_edit_${currentEditingPatientId}` : 'woundCareDraft_new';
+            // For simplicity, this will load the "new patient" draft.
+            // Loading a draft of an *edit* would typically happen by selecting the patient then having a "load edit draft" button.
+            const draftKey = 'woundCareDraft_new'; 
             const draftDataString = localStorage.getItem(draftKey);
             const draftWoundDetailsString = localStorage.getItem('woundCareDraft_woundDetails');
 
@@ -3207,37 +3229,38 @@
                 try {
                     const draftPatient = JSON.parse(draftDataString);
                     
-                    // Important: When loading a draft for a *new* patient, ensure currentEditingPatientId is null
-                    // If it was a draft of an *edit*, currentEditingPatientId would be set before calling loadDraft (e.g. from patient list)
-                    // For simplicity, let's assume loading a draft always means starting "fresh" or continuing a new entry.
-                    // If it's an edit draft, the populateFormForEdit would handle it.
-                    // This function is more for a general "load last draft" for a new form.
-
-                    currentEditingPatientId = draftPatient.id && !draftPatient.isDraft ? draftPatient.id : null; // If it was a saved patient draft
+                    // When loading a draft, it's for a *new* form state.
+                    // Ensure currentEditingPatientId is null because this isn't an existing patient.
+                    currentEditingPatientId = null; 
                     
-                    populateFormForEdit(draftPatient); // This will also clear and set currentEditingPatientId
+                    populateFormForEdit(draftPatient); // Populate form with draft data
 
-                     // Restore wound details from draft
+                     // After populateFormForEdit, currentEditingPatientId might be set from draftPatient.id.
+                     // If it was a draft (draftPatient.isDraft was true), reset currentEditingPatientId.
+                     if (draftPatient.isDraft) {
+                        currentEditingPatientId = null;
+                        // The patient ID in draftPatient might be a temporary one like "patient_timestamp_random"
+                        // or it could be null if it was saved before ID generation.
+                        // It will get a new proper ID on actual submission.
+                        document.querySelector('#patientForm button[type="submit"]').innerHTML = '<i class="fas fa-save" aria-hidden="true"></i> ثبت پرونده بیمار';
+                     }
+
+
+                     // Restore wound details from draft.
+                     // These were saved with 'draft_visitX' keys. We need to apply them to the 'draft' context in woundDetailsData.
                     if (draftWoundDetailsString) {
                         const loadedWoundDetails = JSON.parse(draftWoundDetailsString);
-                        const tempPatientIdForDraft = currentEditingPatientId || 'draft';
                          for (let i = 1; i <= 7; i++) {
-                            if (loadedWoundDetails[`draft_visit${i}`]) { // Assuming draft details were saved with 'draft_visit' prefix
-                                woundDetailsData[`${tempPatientIdForDraft}_visit${i}`] = loadedWoundDetails[`draft_visit${i}`];
+                            if (loadedWoundDetails[`draft_visit${i}`]) { 
+                                woundDetailsData[`draft_visit${i}`] = loadedWoundDetails[`draft_visit${i}`];
                             }
                         }
+                        // Need to re-populate modal if it were open, or ensure data is ready if user opens it.
+                        // Since form is populated, if user opens a wound detail modal, it will pick up these 'draft_visitX' details.
                     }
                     
-                    // If it was truly a draft of a new patient, remove the temporary draft ID
-                    if (draftPatient.isDraft && draftPatient.id.startsWith('patient_')) {
-                        // The new patient will get a new ID on actual submission
-                        // We might not need to do anything with draftPatient.id here if populateFormForEdit handles ID correctly.
-                    }
-
-
                     showCustomMessage("پیش‌نویس بارگذاری شد. در صورت تمایل، پس از تکمیل، آن را ثبت کنید.", "success");
-                    // Optionally, clear the draft from localStorage after loading
-                    // localStorage.removeItem(draftKey);
+                    // localStorage.removeItem(draftKey); // Optionally clear draft
                     // localStorage.removeItem('woundCareDraft_woundDetails');
                 } catch (e) {
                     console.error("Error loading draft:", e);
@@ -3252,7 +3275,7 @@
         // ==================== Service Worker (PWA Functionality) ====================
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js') 
+                navigator.serviceWorker.register('sw.js') // Make sure sw.js is in the root
                     .then(reg => {
                         console.log('Service Worker: Registered');
                         reg.onupdatefound = () => {
@@ -3262,7 +3285,11 @@
                                     showCustomMessageWithAction(
                                         'نسخه جدید برنامه در دسترس است!',
                                         'رفرش برای بروزرسانی',
-                                        () => newWorker.postMessage({ action: 'skipWaiting' })
+                                        () => {
+                                            if (newWorker) { // Check if newWorker is still valid
+                                                newWorker.postMessage({ action: 'skipWaiting' });
+                                            }
+                                        }
                                     );
                                 }
                             };
