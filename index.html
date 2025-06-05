@@ -886,7 +886,7 @@
         <aside class="sidebar">
             <ul class="sidebar-menu">
                 <li class="menu-item">
-                    <a href="#" class="menu-link active" onclick="navigateToSection('dashboard', event)">
+                    <a href="#" class="menu-link active" onclick="navigateToSection('dashboardSection', event)">
                         <i class="fas fa-home"></i>
                         <span>داشبورد</span>
                     </a>
@@ -1573,6 +1573,7 @@
         let uploadedSummaries = []; // آرایه برای نگهداری فایل‌های خلاصه آپلود شده موقت
         let currentImageUploadSlot = 1; // برای تعیین اسلات عکس در مودال زخم
         let currentlyViewedTestFile = null; // برای نگهداری اطلاعات فایل در حال نمایش در مودال
+        let activeMainSectionId = 'dashboardSection'; // برای پیگیری بخش فعال اصلی
 
 
         const MAX_UPLOAD_SIZE_MB = 5; // حداکثر حجم مجاز برای آپلود فایل (مگابایت)
@@ -1587,6 +1588,8 @@
             
             // راه‌اندازی اولیه بخش‌های toggle به حالت "خیر"
             initializeToggleSections();
+            navigateToSection(activeMainSectionId); // نمایش بخش اولیه (داشبورد)
+
 
             document.getElementById('patientForm').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -1637,13 +1640,24 @@
         // ==================== Navigation ====================
         function navigateToSection(sectionId, event) {
             if (event) event.preventDefault();
+            
+            activeMainSectionId = sectionId; // ذخیره بخش فعال فعلی
+
             document.querySelectorAll('main > div').forEach(sec => sec.style.display = 'none');
-            document.getElementById(sectionId).style.display = 'block';
+            const targetSection = document.getElementById(sectionId);
+            if(targetSection) targetSection.style.display = 'block';
+
 
             document.querySelectorAll('.sidebar-menu .menu-link').forEach(link => link.classList.remove('active'));
-            if (event) event.currentTarget.classList.add('active');
-            else if (sectionId === 'dashboardSection') { // Default active link for dashboard
-                 document.querySelector('.sidebar-menu a[onclick*="dashboard"]').classList.add('active');
+            
+            // فعال کردن لینک منوی مربوطه
+            const activeLink = document.querySelector(`.sidebar-menu a[onclick*="'${sectionId}'"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            } else if (sectionId === 'dashboardSection') { 
+                 // اگر بخش داشبورد به صورت پیش‌فرض فعال است و لینکی با onclick آن پیدا نشد (ممکن است نام تابع متفاوت باشد)
+                 const dashboardLink = document.querySelector('.sidebar-menu a[onclick*="dashboard"]'); // یک جستجوی کلی‌تر
+                 if(dashboardLink) dashboardLink.classList.add('active');
             }
 
 
@@ -1894,6 +1908,8 @@
             document.getElementById('testModalContainer').style.display = 'none';
             document.getElementById('testModalBackdrop').style.display = 'none';
             currentlyViewedTestFile = null;
+            // اطمینان از اینکه به بخش صحیح بازمی‌گردیم
+             navigateToSection(activeMainSectionId); 
         }
         function downloadCurrentViewedTestFile() {
             if (!currentlyViewedTestFile) return;
